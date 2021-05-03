@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, {useEffect} from "react";
 import { Link } from "react-router-dom";
 // reactstrap components
 import {
@@ -35,7 +35,40 @@ import {
   Media,
 } from "reactstrap";
 
+import Cookies from 'universal-cookie';
+import axios from 'axios';
+const cookie = new Cookies();
+const baseURL= cookie.get('baseURL');
+
 const AdminNavbar = (props) => {
+
+//metodo Sincronico para el consumo del login en la api
+const logout = async()=>{  
+  axios.defaults.headers.Authorization = "Bearer " + cookie.get('token');       
+  await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
+    // Logout...
+    axios.post(baseURL+"api/logout",{
+      params: {      
+        id: cookie.get('id'),          
+      }
+    })
+    .then(() =>{
+      cookie.remove('token',{path: '/'});          
+      window.location.href = "/auth/login";
+    })  
+    .catch(error=>{      
+      console.log(error);
+    });
+  });
+};
+
+useEffect( ()=> { 
+  //cookie.remove('token',{path: '/'});    
+  if(!cookie.get('token')){    
+    window.location.href = "/auth/login"; 
+  }
+});
+
   return (
     <>
       <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
@@ -73,7 +106,7 @@ const AdminNavbar = (props) => {
                   </span>
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm font-weight-bold">
-                      Jessica Jones
+                      { cookie.get('name')}
                     </span>
                   </Media>
                 </Media>
@@ -99,7 +132,7 @@ const AdminNavbar = (props) => {
                   <span>Support</span>
                 </DropdownItem>
                 <DropdownItem divider />
-                <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
+                <DropdownItem onClick={logout}>
                   <i className="ni ni-user-run" />
                   <span>Logout</span>
                 </DropdownItem>

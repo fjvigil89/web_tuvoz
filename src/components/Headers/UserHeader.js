@@ -19,6 +19,9 @@ import React from "react";
 
 // reactstrap components
 import { Button, Container, Row, Col } from "reactstrap";
+import Cookies from 'universal-cookie';
+//import axios from 'axios';
+const cookie = new Cookies();
 
 const UserHeader = () => {
   return (

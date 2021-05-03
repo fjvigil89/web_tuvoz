@@ -20,6 +20,10 @@ import React from "react";
 // reactstrap components
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 
+import Cookies from 'universal-cookie';
+//import axios from 'axios';
+const cookie = new Cookies();
+
 const Header = () => {
   return (
     <>

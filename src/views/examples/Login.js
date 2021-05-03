@@ -38,7 +38,7 @@ import Cookies from 'universal-cookie';
 import axios from 'axios';
 
 
-const baseURL= "http://localhost:8000/api/";
+const baseURL= "http://localhost:8000/";
 const cookie = new Cookies();
 
 //Funcion Base para la paguina del Login
@@ -52,8 +52,15 @@ const [credenciales, setCredenciales] = useState({
 
 // Similar a componentDidMount y componentDidUpdate:
 useEffect(() => {  
-  document.title = `Login`;  
+  document.title = `Login`; 
+  cookie.set('baseURL', baseURL, {path: '/'});     
+  
+  if(cookie.get('token')){    
+    window.location.href = "/admin/index"; 
+  }
+
 }, []);
+
 
 //Captura los valores del formulario
 const handleChange = async e =>{  
@@ -67,34 +74,41 @@ const handleChange = async e =>{
 }
 
 //metodo Sincronico para el consumo del login en la api
-const inicioSesion = async()=>{   
-  await axios.get(baseURL+'login', {
-    params: { 
-      email: credenciales.form.email, 
-      password: credenciales.form.password 
-    }},
-    {
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',        
-        "Access-Control-Allow-Origin": "*",        
-      },
+const inicioSesion = async()=>{    
+  await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
+    // Login...
+    axios.get(baseURL+'api/login', {
+      params: { 
+        email: credenciales.form.email, 
+        password: credenciales.form.password 
+      }},
+      {
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',        
+          "Access-Control-Allow-Origin": "*",        
+        },
+      })
+    .then(response =>{    
+      return response.data;
     })
-  .then(response =>{
-    return response.data;
-  })
-  .then(response=>{
-    if (response.length > 0) {
-          let result = response[0];
-          cookie.set('id', result.id, {path: '/'});
-          console.log(result);
-    }else(
-      alert('credentials not found')
-    )
-  })
-  .catch(error=>{
-    console.log(error);
-  })  
-  
+    .then(response=>{        
+      if (typeof(response.data) !== "undefined") {
+            let data = response.data;
+            let token = response.access_token;
+            cookie.set('token', token, {path: '/'});
+            cookie.set('id', data.id, {path: '/'});
+            cookie.set('email', data.email, {path: '/'});
+            cookie.set('name', data.name, {path: '/'});    
+            window.location.href = "/admin/index";      
+      }else{      
+        alert('credentials not found');
+      }
+    })
+    .catch(error=>{
+      alert("Error in credentiales");    
+      console.log(error);
+    })
+  }); 
 };
 
   return (

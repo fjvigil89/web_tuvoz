@@ -48,6 +48,11 @@ import {
 
 import Header from "components/Headers/Header.js";
 
+import Cookies from 'universal-cookie';
+//import axios from 'axios';
+const cookie = new Cookies();
+
+
 const Index = (props) => {
   const [activeNav, setActiveNav] = useState(1);
   const [chartExample1Data, setChartExample1Data] = useState("data1");
@@ -61,6 +66,7 @@ const Index = (props) => {
     setActiveNav(index);
     setChartExample1Data("data" + index);
   };
+  
   return (
     <>
       <Header />
