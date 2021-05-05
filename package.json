@@ -23,7 +23,7 @@
     "url": "https://github.com/creativetimofficial/argon-dashboard-react/issues"
   },
   "homepage": "https://demos.creative-tim.com/argon-dashboard-react/",
-  "scripts": {    
+  "scripts": {
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -54,6 +54,7 @@
     "node-sass": "4.14.1",
     "node-sass-package-importer": "5.3.2",
     "nouislider": "14.6.3",
+    "push.js": "^1.0.12",
     "pusher-js": "^7.0.3",
     "react": "17.0.1",
     "react-chartjs-2": "2.11.1",
@@ -63,6 +64,7 @@
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.1",
     "reactstrap": "8.9.0",
+    "sweetalert2": "^10.16.7",
     "universal-cookie": "^4.0.4"
   },
   "devDependencies": {

@@ -48,9 +48,6 @@ import {
 
 import Header from "components/Headers/Header.js";
 
-import Cookies from 'universal-cookie';
-//import axios from 'axios';
-const cookie = new Cookies();
 
 
 const Index = (props) => {

@@ -26,10 +26,6 @@ import Sidebar from "components/Sidebar/Sidebar.js";
 
 import routes from "routes.js";
 
-import Cookies from 'universal-cookie';
-//import axios from 'axios';
-const cookie = new Cookies();
-
 const Admin = (props) => {
   const mainContent = React.useRef(null);
   const location = useLocation();

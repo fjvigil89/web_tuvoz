@@ -34,27 +34,28 @@ import {
 } from "reactstrap";
 
 import { useEffect, useState } from "react";
+import useBaseURL from '../../Hooks/useBaseURL';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
-
-const baseURL= "http://localhost:8000/";
 const cookie = new Cookies();
-
 //Funcion Base para la paguina del Login
 const Login = () => {
 
+  
+  //uso del Hooks para la url de la API
+  const baseURL= useBaseURL(null);
+
   //hoocks para el uso de las credenciales
-const [credenciales, setCredenciales] = useState({
+
+  const [credenciales, setCredenciales] = useState({
   email: '',
   password: ''
 })
 
 // Similar a componentDidMount y componentDidUpdate:
-useEffect(() => {  
-  document.title = `Login`; 
-  cookie.set('baseURL', baseURL, {path: '/'});     
-  
+useEffect(() => {    
   if(cookie.get('token')){    
     window.location.href = "/admin/index"; 
   }
@@ -88,8 +89,9 @@ const inicioSesion = async()=>{
           "Access-Control-Allow-Origin": "*",        
         },
       })
-    .then(response =>{    
-      return response.data;
+    .then(response =>{      
+      console.log(response);
+      //return response.data;
     })
     .then(response=>{        
       if (typeof(response.data) !== "undefined") {
@@ -98,15 +100,21 @@ const inicioSesion = async()=>{
             cookie.set('token', token, {path: '/'});
             cookie.set('id', data.id, {path: '/'});
             cookie.set('email', data.email, {path: '/'});
-            cookie.set('name', data.name, {path: '/'});    
+            cookie.set('name', data.name, {path: '/'});                 
             window.location.href = "/admin/index";      
-      }else{      
-        alert('credentials not found');
       }
     })
-    .catch(error=>{
-      alert("Error in credentiales");    
-      console.log(error);
+    .catch(() => {            
+      Swal.fire({
+        title: 'Oops!!',
+        text: "Credentials went wrong!",
+        icon: "error",
+        footer: '<span style="color: red">server with error!<span/>',        
+        toast: true,
+        position: "top-right",        
+        showConfirmButton: false,
+        timer: 4000,
+      }) 
     })
   }); 
 };

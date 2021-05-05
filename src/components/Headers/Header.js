@@ -15,16 +15,53 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
-
+import React, {useEffect, useState} from "react";
+import Cookies from 'universal-cookie';
+import axios from 'axios';
 // reactstrap components
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
+import useBaseURL from '../../Hooks/useBaseURL';
+import Swal from 'sweetalert2';
 
-import Cookies from 'universal-cookie';
-//import axios from 'axios';
 const cookie = new Cookies();
 
+//inicio de la función
 const Header = () => {
+
+  //uso del Hooks para la url de la API
+  const baseURL= useBaseURL(null);
+  
+ const [treatment, setTreatment]  = useState(0);
+
+  //metodo Sincronico para el consumo del login en la api
+  const countTratamientos = async()=>{    
+    axios.defaults.headers.Authorization = "Bearer " + cookie.get('token'); 
+    await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
+      // get Tratamientos
+      axios.get(baseURL+'api/countTreatment')      
+      .then(response =>{              
+        setTreatment(response.data.data);
+      })    
+      .catch(err => {            
+        Swal.fire({
+          title: 'Oops!!',
+          text: "Server not Found!",
+          icon: "warning",
+          footer: '<span style="color: red">server with error!<span/>',        
+          toast: true,
+          position: "top-right",        
+          showConfirmButton: false,
+          timer: 4000,
+        })        
+      })   
+    })
+  };
+
+
+  useEffect(()=>{            
+    countTratamientos()
+  },[]);
+
   return (
     <>
       <div className="header bg-gradient-info pb-8 pt-5 pt-md-8">
@@ -99,9 +136,9 @@ const Header = () => {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          Sales
+                          Treatments
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">924</span>
+                        <span className="h2 font-weight-bold mb-0"> {treatment}</span>
                       </div>
                       <Col className="col-auto">
                         <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">

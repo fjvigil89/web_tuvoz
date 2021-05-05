@@ -37,21 +37,20 @@ import {
 
 import Cookies from 'universal-cookie';
 import axios from 'axios';
-const cookie = new Cookies();
-const baseURL= cookie.get('baseURL');
+import useBaseURL from '../../Hooks/useBaseURL';
 
+const cookie = new Cookies();
 const AdminNavbar = (props) => {
 
+  //uso del Hooks para la url de la API
+  const baseURL= useBaseURL(null);
+
 //metodo Sincronico para el consumo del login en la api
-const logout = async()=>{  
+const logout = async()=>{  console.log(cookie.getAll());
   axios.defaults.headers.Authorization = "Bearer " + cookie.get('token');       
   await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
     // Logout...
-    axios.post(baseURL+"api/logout",{
-      params: {      
-        id: cookie.get('id'),          
-      }
-    })
+    axios.post(baseURL+"api/logout")
     .then(() =>{
       cookie.remove('token',{path: '/'});          
       window.location.href = "/auth/login";
@@ -66,8 +65,8 @@ useEffect( ()=> {
   //cookie.remove('token',{path: '/'});    
   if(!cookie.get('token')){    
     window.location.href = "/auth/login"; 
-  }
-});
+  }    
+}, []);
 
   return (
     <>
