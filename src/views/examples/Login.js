@@ -56,9 +56,12 @@ const Login = () => {
 
 // Similar a componentDidMount y componentDidUpdate:
 useEffect(() => {    
-  if(cookie.get('token')){    
-    window.location.href = "/admin/index"; 
-  }
+  if(cookie.get('token')){
+    if (cookie.get('role') === 'Specialist') {
+      window.location.href = "/admin/index";
+    }    
+    
+  }  
 
 }, []);
 
@@ -89,19 +92,24 @@ const inicioSesion = async()=>{
           "Access-Control-Allow-Origin": "*",        
         },
       })
-    .then(response =>{      
-      console.log(response);
-      //return response.data;
+    .then(response =>{  
+      return response;
     })
-    .then(response=>{        
-      if (typeof(response.data) !== "undefined") {
-            let data = response.data;
-            let token = response.access_token;
-            cookie.set('token', token, {path: '/'});
+    .then(response=>{     
+      if (response.statusText === 'OK') { 
+            let data = response.data.data;
+            let token = response.data.access_token;
+            cookie.set('token', token, {path: '/', maxAge: '10800'}); 
             cookie.set('id', data.id, {path: '/'});
             cookie.set('email', data.email, {path: '/'});
-            cookie.set('name', data.name, {path: '/'});                 
-            window.location.href = "/admin/index";      
+            cookie.set('name', data.name, {path: '/'}); 
+            cookie.set('role', data.role, {path: '/'}); 
+            
+            if (data.role === 'Specialist') {
+              window.location.href = "/admin/index";
+            }
+
+            
       }
     })
     .catch(() => {            

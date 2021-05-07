@@ -42,10 +42,10 @@ const Header = () => {
       .then(response =>{              
         setTreatment(response.data.data);
       })    
-      .catch(err => {            
+      .catch(() => {            
         Swal.fire({
           title: 'Oops!!',
-          text: "Server not Found!",
+          text: "there is a problem connecting the API server!",
           icon: "warning",
           footer: '<span style="color: red">server with error!<span/>',        
           toast: true,

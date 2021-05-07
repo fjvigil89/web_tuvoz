@@ -46,7 +46,7 @@ const AdminNavbar = (props) => {
   const baseURL= useBaseURL(null);
 
 //metodo Sincronico para el consumo del login en la api
-const logout = async()=>{  console.log(cookie.getAll());
+const logout = async()=>{
   axios.defaults.headers.Authorization = "Bearer " + cookie.get('token');       
   await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
     // Logout...
