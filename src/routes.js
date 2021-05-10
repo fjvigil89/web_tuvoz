@@ -58,7 +58,7 @@ var routes = [
     icon: "ni ni-bullet-list-67 text-red",
     component: Treatments,
     layout: "/admin",
-  },
+  }, 
   {
     path: "/login",
     name: "Login",

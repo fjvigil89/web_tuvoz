@@ -25,6 +25,7 @@ import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
 import routes from "routes.js";
+import routes_hidden from "routes_hidden.js";
 
 const Admin = (props) => {
   const mainContent = React.useRef(null);
@@ -38,6 +39,22 @@ const Admin = (props) => {
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
+      if (prop.layout === "/admin") {
+        return (
+          <Route
+            path={prop.layout + prop.path}
+            component={prop.component}
+            key={key}
+          />
+        );
+      } else {
+        return null;
+      }
+    });
+  };
+
+  const getRoutesHidden = (routes_hidden) => {
+    return routes_hidden.map((prop, key) => {
       if (prop.layout === "/admin") {
         return (
           <Route
@@ -82,6 +99,7 @@ const Admin = (props) => {
         />
         <Switch>
           {getRoutes(routes)}
+          {getRoutesHidden(routes_hidden)}
           <Redirect from="*" to="/admin/index" />
         </Switch>
         <Container fluid>

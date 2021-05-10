@@ -19,6 +19,7 @@ import {
   Row,
   UncontrolledTooltip,  
 } from "reactstrap";
+import { Link } from "react-router-dom";
 
 import Cookies from 'universal-cookie';
 import axios from 'axios';
@@ -60,22 +61,7 @@ const AdminTableList = () => {
   };
   
 
-  //metodo Sincronico para el consumo del login en la api
-  const AddTratamientos = async()=>{  
-    axios.defaults.headers.Authorization = "Bearer " + cookie.get('token'); 
-    await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
-      Swal.fire({
-        title: 'Oops!!',
-        text: "there is a problem connecting with Treatment the API server!",
-        icon: "warning",
-        footer: '<span style="color: red">server with error!<span/>',        
-        toast: true,
-        position: "top-right",        
-        showConfirmButton: false,
-        timer: 4000,
-      }) 
-    })
-  };
+  
 
   useEffect(()=>{            
     Tratamientos()
@@ -94,20 +80,17 @@ const AdminTableList = () => {
             <div className="col">
               <Card className="shadow">
                 <CardHeader className="border-0">
-                  <Media className="align-items-center">
-                          <a
-                            className="avatar rounded-circle mr-3"
-                            href=""
-                            onClick={(e) => AddTratamientos}
-                          >
-                            <img
+                  <Media className="align-items-center">                                                   
+                          <Link className="avatar avatar-sm" to="/admin/addtreatment">
+                          <img
                               alt="..."
+                              className="rounded-circle"
                               src={
-                                require("../../assets/img/theme/plus.jpg")
+                                require("../../assets/img/theme/plus1.jpg")
                                   .default
                               }
                             />
-                          </a>
+                          </Link>
 
                           <Media>
                             <span className="mb-0 text-sm">
@@ -149,7 +132,7 @@ const AdminTableList = () => {
                                 {
                                   item.status === 1 ? <><i className="bg-success" /> activated</> : <><i className="bg-warning" /> disabled </>
                                 }
-                              </Badge>
+                              </Badge>                             
                             </td>
                             <td>
                               <div className="avatar-group">

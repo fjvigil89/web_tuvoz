@@ -32,6 +32,7 @@ const Header = () => {
   const baseURL= useBaseURL(null);
   
  const [treatment, setTreatment]  = useState(0);
+ const [userbytreatment, setUserByTreatment]  = useState(0);
 
   //metodo Sincronico para el consumo del login en la api
   const countTratamientos = async()=>{    
@@ -56,10 +57,36 @@ const Header = () => {
       })   
     })
   };
+  
+    //metodo Sincronico para el consumo del login en la api
+    const countUserByTreatment = async()=>{    
+      axios.defaults.headers.Authorization = "Bearer " + cookie.get('token'); 
+      await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
+        // get Tratamientos
+        axios.get(baseURL+'api/countUserByTreatment')      
+        .then(response =>{              
+          setUserByTreatment(response.data.data);
+        })    
+        .catch(() => {            
+          Swal.fire({
+            title: 'Oops!!',
+            text: "there is a problem connecting the API server!",
+            icon: "warning",
+            footer: '<span style="color: red">server with error!<span/>',        
+            toast: true,
+            position: "top-right",        
+            showConfirmButton: false,
+            timer: 4000,
+          })        
+        })   
+      })
+    };
 
 
   useEffect(()=>{            
     countTratamientos()
+    countUserByTreatment()
+    
   },[]);
 
   return (
@@ -108,13 +135,13 @@ const Header = () => {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          New users
+                          Patient
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">2,356</span>
-                      </div>
+                        <span className="h2 font-weight-bold mb-0">{ userbytreatment }</span>
+                      </div>                      
                       <Col className="col-auto">
-                        <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
-                          <i className="fas fa-chart-pie" />
+                        <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">
+                          <i className="fas fa-users" />
                         </div>
                       </Col>
                     </Row>
@@ -139,10 +166,10 @@ const Header = () => {
                           Treatments
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0"> {treatment}</span>
-                      </div>
+                      </div>                      
                       <Col className="col-auto">
-                        <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">
-                          <i className="fas fa-users" />
+                        <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
+                          <i className="fas fa-chart-pie" />
                         </div>
                       </Col>
                     </Row>
