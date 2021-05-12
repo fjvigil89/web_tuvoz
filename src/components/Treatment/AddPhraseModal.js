@@ -22,8 +22,7 @@ const AddPhraseModal= (props) => {
     const [ listPhrase, setlistPhrase ] = useState([]);
 
     const {
-        buttonLabel,
-        count       
+        buttonLabel,               
         } = props;
 
     const cachePhrase = async()=>{

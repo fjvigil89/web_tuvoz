@@ -60,6 +60,9 @@ useEffect(() => {
     if (cookie.get('role') === 'Specialist') {
       window.location.href = "/admin/index";
     }    
+    if (cookie.get('role') === 'Guest') {
+      window.location.href = "/patient/index";      
+    }
     
   }  
 
@@ -92,7 +95,7 @@ const inicioSesion = async()=>{
           "Access-Control-Allow-Origin": "*",        
         },
       })
-    .then(response =>{  
+    .then(response =>{ 
       return response;
     })
     .then(response=>{     
@@ -108,11 +111,14 @@ const inicioSesion = async()=>{
             if (data.role === 'Specialist') {
               window.location.href = "/admin/index";
             }
+            if (data.role === 'Guest') {
+              window.location.href = "/patient/index";      
+            }
 
             
       }
     })
-    .catch(() => {            
+    .catch(() => {         
       Swal.fire({
         title: 'Oops!!',
         text: "Credentials went wrong!",

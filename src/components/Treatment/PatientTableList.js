@@ -16,17 +16,15 @@ import {
   Row,
   UncontrolledTooltip,    
 } from "reactstrap";
-import { Link } from "react-router-dom";
 
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import useBaseURL from '../../Hooks/useBaseURL';
 
-
 const cookie = new Cookies();
 
-const AdminTableList = () => {    
+const PatientTableList = () => {    
   //uso del Hooks para la url de la API
   const baseURL= useBaseURL(null);
   
@@ -39,8 +37,8 @@ const AdminTableList = () => {
     axios.defaults.headers.Authorization = "Bearer " + cookie.get('token'); 
     await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
       // get Tratamientos
-      axios.get(baseURL+'api/treatment')      
-      .then(response =>{         
+      axios.get(baseURL+'api/treatment_patient')      
+      .then(response =>{                 
         setTreatment(response.data.data);                
       })    
       .catch(err => {                            
@@ -57,49 +55,8 @@ const AdminTableList = () => {
       })   
     })
   };
+
   
-  const deleteTreatment = async(id) =>{
-    axios.defaults.headers.Authorization = "Bearer " + cookie.get('token'); 
-    await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
-      // get Tratamientos
-      Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-      }).then((result) => {
-        if (result.isConfirmed) {
-            axios.delete(baseURL+'api/treatment/'+id)      
-            .then(() =>{                 
-              Tratamientos()              
-
-              Swal.fire(
-                'Deleted!',
-                'Your file has been deleted.',
-                'success'
-              )              
-            })    
-            .catch(err => {                            
-              Swal.fire({
-                title: 'Oops!!',
-                text: "there is a problem connecting with Treatment the API server!",
-                icon: "warning",
-                footer: '<span style="color: red">server with error!<span/>',        
-                toast: true,
-                position: "top-right",        
-                showConfirmButton: false,
-                timer: 4000,
-              })        
-            })
-          
-        }
-      })         
-    })
-
-  }
   
 
   useEffect(()=>{            
@@ -119,18 +76,7 @@ const AdminTableList = () => {
             <div className="col">
               <Card className="shadow">
                 <CardHeader className="border-0">
-                  <Media className="align-items-center">                                                   
-                          <Link className="avatar avatar-sm" to="/admin/addtreatment">
-                          <img
-                              alt="..."
-                              className="rounded-circle"
-                              src={
-                                require("../../assets/img/theme/plus1.jpg")
-                                  .default
-                              }
-                            />
-                          </Link>
-
+                  <Media className="align-items-center">
                           <Media>
                             <span className="mb-0 text-sm">
                               <h3 className="mb-0">Treatment</h3>
@@ -147,14 +93,14 @@ const AdminTableList = () => {
                       <th scope="col">Treatment</th>
                       <th scope="col">Description</th>
                       <th scope="col">Status</th>
-                      <th scope="col">Users</th>
+                      <th scope="col">Specialist</th>
                       <th scope="col">Completion</th>
                       <th className=" text-right">Actions</th>
                     </tr>
                   </thead>
                   <tbody> 
                         {
-                          treatment.map(item =>(       
+                          treatment.map( (item, index) =>(       
                           <tr key={item.id}>
                             <th scope="row">
                               <Media className="align-items-center">                      
@@ -176,38 +122,28 @@ const AdminTableList = () => {
                             </td>
                             <td>
                               <div className="avatar-group">
-                                {item.patients.map( patient => (                                  
-                                  <>                                  
-                                    {
-                                      patient.map( user => (
-                                        <>
-                                          <a 
-                                            className="avatar avatar-sm"
-                                            href="#pablo"
-                                            id={user.name}
-                                            onClick={(e) => e.preventDefault()}
-                                            >
-                                            <img
-                                              alt="..."
-                                              className="rounded-circle"
-                                              src={
-                                                require("../../assets/img/theme/team-1-800x800.jpg")
-                                                  .default
-                                              }
-                                            />
-                                            </a>
-                                            <UncontrolledTooltip 
-                                            delay={user.id}
-                                            target={user.name}
-                                            >
-                                            { user.name}
-                                            </UncontrolledTooltip>  
-                                        </>
-                                      ))
+                                
+                                <a 
+                                  className="avatar avatar-sm"
+                                  href="#pablo"
+                                  id= {item.specialist.name}
+                                  onClick={(e) => e.preventDefault()}
+                                  >
+                                  <img
+                                    alt="..."
+                                    className="rounded-circle"
+                                    src={
+                                      require("../../assets/img/theme/team-1-800x800.jpg")
+                                        .default
                                     }
-                                    
-                                   </>
-                                ))}
+                                  />
+                                  </a>
+                                  <UncontrolledTooltip 
+                                  delay={item.specialist.id}
+                                  target="a"
+                                  >
+                                  { item.specialist.name}
+                                  </UncontrolledTooltip>  
       
                               </div>
                             </td>
@@ -239,40 +175,6 @@ const AdminTableList = () => {
                                   >
                                   info
                                   </UncontrolledTooltip> 
-                              </Button>
-                              
-                              <Button
-                                className=" btn-icon"
-                                color="success"
-                                size="sm"
-                                type="button"
-                                id={item.name+"edit"}
-                              >
-                                <i className=" ni ni-ruler-pencil pt-1"></i>
-                                <UncontrolledTooltip 
-                                  delay={item.id}
-                                  target={item.name +"edit"}
-                                  >
-                                  edit
-                                </UncontrolledTooltip> 
-                              
-                              </Button>
-
-                              <Button
-                                className=" btn-icon"
-                                color="danger"
-                                size="sm"
-                                type="button"
-                                onClick= {(e) =>deleteTreatment(item.id)}
-                                id={item.name+"delete"}
-                              >
-                                <i className=" ni ni-fat-remove pt-1"></i>
-                                <UncontrolledTooltip 
-                                  delay={item.id}
-                                  target={item.name+"delete"}
-                                  >
-                                  delete
-                                </UncontrolledTooltip> 
                               </Button>
                             </td>
                           </tr>
@@ -342,4 +244,4 @@ const AdminTableList = () => {
     );
   
 }
-export default AdminTableList;
+export default PatientTableList;
