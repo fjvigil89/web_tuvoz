@@ -100,10 +100,10 @@ const inicioSesion = async()=>{
             let data = response.data.data;
             let token = response.data.access_token;
             cookie.set('token', token, {path: '/', maxAge: '10800'}); 
-            cookie.set('id', data.id, {path: '/'});
-            cookie.set('email', data.email, {path: '/'});
-            cookie.set('name', data.name, {path: '/'}); 
-            cookie.set('role', data.role, {path: '/'}); 
+            cookie.set('id', data.id, {path: '/', maxAge: '10800'});
+            cookie.set('email', data.email, {path: '/', maxAge: '10800'});
+            cookie.set('name', data.name, {path: '/', maxAge: '10800'}); 
+            cookie.set('role', data.role, {path: '/', maxAge: '10800'}); 
             
             if (data.role === 'Specialist') {
               window.location.href = "/admin/index";

@@ -18,6 +18,7 @@ import Cookies from 'universal-cookie';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import useBaseURL from '../../Hooks/useBaseURL';
+import AddPhraseModal from "./AddPhraseModal.js";
 
 const cookie = new Cookies();
 
@@ -29,6 +30,7 @@ const AddFrom = () => {
     if(!cookie.get('token')){    
       window.location.href = "/auth/login"; 
     }
+    
   },[]);
 
     const [treatment, setTreatment] = useState({
@@ -48,13 +50,15 @@ const AddFrom = () => {
 
     const addTreatment = async()=>{
         axios.defaults.headers.Authorization = "Bearer " + cookie.get('token');       
-        await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
-            // Logout...
+        await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {            
+            // // Logout...
             axios.post(baseURL+"api/treatment",{                
                     name: treatment.form.nameTreatment,
-                    desc: treatment.form.descTreatment                
+                    desc: treatment.form.descTreatment,
+                    phrase: cookie.get('cachePhrase')
             })
-            .then(response =>{
+            .then(response =>{                                
+                cookie.remove('cachePhrase', {path: '/'});         
                 Swal.fire({
                     title: 'Woww!!',
                     text: response.data.message,
@@ -72,8 +76,12 @@ const AddFrom = () => {
             .catch(error=>{      
                 console.log(error);
             });
+            
+            
         });        
     }
+    
+   
     const resetForm = async()=>{
         document.getElementById("nameTreatment").value="";
         document.getElementById("descTreatment").value="";
@@ -139,6 +147,7 @@ const AddFrom = () => {
                                 onChange= { handleChange }
                                 name="descTreatment"
                                 id="descTreatment"
+                                placeholder="Description Treatment"
                                 ></Input>
                             </FormGroup>
                             </Col>  
@@ -146,26 +155,56 @@ const AddFrom = () => {
                             </Col>                        
                         </Row> 
 
+                        <Row>                             
+                            <Col md="6">                                                                   
+                                    <AddPhraseModal
+                                     buttonLabel="Add Phrase"                                     
+                                    >
+                                    </AddPhraseModal>            
+                            </Col>
+
+                        </Row> 
+
                         <Row>
                             <Col md="8">                            
                             </Col>  
-                            <Col md="2">                        
-                                <Button 
-                                    className="btn-icon btn-3" 
-                                    color="primary" 
-                                    type="button"  
-                                    href="#"
-                                    onClick={(e) => addTreatment()}>
-                                    <span className="btn-inner--icon">
-                                    <i className="ni ni-fat-add"></i>
-                                    </span>
-                                    <span className="btn-inner--text">Add</span>
-                                </Button>              
+                            <Col md="2">  
+                                {
+                                    typeof(treatment.form) !=='undefined' ?                                        
+                                        <Button 
+                                            className="btn-icon btn-1" 
+                                            color="primary" 
+                                            type="button"  
+                                            href=""
+                                            onClick={(e) => addTreatment()}>
+                                            <span className="btn-inner--icon">
+                                            <i className="ni ni-fat-add"></i>
+                                            </span>
+                                            <span className="btn-inner--text">Add</span>
+                                        </Button>                      
+                                                                                
+                                    :
+                                        <Button 
+                                            className="btn-icon btn-1" 
+                                            color="primary" 
+                                            type="button"  
+                                            href=""
+                                            disabled 
+                                            >
+                                            <span className="btn-inner--icon">
+                                            <i className="ni ni-fat-add"></i>
+                                            </span>
+                                            <span className="btn-inner--text">Add</span>
+                                        </Button>
+
+                                    
+                                }                      
+                                
                             </Col>    
                             <Col md="2">
                                 <Link to="/admin/treatments">
                                     <Button 
-                                        className="btn-icon btn-3" 
+                                        className="btn-icon btn-1" 
                                         color="danger" 
                                         type="button">                                        
                                         <span className="btn-inner--icon">
@@ -178,6 +217,7 @@ const AddFrom = () => {
                             </Col>                        
                         </Row> 
 
+                        
                         
                         
                     </Form>

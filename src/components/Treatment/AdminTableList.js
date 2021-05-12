@@ -5,10 +5,7 @@ import {
   Card,
   CardHeader,
   CardFooter,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
+  Button,
   Media,
   Pagination,
   PaginationItem,
@@ -17,7 +14,7 @@ import {
   Table,
   Container,
   Row,
-  UncontrolledTooltip,  
+  UncontrolledTooltip,    
 } from "reactstrap";
 import { Link } from "react-router-dom";
 
@@ -42,10 +39,10 @@ const AdminTableList = () => {
     await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
       // get Tratamientos
       axios.get(baseURL+'api/treatment')      
-      .then(response =>{                                 
-        setTreatment(response.data.data);        
+      .then(response =>{         
+        setTreatment(response.data.data);                
       })    
-      .catch(() => {            
+      .catch(err => {                            
         Swal.fire({
           title: 'Oops!!',
           text: "there is a problem connecting with Treatment the API server!",
@@ -96,6 +93,7 @@ const AdminTableList = () => {
                             <span className="mb-0 text-sm">
                               <h3 className="mb-0">Treatment</h3>
                             </span>
+
                           </Media>                                 
                                              
                   </Media>
@@ -109,7 +107,7 @@ const AdminTableList = () => {
                       <th scope="col">Status</th>
                       <th scope="col">Users</th>
                       <th scope="col">Completion</th>
-                      <th scope="col" />
+                      <th className=" text-right">Actions</th>
                     </tr>
                   </thead>
                   <tbody> 
@@ -183,38 +181,56 @@ const AdminTableList = () => {
                                 </div>
                               </div>
                             </td>
-                            <td className="text-right">
-                              <UncontrolledDropdown>
-                                <DropdownToggle
-                                  className="btn-icon-only text-light"
-                                  href="#pablo"
-                                  role="button"
-                                  size="sm"
-                                  color=""
-                                  onClick={(e) => e.preventDefault()}
-                                >
-                                  <i className="fas fa-ellipsis-v" />
-                                </DropdownToggle>
-                                <DropdownMenu className="dropdown-menu-arrow" right>
-                                  <DropdownItem
-                                    href="#pablo"
-                                    onClick={(e) => e.preventDefault()}
+                            <td className=" td-actions text-right">
+                              <Button
+                                className=" btn-icon"
+                                color="info"
+                                size="sm"
+                                type="button"
+                                id={item.name+"info"}
+                              >
+                              <i className=" ni ni-circle-08 pt-1"></i>
+                              
+                              <UncontrolledTooltip 
+                                  delay={item.id}
+                                  target={item.name+"info"}
                                   >
-                                    Show
-                                  </DropdownItem>
-                                  <DropdownItem                                    
-                                    onClick={(e) =>e.preventDefault()}
+                                  info
+                                  </UncontrolledTooltip> 
+                              </Button>
+                              
+                              <Button
+                                className=" btn-icon"
+                                color="success"
+                                size="sm"
+                                type="button"
+                                id={item.name+"edit"}
+                              >
+                                <i className=" ni ni-ruler-pencil pt-1"></i>
+                                <UncontrolledTooltip 
+                                  delay={item.id}
+                                  target={item.name +"edit"}
                                   >
-                                    Edit
-                                  </DropdownItem>
-                                  <DropdownItem
-                                    href="#pablo"
-                                    onClick={(e) => e.preventDefault()}
+                                  edit
+                                </UncontrolledTooltip> 
+                              
+                              </Button>
+
+                              <Button
+                                className=" btn-icon"
+                                color="danger"
+                                size="sm"
+                                type="button"
+                                id={item.name+"delete"}
+                              >
+                                <i className=" ni ni-fat-remove pt-1"></i>
+                                <UncontrolledTooltip 
+                                  delay={item.id}
+                                  target={item.name+"delete"}
                                   >
-                                    Delete
-                                  </DropdownItem>
-                                </DropdownMenu>
-                              </UncontrolledDropdown>
+                                  delete
+                                </UncontrolledTooltip> 
+                              </Button>
                             </td>
                           </tr>
 
