@@ -22,6 +22,7 @@ import Cookies from 'universal-cookie';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import useBaseURL from '../../Hooks/useBaseURL';
+import Header from "components/Headers/Header.js";
 
 const cookie = new Cookies();
 
@@ -57,7 +58,48 @@ const AdminTableList = () => {
     })
   };
   
+  const deleteTreatment = async(id) =>{
+    axios.defaults.headers.Authorization = "Bearer " + cookie.get('token'); 
+    await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
+      // get Tratamientos
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+            axios.delete(baseURL+'api/treatment/'+id)      
+            .then(() =>{                 
+              Tratamientos()              
 
+              Swal.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+              )              
+            })    
+            .catch(err => {                            
+              Swal.fire({
+                title: 'Oops!!',
+                text: "there is a problem connecting with Treatment the API server!",
+                icon: "warning",
+                footer: '<span style="color: red">server with error!<span/>',        
+                toast: true,
+                position: "top-right",        
+                showConfirmButton: false,
+                timer: 4000,
+              })        
+            })
+          
+        }
+      })         
+    })
+
+  }
   
 
   useEffect(()=>{            
@@ -221,6 +263,7 @@ const AdminTableList = () => {
                                 color="danger"
                                 size="sm"
                                 type="button"
+                                onClick= {(e) =>deleteTreatment(item.id)}
                                 id={item.name+"delete"}
                               >
                                 <i className=" ni ni-fat-remove pt-1"></i>

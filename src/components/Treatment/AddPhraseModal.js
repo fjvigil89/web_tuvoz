@@ -22,7 +22,8 @@ const AddPhraseModal= (props) => {
     const [ listPhrase, setlistPhrase ] = useState([]);
 
     const {
-        buttonLabel        
+        buttonLabel,
+        count       
         } = props;
 
     const cachePhrase = async()=>{
@@ -101,8 +102,8 @@ const AddPhraseModal= (props) => {
                 ></Input>
                  
                 {
-                    listPhrase.map(item =>(
-                        <Fade tag="h5" className="mt-3">
+                    listPhrase.map( (item, index) =>(
+                        <Fade tag="h5" className="mt-3" key={index}>
                             {item.namePhrase}
                         </Fade>
                         

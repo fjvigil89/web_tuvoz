@@ -57,8 +57,7 @@ const AddFrom = () => {
                     desc: treatment.form.descTreatment,
                     phrase: cookie.get('cachePhrase')
             })
-            .then(response =>{                                
-                cookie.remove('cachePhrase', {path: '/'});         
+            .then(response =>{                                                
                 Swal.fire({
                     title: 'Woww!!',
                     text: response.data.message,
@@ -83,6 +82,7 @@ const AddFrom = () => {
     
    
     const resetForm = async()=>{
+        cookie.remove('cachePhrase', {path: '/'}); 
         document.getElementById("nameTreatment").value="";
         document.getElementById("descTreatment").value="";
         await setTreatment({           
@@ -158,7 +158,7 @@ const AddFrom = () => {
                         <Row>                             
                             <Col md="6">                                                                   
                                     <AddPhraseModal
-                                     buttonLabel="Add Phrase"                                     
+                                     buttonLabel="Add Phrase"                                    
                                     >
                                     </AddPhraseModal>            
                             </Col>

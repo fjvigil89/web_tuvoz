@@ -27,6 +27,7 @@ const cookie = new Cookies();
 
 //inicio de la función
 const Header = () => {
+  
 
   //uso del Hooks para la url de la API
   const baseURL= useBaseURL(null);
