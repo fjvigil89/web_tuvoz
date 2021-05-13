@@ -21,6 +21,7 @@ import Cookies from 'universal-cookie';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import useBaseURL from '../../Hooks/useBaseURL';
+import RecordPatientModal from './RecordPatientModal.js';
 
 const cookie = new Cookies();
 
@@ -160,22 +161,13 @@ const PatientTableList = () => {
                               </div>
                             </td>
                             <td className=" td-actions text-right">
-                              <Button
-                                className=" btn-icon"
-                                color="info"
-                                size="sm"
-                                type="button"
-                                id={item.name+"info"}
+                              <RecordPatientModal
+                                idTreatment={ item.id}
+                                nameTreatment = {item.name}
                               >
-                              <i className=" ni ni-circle-08 pt-1"></i>
-                              
-                              <UncontrolledTooltip 
-                                  delay={item.id}
-                                  target={item.name+"info"}
-                                  >
-                                  info
-                                  </UncontrolledTooltip> 
-                              </Button>
+
+                              </RecordPatientModal>
+
                             </td>
                           </tr>
 
