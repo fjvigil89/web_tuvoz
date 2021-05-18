@@ -144,12 +144,11 @@ const AdminTableList = () => {
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
                     <tr>
-                      <th scope="col">Treatment</th>
-                      <th scope="col">Description</th>
+                      <th scope="col">Tratamientos</th>
+                      <th scope="col">Descripción</th>
                       <th scope="col">Status</th>
-                      <th scope="col">Users</th>
-                      <th scope="col">Completion</th>
-                      <th className=" text-right">Actions</th>
+                      <th scope="col">Paciente</th>                      
+                      <th className=" text-right">Acción</th>
                     </tr>
                   </thead>
                   <tbody> 
@@ -210,70 +209,66 @@ const AdminTableList = () => {
                                 ))}
       
                               </div>
-                            </td>
-                            <td>
-                              <div className="d-flex align-items-center">
-                                <span className="mr-2">60%</span>
-                                <div>
-                                  <Progress
-                                    max="100"
-                                    value="60"
-                                    barClassName="bg-danger"
-                                  />
-                                </div>
-                              </div>
-                            </td>
+                            </td>                            
                             <td className=" td-actions text-right">
-                              <Button
-                                className=" btn-icon"
-                                color="info"
-                                size="sm"
-                                type="button"
-                                id={item.name+"info"}
+                              <Link 
+                               to={"/admin/listPatient/"+item.id+"/"+item.name}
+                               params = {{ id: item.id, name:item.name}}
                               >
-                              <i className=" ni ni-circle-08 pt-1"></i>
-                              
-                              <UncontrolledTooltip 
-                                  delay={item.id}
-                                  target={item.name+"info"}
-                                  >
-                                  info
+                                <Button
+                                  className=" btn-icon"
+                                  color="info"
+                                  size="sm"
+                                  type="button"
+                                  id={item.name+"info"}
+                                >
+                                <i className=" ni ni-circle-08 pt-1"></i>
+                                
+                                <UncontrolledTooltip 
+                                    delay={item.id}
+                                    target={item.name+"info"}
+                                    >
+                                    Pacientes
+                                    </UncontrolledTooltip> 
+                                </Button>
+                              </Link>
+                                                            
+                              <Link to="#">
+                                <Button
+                                  className=" btn-icon"
+                                  color="success"
+                                  size="sm"
+                                  type="button"
+                                  id={item.name+"edit"}
+                                >
+                                  <i className=" ni ni-ruler-pencil pt-1"></i>
+                                  <UncontrolledTooltip 
+                                    delay={item.id}
+                                    target={item.name +"edit"}
+                                    >
+                                    Editar
                                   </UncontrolledTooltip> 
-                              </Button>
-                              
-                              <Button
-                                className=" btn-icon"
-                                color="success"
-                                size="sm"
-                                type="button"
-                                id={item.name+"edit"}
-                              >
-                                <i className=" ni ni-ruler-pencil pt-1"></i>
-                                <UncontrolledTooltip 
-                                  delay={item.id}
-                                  target={item.name +"edit"}
-                                  >
-                                  edit
-                                </UncontrolledTooltip> 
-                              
-                              </Button>
-
-                              <Button
-                                className=" btn-icon"
-                                color="danger"
-                                size="sm"
-                                type="button"
-                                onClick= {(e) =>deleteTreatment(item.id)}
-                                id={item.name+"delete"}
-                              >
-                                <i className=" ni ni-fat-remove pt-1"></i>
-                                <UncontrolledTooltip 
-                                  delay={item.id}
-                                  target={item.name+"delete"}
-                                  >
-                                  delete
-                                </UncontrolledTooltip> 
-                              </Button>
+                                
+                                </Button>
+                              </Link>
+                              <Link to="#">
+                                <Button
+                                  className=" btn-icon"
+                                  color="danger"
+                                  size="sm"
+                                  type="button"
+                                  onClick= {(e) =>deleteTreatment(item.id)}
+                                  id={item.name+"delete"}
+                                >
+                                  <i className=" ni ni-fat-remove pt-1"></i>
+                                  <UncontrolledTooltip 
+                                    delay={item.id}
+                                    target={item.name+"delete"}
+                                    >
+                                    Eliminar
+                                  </UncontrolledTooltip> 
+                                </Button>
+                              </Link>
                             </td>
                           </tr>
 

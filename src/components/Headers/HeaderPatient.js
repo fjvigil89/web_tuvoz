@@ -18,7 +18,7 @@
 import React, {useEffect, useState} from "react";
 import Cookies from 'universal-cookie';
 import axios from 'axios';
-
+import { Link } from "react-router-dom";
 // reactstrap components
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 import useBaseURL from '../../Hooks/useBaseURL';
@@ -75,6 +75,7 @@ const HeaderPatient = () => {
             <Row>                            
               <Col lg="6" xl="3">
                 <Card className="card-stats mb-4 mb-xl-0">
+                <Link to={"/patient/treatments/"}> 
                   <CardBody>
                     <Row>
                       <div className="col">
@@ -99,6 +100,7 @@ const HeaderPatient = () => {
                       <span className="text-nowrap">Since yesterday</span>
                     </p>
                   </CardBody>
+                </Link>
                 </Card>
               </Col>
               <Col lg="6" xl="3">

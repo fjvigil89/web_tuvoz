@@ -26,22 +26,43 @@ import useBaseURL from '../../Hooks/useBaseURL';
 
 const cookie = new Cookies();
 
-const PatientTableList = () => {    
+const ListPatientTable = (props) => {    
   //uso del Hooks para la url de la API
   const baseURL= useBaseURL(null);
   
+
+  const {
+    idTreatment,
+    nameTreatment
+  } = props;
+
   //gusrdar los tratamientos del Usuario Logueado
-  const [treatment, setTreatment]  = useState([]);
+  const [patient, setPatient]  = useState([]);
   
 
   //metodo Sincronico para el consumo del login en la api
-  const Tratamientos = async()=>{  
+  const Patients = async()=>{  
     axios.defaults.headers.Authorization = "Bearer " + cookie.get('token'); 
     await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
       // get Tratamientos
-      axios.get(baseURL+'api/treatment_patient')      
-      .then(response =>{                 
-        setTreatment(response.data.data);                
+      axios.get(baseURL+'api/getPatientNotTreatment',{
+        params:{
+          idTreatment: idTreatment
+        }
+      })
+      .then(response =>{
+        console.log(response);
+        //setPatient(response.data.data); 
+          Swal.fire({
+            title: 'Oops!!',
+            text: response.data,
+            icon: "info",
+            footer: '<span style="color: red">server with error!<span/>',        
+            toast: true,
+            position: "top-right",        
+            showConfirmButton: false,
+            timer: 4000,
+          })           
       })    
       .catch(err => {                            
         Swal.fire({
@@ -62,7 +83,7 @@ const PatientTableList = () => {
   
 
   useEffect(()=>{            
-    Tratamientos()
+    Patients()
 
     if(!cookie.get('token')){    
       window.location.href = "/auth/login"; 
@@ -81,7 +102,7 @@ const PatientTableList = () => {
                   <Media className="align-items-center">
                           <Media>
                             <span className="mb-0 text-sm">
-                              <h3 className="mb-0">Treatment</h3>
+                              <h3 className="mb-0">{nameTreatment}</h3>
                             </span>
 
                           </Media>                                 
@@ -92,17 +113,15 @@ const PatientTableList = () => {
                 <Table className="align-items-center table-flush" responsive>
                   <thead className="thead-light">
                     <tr>
-                      <th scope="col">Treatment</th>
-                      <th scope="col">Description</th>
-                      <th scope="col">Status</th>
-                      <th scope="col">Specialist</th>
-                      <th scope="col">Completion</th>
+                      <th scope="col">Nombre</th>
+                      <th scope="col">email</th>
+                      <th scope="col">alta</th>                      
                       <th className=" text-right">Actions</th>
                     </tr>
                   </thead>
                   <tbody> 
                         {
-                          treatment.map( (item, index) =>(       
+                          patient.map( (item, index) =>(       
                           <tr key={item.id}>
                             <th scope="row">
                               <Media className="align-items-center">                      
@@ -112,69 +131,24 @@ const PatientTableList = () => {
                               </Media>                      
                             </th>
                             <td>{ 
-                              item.desc.length > 50 ? item.desc.substr(1,40)+'...' : item.desc                              
+                              item.email                              
                               
-                              }</td>
-                            <td>
-                              <Badge color="" className="badge-dot mr-4">
-                                {
-                                  item.status === 1 ? <><i className="bg-success" /> activated</> : <><i className="bg-warning" /> disabled </>
-                                }
-                              </Badge>                             
-                            </td>
-                            <td>
-                              <div className="avatar-group">
-                                
-                                <a 
-                                  className="avatar avatar-sm"
-                                  href=""
-                                  id= {"treatmenPatner"+item.specialist.id}
-                                  onClick={(e) => e.preventDefault()}
-                                  >
-                                  <img
-                                    alt="..."
-                                    className="rounded-circle"
-                                    src={
-                                      require("../../assets/img/theme/team-1-800x800.jpg")
-                                        .default
-                                    }
-                                  />
-                                  </a>
-                                  <UncontrolledTooltip 
-                                  delay={item.specialist.id}
-                                  target={"treatmenPatner"+item.specialist.id}
-                                  >
-                                  { item.specialist.name}
-                                  </UncontrolledTooltip>  
-      
-                              </div>
-                            </td>
-                            <td>
-                              <div className="d-flex align-items-center">
-                                <span className="mr-2">60%</span>
-                                <div>
-                                  <Progress
-                                    max="100"
-                                    value="60"
-                                    barClassName="bg-danger"
-                                  />
-                                </div>
-                              </div>
-                            </td>
+                              }</td>                            
+                            <td>                            
+                              <span className="mb-0 text-sm">
+                                    {item.createdAt}
+                              </span>
+                            </td>                            
                             <td className=" td-actions text-right">  
-                              <Link                               
-                              to={"/patient/listPhrase/"+item.id }
-                              params = {{ id: item.id }}
-                              >     
                                 <Button
                                   className=" btn-icon"
                                   color="info"
                                   size="sm"
                                   type="button"
+                                  onClick = {(e)=> e.preventDefault()}
                                 >                                                
                                   <i className="ni ni-collection pt-1"></i>                              
                                 </Button>     
-                              </Link>
                             </td>
                           </tr>
 
@@ -243,4 +217,4 @@ const PatientTableList = () => {
     );
   
 }
-export default PatientTableList;
+export default ListPatientTable;

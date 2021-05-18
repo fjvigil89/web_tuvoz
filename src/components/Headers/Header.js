@@ -15,6 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+import { Link } from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import Cookies from 'universal-cookie';
 import axios from 'axios';
@@ -129,6 +130,7 @@ const Header = () => {
               </Col>
               <Col lg="6" xl="3">
                 <Card className="card-stats mb-4 mb-xl-0">
+                <Link to="#">
                   <CardBody>
                     <Row>
                       <div className="col">
@@ -153,10 +155,12 @@ const Header = () => {
                       <span className="text-nowrap">Since last week</span>
                     </p>
                   </CardBody>
+                </Link>
                 </Card>
               </Col>
               <Col lg="6" xl="3">
                 <Card className="card-stats mb-4 mb-xl-0">
+                <Link to={"/admin/treatments/"}> 
                   <CardBody>
                     <Row>
                       <div className="col">
@@ -181,6 +185,7 @@ const Header = () => {
                       <span className="text-nowrap">Since yesterday</span>
                     </p>
                   </CardBody>
+                </Link>
                 </Card>
               </Col>
               <Col lg="6" xl="3">

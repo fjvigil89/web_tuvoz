@@ -15,24 +15,29 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
+import React from "react";
+// reactstrap components
+import { useParams } from "react-router";
 
-import Index from "views/Patient/Index.js"
-import Treatments from "views/Patient/Treatments.js"
+// core components
+import HeaderPatient from "components/Headers/HeaderPatient.js";
+import PhrasePatientTableList from "components/Phrase/PhrasePatientTableList";
 
-var routes_patient = [  
-  {
-    path: "/index",
-    name: "Dashboard",
-    icon: "ni ni-circle-08 text-pink",
-    component: Index,
-    layout: "/patient",
-  },
-  {
-    path: "/treatments",
-    name: "Treatments",
-    icon: "ni ni-bullet-list-67 text-red",
-    component: Treatments,
-    layout: "/patient",
-  }, 
-];
-export default routes_patient;
+
+const Phrases = (props) => {
+  
+  let { id }= useParams();
+  
+  return (
+    <>
+      <HeaderPatient />      
+      {/* Page content */}
+      <PhrasePatientTableList
+        idTreatment = {id}
+      ></PhrasePatientTableList>
+
+    </>
+  );
+};
+
+export default Phrases;

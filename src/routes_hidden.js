@@ -17,6 +17,8 @@
 */
 
 import AddTreatments from "views/Treatment/AddTreatments";
+import ListPhrase from "views/Patient/Phrases";
+import ListPatient from "components/Patient/ListPatient";
 
 var routes_hidden = [
   {
@@ -24,6 +26,18 @@ var routes_hidden = [
     name: "AddTreatment",    
     component: AddTreatments,
     layout: "/admin",
+  },  
+  {
+    path: "/listPatient/:id/:name",
+    name: "ListPatient",    
+    component: ListPatient,
+    layout: "/admin",
+  },
+  {
+    path: "/listPhrase/:id",
+    name: "listPhrase",    
+    component: ListPhrase,
+    layout: "/patient",
   },  
 ];
 export default routes_hidden;
