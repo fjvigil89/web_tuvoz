@@ -50,19 +50,8 @@ const ListPatientTable = (props) => {
           idTreatment: idTreatment
         }
       })
-      .then(response =>{
-        console.log(response);
-        //setPatient(response.data.data); 
-          Swal.fire({
-            title: 'Oops!!',
-            text: response.data,
-            icon: "info",
-            footer: '<span style="color: red">server with error!<span/>',        
-            toast: true,
-            position: "top-right",        
-            showConfirmButton: false,
-            timer: 4000,
-          })           
+      .then(response =>{        
+        setPatient(response.data.data);           
       })    
       .catch(err => {                            
         Swal.fire({
@@ -79,7 +68,32 @@ const ListPatientTable = (props) => {
     })
   };
 
-  
+  //metodo Sincronico para el consumo del login en la api
+  const AssociatePatients = async(idPatient)=>{  
+    axios.defaults.headers.Authorization = "Bearer " + cookie.get('token'); 
+    await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
+      // get Tratamientos
+      axios.post(baseURL+'api/associatePatientTreatment',{        
+          idTreatment: idTreatment,
+          idPatient: idPatient        
+      })
+      .then(() =>{        
+        Patients();
+      })    
+      .catch(err => {                            
+        Swal.fire({
+          title: 'Oops!!',
+          text: "there is a problem connecting with Treatment the API server!",
+          icon: "warning",
+          footer: '<span style="color: red">server with error!<span/>',        
+          toast: true,
+          position: "top-right",        
+          showConfirmButton: false,
+          timer: 4000,
+        })        
+      })   
+    })
+  };
   
 
   useEffect(()=>{            
@@ -145,9 +159,9 @@ const ListPatientTable = (props) => {
                                   color="info"
                                   size="sm"
                                   type="button"
-                                  onClick = {(e)=> e.preventDefault()}
+                                  onClick = {(e)=> AssociatePatients(item.id)}
                                 >                                                
-                                  <i className="ni ni-collection pt-1"></i>                              
+                                  <i className="ni ni-user-run pt-1"></i>                              
                                 </Button>     
                             </td>
                           </tr>

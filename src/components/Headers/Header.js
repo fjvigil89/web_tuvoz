@@ -42,8 +42,8 @@ const Header = () => {
     await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
       // get Tratamientos
       axios.get(baseURL+'api/countTreatment')      
-      .then(response =>{              
-        setTreatment(response.data.data);
+      .then(response =>{                    
+        setTreatment(response.data);
       })    
       .catch(() => {            
         Swal.fire({
@@ -66,8 +66,8 @@ const Header = () => {
       await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
         // get Tratamientos
         axios.get(baseURL+'api/countUserByTreatment')      
-        .then(response =>{              
-          setUserByTreatment(response.data.data);
+        .then(response =>{                        
+          setUserByTreatment(response.data);
         })    
         .catch(() => {            
           Swal.fire({
@@ -138,9 +138,9 @@ const Header = () => {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          Patient
+                          Pacientes
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">{ userbytreatment }</span>
+                        <span className="h2 font-weight-bold mb-0">{ userbytreatment.data }</span>
                       </div>                      
                       <Col className="col-auto">
                         <div className="icon icon-shape bg-yellow text-white rounded-circle shadow">
@@ -149,10 +149,10 @@ const Header = () => {
                       </Col>
                     </Row>
                     <p className="mt-3 mb-0 text-muted text-sm">
-                      <span className="text-danger mr-2">
-                        <i className="fas fa-arrow-down" /> 3.48%
-                      </span>{" "}
-                      <span className="text-nowrap">Since last week</span>
+                      <span className="text-success mr-2">
+                        <i className="fas fa-arrow-up" /> { userbytreatment.porcent }%
+                      </span>{"  "}
+                      <span className="text-nowrap">Hoy</span>
                     </p>
                   </CardBody>
                 </Link>
@@ -168,9 +168,9 @@ const Header = () => {
                           tag="h5"
                           className="text-uppercase text-muted mb-0"
                         >
-                          Treatments
+                          Tratamientos
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0"> {treatment}</span>
+                        <span className="h2 font-weight-bold mb-0"> {treatment.data}</span>
                       </div>                      
                       <Col className="col-auto">
                         <div className="icon icon-shape bg-warning text-white rounded-circle shadow">
@@ -179,10 +179,10 @@ const Header = () => {
                       </Col>
                     </Row>
                     <p className="mt-3 mb-0 text-muted text-sm">
-                      <span className="text-warning mr-2">
-                        <i className="fas fa-arrow-down" /> 1.10%
+                      <span className="text-success mr-2">
+                        <i className="fas fa-arrow-up" /> {treatment.porcent}%
                       </span>{" "}
-                      <span className="text-nowrap">Since yesterday</span>
+                      <span className="text-nowrap">Hoy</span>
                     </p>
                   </CardBody>
                 </Link>

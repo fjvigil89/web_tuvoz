@@ -180,7 +180,7 @@ const AdminTableList = () => {
                                     {
                                       patient.map( user => (
                                         <>
-                                          <a 
+                                          <a
                                             className="avatar avatar-sm"
                                             href="#pablo"
                                             id={user.name}
