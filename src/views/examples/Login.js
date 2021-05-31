@@ -84,18 +84,17 @@ const handleChange = async e =>{
 const inicioSesion = async()=>{    
   await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
     // Login...
-    axios.get(baseURL+'api/login', {
-      params: { 
+    axios.post(baseURL+'api/login', {      
         email: credenciales.form.email, 
         password: credenciales.form.password 
-      }},
+      },
       {
         headers: {
           'Content-type': 'application/json; charset=UTF-8',        
           "Access-Control-Allow-Origin": "*",        
         },
       })
-    .then(response =>{ 
+    .then(response =>{             
       return response;
     })
     .then(response=>{     
