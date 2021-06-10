@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React  from "react";
 
 // reactstrap components
 import {     
@@ -6,16 +6,14 @@ import {
     Button, 
     Modal, 
     ModalBody, 
-    ModalFooter,
-    UncontrolledTooltip,  
+    ModalFooter,  
      } from "reactstrap";
 
-import axios from 'axios';
-import Swal from 'sweetalert2';
+//import Swal from 'sweetalert2';
 import Cookies from 'universal-cookie';
 import useBaseURL from '../../Hooks/useBaseURL';
 import Recorded from 'components/Recorded/Recorded';
-import { from } from "form-data";
+//import { from } from "form-data";
 
 const cookie = new Cookies();
 

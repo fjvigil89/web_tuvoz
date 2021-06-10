@@ -1,23 +1,20 @@
 import React, { useEffect, useState } from 'react';
 
-import {
-  Badge,
+import {  
   Card,
   CardHeader,
   CardFooter,
   Media,
   Pagination,
   PaginationItem,
-  PaginationLink,
-  Progress,
+  PaginationLink,  
   Table,
   Container,
   Row,
-  Button,
-  UncontrolledTooltip,   
+  Button,  
 } from "reactstrap";
 
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 import Swal from 'sweetalert2';

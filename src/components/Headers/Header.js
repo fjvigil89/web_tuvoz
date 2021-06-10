@@ -130,7 +130,7 @@ const Header = () => {
               </Col>
               <Col lg="6" xl="3">
                 <Card className="card-stats mb-4 mb-xl-0">
-                <Link to="#">
+                <Link to="/admin/patients/">
                   <CardBody>
                     <Row>
                       <div className="col">

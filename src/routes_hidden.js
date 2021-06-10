@@ -19,6 +19,7 @@
 import AddTreatments from "views/Treatment/AddTreatments";
 import ListPhrase from "views/Patient/Phrases";
 import ListPatient from "components/Patient/ListPatient";
+import Login from "views/examples/Login.js";
 
 var routes_hidden = [
   {
@@ -32,6 +33,12 @@ var routes_hidden = [
     name: "ListPatient",    
     component: ListPatient,
     layout: "/admin",
+  },
+  {
+    path: "/login",
+    name: "Login",     
+    component: Login,
+    layout: "/auth",
   },
   {
     path: "/listPhrase/:id",

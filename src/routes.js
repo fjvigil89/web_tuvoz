@@ -22,6 +22,7 @@ import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
 import Treatments from "views/examples/Treatments.js";
 import Icons from "views/examples/Icons.js";
+import Patients from "views/examples/Patients";
 
 var routes = [
   {
@@ -53,6 +54,12 @@ var routes = [
     layout: "/admin",
   },
   {
+    path: "/login",
+    name: "Login",     
+    component: Login,
+    layout: "/auth",
+  },
+  {
     path: "/treatments",
     name: "Treatments",
     icon: "ni ni-bullet-list-67 text-red",
@@ -60,11 +67,11 @@ var routes = [
     layout: "/admin",
   }, 
   {
-    path: "/login",
-    name: "Login",
-    icon: "ni ni-key-25 text-info",
-    component: Login,
-    layout: "/auth",
+    path: "/patients",
+    name: "Pacientes",
+    icon: "fas fa-users text-info",    
+    component: Patients,
+    layout: "/admin",
   },
   {
     path: "/register",
