@@ -40,7 +40,7 @@ const AdminTableList = () => {
     await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
       // get Tratamientos
       axios.get(baseURL+'api/treatment')      
-      .then(response =>{         
+      .then(response =>{
         setTreatment(response.data.data);                
       })    
       .catch(err => {                            
