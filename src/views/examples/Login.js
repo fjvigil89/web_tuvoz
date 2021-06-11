@@ -107,10 +107,10 @@ const inicioSesion = async()=>{
             cookie.set('name', data.name, {path: '/', maxAge: '10800'}); 
             cookie.set('role', data.role, {path: '/', maxAge: '10800'}); 
             
-            if (data.role === 'Specialist') {
+            if (data.role === 'Specialist' && data.status) {
               window.location.href = "/admin/index";
             }
-            if (data.role === 'Guest') {
+            if (data.role === 'Guest' && data.status) {
               window.location.href = "/patient/index";      
             }
 

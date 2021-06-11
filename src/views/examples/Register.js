@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useState } from "react";
 
 // reactstrap components
 import {
@@ -32,8 +32,95 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import useBaseURL from '../../Hooks/useBaseURL';
+import Cookies from 'universal-cookie';
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import { useParams } from "react-router";
+
+const cookie = new Cookies();
+
 
 const Register = () => {
+
+  //uso del Hooks para la url de la API
+  const baseURL = useBaseURL(null);
+
+  //hoocks para el uso de las credenciales
+  const { email }= useParams();
+
+  const [register, setRegister] = useState({
+    name: '',
+    email: email,
+    password: ''
+  })
+
+  //Captura los valores del formulario
+  const handleChange = async e => {
+    await setRegister({
+      form: {
+        ...register.form,
+        [e.target.name]: e.target.value
+      }
+
+    });    
+  }
+
+//metodo Sincronico para el consumo del login en la api
+const setRegisterpatient = async()=>{    
+  await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
+    // Login...
+    axios.post(baseURL+'api/register', {      
+        email: register.form.email, 
+        name: register.form.name,
+        password: register.form.password 
+      },
+      {
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',        
+          "Access-Control-Allow-Origin": "*",        
+        },
+      })
+    .then(response =>{             
+      return response;
+    })
+    .then(response=>{     
+      console.log(response);
+      // if (response.statusText === 'OK') { 
+      //       let data = response.data.data;
+      //       let token = response.data.access_token;
+      //       cookie.set('token', token, {path: '/', maxAge: '10800'}); 
+      //       cookie.set('id', data.id, {path: '/', maxAge: '10800'});
+      //       cookie.set('email', data.email, {path: '/', maxAge: '10800'});
+      //       cookie.set('name', data.name, {path: '/', maxAge: '10800'}); 
+      //       cookie.set('role', data.role, {path: '/', maxAge: '10800'}); 
+            
+      //       if (data.role === 'Specialist' && data.status) {
+      //         window.location.href = "/admin/index";
+      //       }
+      //       if (data.role === 'Guest' && data.status) {
+      //         window.location.href = "/patient/index";      
+      //       }
+
+            
+      // }
+    })
+    .catch(() => {         
+      Swal.fire({
+        title: 'Oops!!',
+        text: "Credentials went wrong!",
+        icon: "error",
+        footer: '<span style="color: red">server with error!<span/>',        
+        toast: true,
+        position: "top-right",        
+        showConfirmButton: false,
+        timer: 4000,
+      }) 
+    })
+  }); 
+};
+
+
   return (
     <>
       <Col lg="6" md="8">
@@ -91,7 +178,12 @@ const Register = () => {
                       <i className="ni ni-hat-3" />
                     </InputGroupText>
                   </InputGroupAddon>
-                  <Input placeholder="Name" type="text" />
+                  <Input
+                    name="name"
+                    placeholder="Name"
+                    type="text"
+                    onChange={handleChange}
+                  />
                 </InputGroup>
               </FormGroup>
               <FormGroup>
@@ -102,9 +194,13 @@ const Register = () => {
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input
+                    ofline
+                    name="email"
                     placeholder="Email"
                     type="email"
                     autoComplete="new-email"
+                    value={email}
+                    onChange={handleChange}
                   />
                 </InputGroup>
               </FormGroup>
@@ -116,9 +212,11 @@ const Register = () => {
                     </InputGroupText>
                   </InputGroupAddon>
                   <Input
+                    name="password"
                     placeholder="Password"
                     type="password"
                     autoComplete="new-password"
+                    onChange={handleChange}
                   />
                 </InputGroup>
               </FormGroup>
@@ -151,7 +249,7 @@ const Register = () => {
                 </Col>
               </Row>
               <div className="text-center">
-                <Button className="mt-4" color="primary" type="button">
+                <Button className="mt-4" color="primary" type="button" onClick={setRegisterpatient}>
                   Create account
                 </Button>
               </div>

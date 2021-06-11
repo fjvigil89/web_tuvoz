@@ -74,7 +74,7 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/register",
+    path: "/register/:email",
     name: "Register",
     icon: "ni ni-circle-08 text-pink",
     component: Register,
