@@ -61,7 +61,9 @@ const TablePatientsList = () => {
 
 
   useEffect(() => {
-    getAllPatients();
+    getAllPatients(); 
+
+    
 
     if (!cookie.get('token')) {
       window.location.href = "/auth/login";
@@ -80,6 +82,7 @@ const TablePatientsList = () => {
                 <Media className="align-items-center">
                   <RegisterPatient
                     buttonLabel="Registrar Paciente"
+                   
                   >
                   </RegisterPatient>
                  
