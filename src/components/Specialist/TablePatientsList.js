@@ -38,14 +38,13 @@ const TablePatientsList = () => {
     await axios.get(baseURL + 'sanctum/csrf-cookie').then(() => {
       // get Tratamientos
       axios.get(baseURL + 'api/getAllpatient')
-        .then(response => {
-          //console.log(response);
+        .then(response => {          
           setListPatients(response.data.data);
         })
-        .catch(err => {
+        .catch(() => {
           Swal.fire({
             title: 'Oops!!',
-            text: "there is a problem connecting with Treatment the API server!",
+            text: "there is a problem connecting with  the API server!",
             icon: "warning",
             footer: '<span style="color: red">server with error!<span/>',
             toast: true,
@@ -62,9 +61,6 @@ const TablePatientsList = () => {
 
   useEffect(() => {
     getAllPatients(); 
-
-    
-
     if (!cookie.get('token')) {
       window.location.href = "/auth/login";
     }
@@ -123,12 +119,7 @@ const TablePatientsList = () => {
                                     }
                                   />
                                 </Link>
-                                <UncontrolledTooltip
-                                  delay={item.id}
-                                  target={item.name}
-                                >
-                                  {item.name}
-                                </UncontrolledTooltip>
+                                
                               </>
                             </span>
                           </Media>
@@ -158,15 +149,12 @@ const TablePatientsList = () => {
                               size="sm"
                               type="button"
                               onClick={(e) => e.preventDefault()}
-                              id={item.name + "baja"}
+                              id={item.id}
                             >
                               <i className=" ni ni-fat-remove pt-1"></i>
-                              <UncontrolledTooltip
-                                delay={item.id}
-                                target={item.name + "baja"}
-                              >
+                              
                                 Baja
-                                  </UncontrolledTooltip>
+                                  
                             </Button>
                           </Link>
                         </td>

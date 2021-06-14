@@ -38,8 +38,7 @@ const RegisterPatientsModal = (props) => {
           emailRegister: emailRegister.form.email,
           uri_register: window.location.origin+'/auth/register'
         })
-        .then((response) => {
-          //console.log(response);
+        .then((response) => {          
           if (response.status === 200) {            
               Swal.fire({
                 title: 'Woww!!',
@@ -51,14 +50,14 @@ const RegisterPatientsModal = (props) => {
                 showConfirmButton: false,
                 timer: 4000,
             });
-            //setModalOpen(!modalOpen);
+            setModalOpen(!modalOpen);
           }
           
         })
-        .catch((err) => {
+        .catch(() => {
           Swal.fire({
             title: "Oops!!",
-            text: "there is a problem connecting with Treatment the API server!",
+            text: "there is a problem connecting with the API server!",
             icon: "warning",
             footer: '<span style="color: red">server with error!<span/>',
             toast: true,
