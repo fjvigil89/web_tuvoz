@@ -16,10 +16,7 @@
 
 */
 import Index from "views/Index.js";
-import Profile from "views/examples/Profile.js";
 import Maps from "views/examples/Maps.js";
-import Register from "views/examples/Register.js";
-import Login from "views/examples/Login.js";
 import Treatments from "views/examples/Treatments.js";
 import Icons from "views/examples/Icons.js";
 import Patients from "views/examples/Patients";
@@ -45,20 +42,7 @@ var routes = [
     icon: "ni ni-pin-3 text-orange",
     component: Maps,
     layout: "/admin",
-  },
-  {
-    path: "/user-profile",
-    name: "User Profile",
-    icon: "ni ni-single-02 text-yellow",
-    component: Profile,
-    layout: "/admin",
-  },
-  {
-    path: "/login",
-    name: "Login",     
-    component: Login,
-    layout: "/auth",
-  },
+  },  
   {
     path: "/treatments",
     name: "Treatments",
@@ -72,13 +56,6 @@ var routes = [
     icon: "fas fa-users text-info",    
     component: Patients,
     layout: "/admin",
-  },
-  {
-    path: "/register/:email",
-    name: "Register",
-    icon: "ni ni-circle-08 text-pink",
-    component: Register,
-    layout: "/auth",
-  },  
+  }, 
 ];
 export default routes;

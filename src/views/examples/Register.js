@@ -37,7 +37,7 @@ import Cookies from 'universal-cookie';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useParams } from "react-router";
-import { isEntityName } from "typescript";
+
 
 
 const cookie = new Cookies();

@@ -16,7 +16,6 @@ import {
   UncontrolledTooltip,
 } from "reactstrap";
 import { Link } from "react-router-dom";
-
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -40,6 +39,7 @@ const AdminTableList = () => {
       // get Tratamientos
       axios.get(baseURL + 'api/treatment')
         .then(response => {
+          //console.log(response.data.data[0].patients[0][0].username.toString());
           setTreatment(response.data.data);
         })
         .catch(err => {
@@ -132,7 +132,7 @@ const AdminTableList = () => {
 
                   <Media>
                     <span className="mb-0 text-sm">
-                      <h3 className="mb-0">Treatment</h3>
+                      <h3 className="mb-0">Tratamientos</h3>
                     </span>
 
                   </Media>
@@ -158,6 +158,7 @@ const AdminTableList = () => {
                         <th scope="row">
                           <Media className="align-items-center">
                             <span className="mb-0 text-sm">
+                              
                               {item.name}
                             </span>
                           </Media>
@@ -180,11 +181,10 @@ const AdminTableList = () => {
                                 {
                                   patient.map(user => (
                                     <>
-                                      <a
+                                      <Link
                                         className="avatar avatar-sm"
-                                        href="#pablo"
-                                        id={user.name}
-                                        onClick={(e) => e.preventDefault()}
+                                        to={"/admin/user-profile/" + user.id}
+                                        id={user.name.split(' ')[0]}
                                       >
                                         <img
                                           alt="..."
@@ -194,12 +194,12 @@ const AdminTableList = () => {
                                               .default
                                           }
                                         />
-                                      </a>
+                                      </Link>
                                       <UncontrolledTooltip
                                         delay={user.id}
-                                        target={user.name}
+                                        target={user.name.split(' ')[0]}
                                       >
-                                        {user.name}
+                                        {user.name.split(' ')[0]}
                                       </UncontrolledTooltip>
                                     </>
                                   ))
@@ -220,16 +220,16 @@ const AdminTableList = () => {
                               color="info"
                               size="sm"
                               type="button"
-                              id={item.name + "info"}
+                              id={item.name.split(' ')[0] + "info"}
                             >
                               <i className=" ni ni-circle-08 pt-1"></i>
 
                               <UncontrolledTooltip
                                 delay={item.id}
-                                target={item.name + "info"}
+                                target={item.name.split(' ')[0] + "info"}
                               >
                                 Pacientes
-                                    </UncontrolledTooltip>
+                              </UncontrolledTooltip>
                             </Button>
                           </Link>
 
@@ -239,15 +239,15 @@ const AdminTableList = () => {
                               color="success"
                               size="sm"
                               type="button"
-                              id={item.name + "edit"}
+                              id={item.name.split(' ')[0] + "edit"}
                             >
                               <i className=" ni ni-ruler-pencil pt-1"></i>
                               <UncontrolledTooltip
                                 delay={item.id}
-                                target={item.name + "edit"}
+                                target={item.name.split(' ')[0] + "edit"}
                               >
                                 Editar
-                                  </UncontrolledTooltip>
+                              </UncontrolledTooltip>
 
                             </Button>
                           </Link>
@@ -258,15 +258,15 @@ const AdminTableList = () => {
                               size="sm"
                               type="button"
                               onClick={(e) => deleteTreatment(item.id)}
-                              id={item.name + "delete"}
+                              id={item.name.split(' ')[0] + "delete"}
                             >
                               <i className=" ni ni-fat-remove pt-1"></i>
                               <UncontrolledTooltip
                                 delay={item.id}
-                                target={item.name + "delete"}
+                                target={item.name.split(' ')[0] + "delete"}
                               >
                                 Eliminar
-                                  </UncontrolledTooltip>
+                              </UncontrolledTooltip>
                             </Button>
                           </Link>
                         </td>
@@ -299,7 +299,7 @@ const AdminTableList = () => {
                         onClick={(e) => e.preventDefault()}
                       >
                         1
-                        </PaginationLink>
+                      </PaginationLink>
                     </PaginationItem>
                     <PaginationItem>
                       <PaginationLink
@@ -315,7 +315,7 @@ const AdminTableList = () => {
                         onClick={(e) => e.preventDefault()}
                       >
                         3
-                        </PaginationLink>
+                      </PaginationLink>
                     </PaginationItem>
                     <PaginationItem>
                       <PaginationLink

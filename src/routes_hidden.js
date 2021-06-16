@@ -20,6 +20,8 @@ import AddTreatments from "views/Treatment/AddTreatments";
 import ListPhrase from "views/Patient/Phrases";
 import ListPatient from "components/Patient/ListPatient";
 import Login from "views/examples/Login.js";
+import Profile from "views/examples/Profile.js";
+import Register from "views/examples/Register.js";
 
 var routes_hidden = [
   {
@@ -34,6 +36,20 @@ var routes_hidden = [
     component: ListPatient,
     layout: "/admin",
   },
+  {
+    path: "/user-profile/:id",
+    name: "User Profile",
+    icon: "ni ni-single-02 text-yellow",
+    component: Profile,
+    layout: "/admin",
+  },
+  {
+    path: "/register/:email",
+    name: "Register",
+    icon: "ni ni-circle-08 text-pink",
+    component: Register,
+    layout: "/auth",
+  }, 
   {
     path: "/login",
     name: "Login",     
