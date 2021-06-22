@@ -20,6 +20,7 @@ import Maps from "views/examples/Maps.js";
 import Treatments from "views/examples/Treatments.js";
 import Icons from "views/examples/Icons.js";
 import Patients from "views/examples/Patients";
+import Voces from "views/examples/Voces.js";
 
 var routes = [
   {
@@ -55,6 +56,13 @@ var routes = [
     name: "Pacientes",
     icon: "fas fa-users text-info",    
     component: Patients,
+    layout: "/admin",
+  }, 
+  {
+    path: "/voces",
+    name: "Voces",
+    icon: "ni ni-sound-wave text-blue",    
+    component: Voces,
     layout: "/admin",
   }, 
 ];

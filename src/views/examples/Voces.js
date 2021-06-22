@@ -20,15 +20,16 @@ import React from "react";
 
 // core components
 import SpecialistHeader from "components/Specialist/Headers/SpecialistHeader";
+import SpecialistRecord from "components/Specialist/Record/SpecialistRecordTableList";
 import AdminHeader from "components/Admin/Headers/AdminHeader";
-import SpecialistTableList from "components/Specialist/Treatment/SpecialistTableList";
-import AdminTableList from "components/Admin/Treatment/AdminTableList";
+import AdminRecord from "components/Admin/Record/AdminRecordTableList";
+
 import Cookies from 'universal-cookie';
 
 
 const cookie = new Cookies();
 
-const Treatments = () => {
+const Voces = () => {
    
 
   return (
@@ -38,12 +39,12 @@ const Treatments = () => {
         cookie.get('role') === "Admin" ? <AdminHeader/> :  <SpecialistHeader/> 
       }   
       {/* Page content */}
-      {
-        cookie.get('role') === "Admin" ? <AdminTableList/> :  <SpecialistTableList/> 
-      }
 
+      {
+        cookie.get('role') === "Admin" ? <AdminRecord/> :  <SpecialistRecord/> 
+      } 
     </>
   );
 };
 
-export default Treatments;
+export default Voces;

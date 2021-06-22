@@ -20,7 +20,7 @@ import { Link } from "react-router-dom";
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import useBaseURL from '../../Hooks/useBaseURL';
+import useBaseURL from '../../../Hooks/useBaseURL';
 import RegisterPatient from "./RegisterPatientsModal";
 
 const cookie = new Cookies();
@@ -116,7 +116,7 @@ const TablePatientsList = () => {
                                     alt="..."
                                     className="rounded-circle"
                                     src={
-                                      require("../../assets/img/theme/team-1-800x800.jpg")
+                                      require("../../../assets/img/theme/team-1-800x800.jpg")
                                         .default
                                     }
                                   />

@@ -46,10 +46,12 @@ import {
   chartExample2,
 } from "variables/charts.js";
 
-import Header from "components/Headers/Header.js";
+import SpecialistHeader from "components/Specialist/Headers/SpecialistHeader";
+import AdminHeader from "components/Admin/Headers/AdminHeader";
+import Cookies from 'universal-cookie';
 
 
-
+const cookie = new Cookies();
 const Index = (props) => {
   const [activeNav, setActiveNav] = useState(1);
   const [chartExample1Data, setChartExample1Data] = useState("data1");
@@ -66,7 +68,10 @@ const Index = (props) => {
   
   return (
     <>
-      <Header />
+      {
+        cookie.get('role') === "Admin" ? <AdminHeader/> :  <SpecialistHeader/> 
+      } 
+
       {/* Page content */}
       <Container className="mt--7" fluid>
         <Row>

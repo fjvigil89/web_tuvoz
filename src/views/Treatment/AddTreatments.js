@@ -19,8 +19,8 @@ import React from "react";
 // reactstrap components
 
 // core components
-import Header from "components/Headers/Header.js";
-import AddForm from "components/Treatment/AddForm.js";
+import Header from "components/Specialist/Headers/SpecialistHeader.js";
+import AddForm from "components/Specialist/Treatment/AddForm.js";
 
 const AddTreatments = () => {
    

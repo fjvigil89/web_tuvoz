@@ -13,9 +13,11 @@ import {
 import axios from "axios";
 import Swal from "sweetalert2";
 import Cookies from "universal-cookie";
-import useBaseURL from "../../Hooks/useBaseURL";
+import useBaseURL from "../../../Hooks/useBaseURL";
 const cookie = new Cookies();
-const RegisterPatientsModal = (props) => {
+
+
+const RegisterSpecialistModal = (props) => {
   //uso del Hooks para la url de la API
   const baseURL = useBaseURL(null);
 
@@ -29,12 +31,11 @@ const RegisterPatientsModal = (props) => {
 
   
 
-  const setEmailRegisterPatiente = async () => {
+  const setEmailRegisterSpecialist = async () => {
     axios.defaults.headers.Authorization = "Bearer " + cookie.get("token");
     await axios.get(baseURL + "sanctum/csrf-cookie").then(() => {
       // get Tratamientos
-      axios
-        .post(baseURL + "api/setEmailRegisterPatient", {
+      axios.post(baseURL + "api/setEmailRegisterSpecialist", {
           emailRegister: emailRegister.form.email,
           uri_register: window.location.origin+'/auth/register'
         })
@@ -119,7 +120,7 @@ const RegisterPatientsModal = (props) => {
               className=" form-control-alternative"
               id="email"
               name="email"
-              placeholder="paciente@email"
+              placeholder="specialist@email"
               type="email"
               onChange={handleEmailRegisterChange}
             ></Input>
@@ -136,7 +137,7 @@ const RegisterPatientsModal = (props) => {
           <Button
             color="primary"
             type="button"
-            onClick={() => setEmailRegisterPatiente()}
+            onClick={() => setEmailRegisterSpecialist()}
           >
             Enviar
           </Button>
@@ -146,4 +147,4 @@ const RegisterPatientsModal = (props) => {
   );
 };
 
-export default RegisterPatientsModal;
+export default RegisterSpecialistModal;

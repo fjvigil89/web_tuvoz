@@ -17,7 +17,7 @@ import { Link } from "react-router-dom";
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import useBaseURL from '../../Hooks/useBaseURL';
+import useBaseURL from '../../../Hooks/useBaseURL';
 import AddPhraseModal from "./AddPhraseModal.js";
 
 const cookie = new Cookies();
