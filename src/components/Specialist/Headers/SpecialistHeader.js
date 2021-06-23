@@ -91,7 +91,8 @@ const SpecialistHeader = () => {
       await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
         // get Tratamientos
         axios.get(baseURL+'api/countGetRecordByUser')      
-        .then(response =>{                        
+        .then(response =>{ 
+          console.log(response);                       
           setCountRecord(response.data);
         })    
         .catch(() => {            

@@ -39,7 +39,7 @@ const SpecialistRecordTableList = () => {
       // get Tratamientos
       axios.get(baseURL + "api/getRecordByUser")
         .then((response) => {
-          //console.log(response.data);
+          //console.log(response.data.data[0][0].path.split('/'));
           setRecord(response.data.data);
         })
         .catch((err) => {
@@ -96,52 +96,56 @@ const SpecialistRecordTableList = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {record.map((item) => (
-                    <tr key={item.id}>
-                      <th scope="row">
-                        <Media className="align-items-center">
-                          <span className="mb-0 text-sm">{item.phrase_id === null ? "Demo" : item.name}</span>
-                        </Media>
-                      </th>
-                      <th>
-                        { item.path.split('/')[4].split('-')[0] }
-                      </th>
-                      <td>                        
-                        <audio src={item.path} controls />  
-                      </td>              
-                      <td>
-                        <div className="avatar-group">
-                           {/*item.specialist_id.map((user) => (
-                                <>
-                                  <Link
-                                    className="avatar avatar-sm"
-                                    to={"/admin/user-profile/" + user.id}
-                                    id={user.name.split(" ")[0]}
-                                  >
-                                    <img
-                                      alt="..."
-                                      className="rounded-circle"
-                                      src={
-                                        require("../../../assets/img/theme/team-1-800x800.jpg")
-                                          .default
-                                      }
-                                    />
-                                  </Link>
-                                  <UncontrolledTooltip
-                                    delay={user.id}
-                                    target={user.name.split(" ")[0]}
-                                  >
-                                    {user.name.split(" ")[0]}
-                                  </UncontrolledTooltip>
-                                </>
-                              ))*/}
+                  {record.map((list) => (
+                    <>
+                    { list.map((item)=> (
+                      <tr key={item.id}>
+                        <th scope="row">
+                          <Media className="align-items-center">
+                            <span className="mb-0 text-sm">{item.phrase_id === null ? "Demo" : item.name}</span>
+                          </Media>
+                        </th>
+                        <th>
+                          { item.path.split('/')[4].split('-')[0] }
+                        </th>
+                        <td>                        
+                          <audio src={item.path} controls />  
+                        </td>              
+                        <td>
+                          <div className="avatar-group">
+                            {/*item.specialist_id.map((user) => (
+                                  <>
+                                    <Link
+                                      className="avatar avatar-sm"
+                                      to={"/admin/user-profile/" + user.id}
+                                      id={user.name.split(" ")[0]}
+                                    >
+                                      <img
+                                        alt="..."
+                                        className="rounded-circle"
+                                        src={
+                                          require("../../../assets/img/theme/team-1-800x800.jpg")
+                                            .default
+                                        }
+                                      />
+                                    </Link>
+                                    <UncontrolledTooltip
+                                      delay={user.id}
+                                      target={user.name.split(" ")[0]}
+                                    >
+                                      {user.name.split(" ")[0]}
+                                    </UncontrolledTooltip>
+                                  </>
+                                ))*/}
 
-                              { item.phrase_id }
-                            
-                        </div>
-                      </td>
-                     
-                    </tr>
+                                { item.phrase_id }
+                              
+                          </div>
+                        </td>
+                      
+                      </tr>
+                      ))}
+                    </>
                   ))}
                 </tbody>
               </Table>
