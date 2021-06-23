@@ -42,7 +42,7 @@ const AdminRecordTableList = () => {
           //console.log(response.data.data);
           setRecord(response.data.data);
         })
-        .catch((err) => {
+        .catch(() => {
           Swal.fire({
             title: "Oops!!",
             text: "there is a problem connecting with Treatment the API server!",
@@ -57,7 +57,45 @@ const AdminRecordTableList = () => {
     });
   };
 
-  
+  const setDeleteRecordId = async (recordID) =>{
+    axios.defaults.headers.Authorization = "Bearer " + cookie.get("token");
+    await axios.get(baseURL + "sanctum/csrf-cookie").then(() => {
+      // get Tratamientos
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.delete(baseURL + "api/record/" + recordID)
+            .then(response => {
+              //console.log(response);
+              getAllRecord();
+
+              Swal.fire("Deleted!", "Your file has been deleted.", "success");
+            })
+            .catch(() => {
+              Swal.fire({
+                title: "Oops!!",
+                text: "there is a problem connecting with Treatment the API server!",
+                icon: "warning",
+                footer: '<span style="color: red">server with error!<span/>',
+                toast: true,
+                position: "top-right",
+                showConfirmButton: false,
+                timer: 4000,
+              });
+            });
+        }
+      });
+    });
+  };
+ 
+
   useEffect(() => {
     getAllRecord()
 
@@ -92,6 +130,7 @@ const AdminRecordTableList = () => {
                     <th scope="col">Identificador</th>
                     <th scope="col">Url</th>                    
                     <th scope="col">Frases</th>
+                    <th className=" text-right">Acción</th>
                     
                   </tr>
                 </thead>
@@ -107,7 +146,10 @@ const AdminRecordTableList = () => {
                         { item.path.split('/')[4].split('-')[0] }
                       </th>
                       <td>                        
-                        <audio src={item.path} controls />  
+                          
+                        <audio controls="controls" >
+                            <source src={item.path} type="audio/mp4" />
+                        </audio>
                       </td>              
                       <td>
                         <div className="avatar-group">
@@ -140,7 +182,44 @@ const AdminRecordTableList = () => {
                             
                         </div>
                       </td>
-                     
+                      <td className=" td-actions text-right"> 
+                        <a  href={item.path} target="_blank" rel="noopener noreferrer" download>
+                          <Button
+                            className=" btn-icon"
+                            color="info"
+                            size="sm"
+                            type="button"                            
+                            id={"download"}
+                          >
+                            <i className=" ni ni-cloud-download-95 pt-1"></i>
+                            <UncontrolledTooltip
+                              delay={item.id}
+                              target={"download"}
+                            >
+                              Original
+                            </UncontrolledTooltip>
+                          </Button>
+                        </a>     
+
+                        <Link to="#">
+                          <Button
+                            className=" btn-icon"
+                            color="danger"
+                            size="sm"
+                            type="button"
+                            onClick={(e) => setDeleteRecordId(item.id) }
+                            id={"delete"}
+                          >
+                            <i className=" ni ni-fat-remove pt-1"></i>
+                            <UncontrolledTooltip
+                              delay={item.id}
+                              target={"delete"}
+                            >
+                              Eliminar
+                            </UncontrolledTooltip>
+                          </Button>
+                        </Link>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
