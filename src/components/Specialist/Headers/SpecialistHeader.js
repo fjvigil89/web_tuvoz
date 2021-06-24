@@ -92,7 +92,7 @@ const SpecialistHeader = () => {
         // get Tratamientos
         axios.get(baseURL+'api/countGetRecordByUser')      
         .then(response =>{ 
-          console.log(response);                       
+          //console.log(response);                       
           setCountRecord(response.data);
         })    
         .catch(() => {            

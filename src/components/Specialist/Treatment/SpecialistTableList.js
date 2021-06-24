@@ -174,7 +174,7 @@ const SpecialistTableList = () => {
                             <>
                               {patient.map((user) => (
                                 <>
-                                  <Link
+                                  <Link key={user.id}
                                     className="avatar avatar-sm"
                                     to={"/admin/user-profile/" + user.id}
                                     id={user.name.split(" ")[0]}

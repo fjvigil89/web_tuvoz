@@ -26,11 +26,11 @@ const cookie = new Cookies();
 const SpecialistRecordTableList = () => {
   //uso del Hooks para la url de la API
   const baseURL = useBaseURL(null);
-  
+
   //gusrdar los tratamientos del Usuario Logueado
   const [record, setRecord] = useState([]);
 
-  
+
 
   //metodo Sincronico para el consumo del login en la api
   const getRecordByUser = async () => {
@@ -39,7 +39,7 @@ const SpecialistRecordTableList = () => {
       // get Tratamientos
       axios.get(baseURL + "api/getRecordByUser")
         .then((response) => {
-          //console.log(response.data.data[0][0].path.split('/'));
+          //console.log(response.data.data[0]);
           setRecord(response.data.data);
         })
         .catch((err) => {
@@ -57,7 +57,7 @@ const SpecialistRecordTableList = () => {
     });
   };
 
-  
+
   useEffect(() => {
     getRecordByUser()
 
@@ -72,79 +72,53 @@ const SpecialistRecordTableList = () => {
         {/* Table */}
         <Row>
           <div className="col">
-            <Card className="shadow">              
-                <CardHeader className="border-0">
-                  <Media className="align-items-center">
-                  
-                    <Media>
-                      <span className="mb-0 text-sm">
-                        <h3 className="mb-0">Grabaciones</h3>
-                      </span>
-                    </Media>
+            <Card className="shadow">
+              <CardHeader className="border-0">
+                <Media className="align-items-center">
+
+                  <Media>
+                    <span className="mb-0 text-sm">
+                      <h3 className="mb-0">Grabaciones</h3>
+                    </span>
                   </Media>
-                </CardHeader>
-              
+                </Media>
+              </CardHeader>
+
 
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
-                      <th scope="col">Usuario</th>
-                      <th scope="col">Identificador</th>
-                      <th scope="col">Url</th>                    
-                      <th scope="col">Frases</th>
-                    
+                    <th scope="col">Usuario</th>
+                    <th scope="col">Identificador</th>
+                    <th scope="col">Url</th>
+                    <th scope="col">Frases</th>
+
                   </tr>
                 </thead>
                 <tbody>
-                  {record.map((list) => (
+                  {record.map((item) => (
                     <>
-                    { list.map((item)=> (
                       <tr key={item.id}>
                         <th scope="row">
                           <Media className="align-items-center">
-                            <span className="mb-0 text-sm">{item.phrase_id === null ? "Demo" : item.name}</span>
+                            <span className="mb-0 text-sm">
+                              {item.phrase_id.treatment_id.patient_id.name}
+                            </span>
                           </Media>
                         </th>
                         <th>
-                          { item.path.split('/')[4].split('-')[0] }
+                          {item.path.split('/')[4].split('-')[0]}
                         </th>
-                        <td>                        
-                          <audio src={item.path} controls />  
-                        </td>              
+                        <td>
+                          <audio src={item.path} controls />
+                        </td>
                         <td>
                           <div className="avatar-group">
-                            {/*item.specialist_id.map((user) => (
-                                  <>
-                                    <Link
-                                      className="avatar avatar-sm"
-                                      to={"/admin/user-profile/" + user.id}
-                                      id={user.name.split(" ")[0]}
-                                    >
-                                      <img
-                                        alt="..."
-                                        className="rounded-circle"
-                                        src={
-                                          require("../../../assets/img/theme/team-1-800x800.jpg")
-                                            .default
-                                        }
-                                      />
-                                    </Link>
-                                    <UncontrolledTooltip
-                                      delay={user.id}
-                                      target={user.name.split(" ")[0]}
-                                    >
-                                      {user.name.split(" ")[0]}
-                                    </UncontrolledTooltip>
-                                  </>
-                                ))*/}
-
-                                { item.phrase_id }
-                              
+                            {item.phrase_id.phrase}
                           </div>
                         </td>
-                      
+
                       </tr>
-                      ))}
                     </>
                   ))}
                 </tbody>
