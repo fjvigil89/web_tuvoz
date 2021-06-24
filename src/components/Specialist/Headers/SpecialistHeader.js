@@ -21,13 +21,13 @@ import Cookies from 'universal-cookie';
 import axios from 'axios';
 // reactstrap components
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
-import useBaseURL from '../../Hooks/useBaseURL';
+import useBaseURL from '../../../Hooks/useBaseURL';
 import Swal from 'sweetalert2';
 
 const cookie = new Cookies();
 
 //inicio de la función
-const Header = () => {
+const SpecialistHeader = () => {
   
 
   //uso del Hooks para la url de la API
@@ -35,6 +35,7 @@ const Header = () => {
   
  const [treatment, setTreatment]  = useState(0);
  const [userbytreatment, setUserByTreatment]  = useState(0);
+ const [countRecord, setCountRecord]  = useState(0);
 
   //metodo Sincronico para el consumo del login en la api
   const countTratamientos = async()=>{    
@@ -66,7 +67,7 @@ const Header = () => {
       await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
         // get Tratamientos
         axios.get(baseURL+'api/countUserByTreatment')      
-        .then(response =>{                        
+        .then(response =>{                       
           setUserByTreatment(response.data);
         })    
         .catch(() => {            
@@ -84,11 +85,36 @@ const Header = () => {
       })
     };
 
+    //metodo Sincronico para el consumo del login en la api
+    const countGetRecordByUser = async()=>{    
+      axios.defaults.headers.Authorization = "Bearer " + cookie.get('token'); 
+      await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
+        // get Tratamientos
+        axios.get(baseURL+'api/countGetRecordByUser')      
+        .then(response =>{ 
+          console.log(response);                       
+          setCountRecord(response.data);
+        })    
+        .catch(() => {            
+          Swal.fire({
+            title: 'Oops!!',
+            text: "there is a problem connecting the API server!",
+            icon: "warning",
+            footer: '<span style="color: red">server with error!<span/>',        
+            toast: true,
+            position: "top-right",        
+            showConfirmButton: false,
+            timer: 4000,
+          })        
+        })   
+      })
+    };
 
   useEffect(()=>{            
     countTratamientos()
     countUserByTreatment()
-    
+    countGetRecordByUser()
+
   },[]);
 
   return (
@@ -100,32 +126,34 @@ const Header = () => {
             <Row>
               <Col lg="6" xl="3">
                 <Card className="card-stats mb-4 mb-xl-0">
-                  <CardBody>
-                    <Row>
-                      <div className="col">
-                        <CardTitle
-                          tag="h5"
-                          className="text-uppercase text-muted mb-0"
-                        >
-                          Traffic
-                        </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">
-                          350,897
-                        </span>
-                      </div>
-                      <Col className="col-auto">
-                        <div className="icon icon-shape bg-danger text-white rounded-circle shadow">
-                          <i className="fas fa-chart-bar" />
+                <Link to="/admin/voces/">
+                    <CardBody>
+                      <Row>
+                        <div className="col">
+                          <CardTitle
+                            tag="h5"
+                            className="text-uppercase text-muted mb-0"
+                          >
+                            Voces
+                          </CardTitle>
+                          <span className="h2 font-weight-bold mb-0">
+                            { countRecord.data }
+                          </span>
                         </div>
-                      </Col>
-                    </Row>
-                    <p className="mt-3 mb-0 text-muted text-sm">
-                      <span className="text-success mr-2">
-                        <i className="fa fa-arrow-up" /> 3.48%
-                      </span>{" "}
-                      <span className="text-nowrap">Since last month</span>
-                    </p>
-                  </CardBody>
+                        <Col className="col-auto">
+                          <div className="icon icon-shape bg-blue text-white rounded-circle shadow">
+                            <i className="ni ni-sound-wave " />
+                          </div>
+                        </Col>
+                      </Row>
+                      <p className="mt-3 mb-0 text-muted text-sm">
+                        <span className="text-success mr-2">
+                          <i className="fa fa-arrow-up" /> 100%
+                        </span>{" "}
+                        <span className="text-nowrap">Hoy</span>
+                      </p>
+                    </CardBody>
+                  </Link>
                 </Card>
               </Col>
               <Col lg="6" xl="3">
@@ -224,4 +252,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default SpecialistHeader;

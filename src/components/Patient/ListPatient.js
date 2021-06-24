@@ -19,7 +19,7 @@ import React from "react";
 // reactstrap components
 
 // core components
-import Header from "components/Headers/Header.js";
+import Header from "components/Specialist/Headers/SpecialistHeader";
 import ListPatientTable from "./ListPatientTable";
 import { useParams } from "react-router";
 

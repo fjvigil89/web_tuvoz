@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import {  
+import {
   Card,
   CardHeader,
   CardFooter,
@@ -8,18 +8,19 @@ import {
   Media,
   Pagination,
   PaginationItem,
-  PaginationLink,  
+  PaginationLink,
   Table,
   Container,
   Row,
-  UncontrolledTooltip,
+  Badge,
+  UncontrolledTooltip
 } from "reactstrap";
 import { Link } from "react-router-dom";
 
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 import Swal from 'sweetalert2';
-import useBaseURL from '../../Hooks/useBaseURL';
+import useBaseURL from '../../../Hooks/useBaseURL';
 import RegisterPatient from "./RegisterPatientsModal";
 
 const cookie = new Cookies();
@@ -39,13 +40,12 @@ const TablePatientsList = () => {
       // get Tratamientos
       axios.get(baseURL + 'api/getAllpatient')
         .then(response => {
-          //console.log(response);
           setListPatients(response.data.data);
         })
-        .catch(err => {
+        .catch(() => {
           Swal.fire({
             title: 'Oops!!',
-            text: "there is a problem connecting with Treatment the API server!",
+            text: "there is a problem connecting with  the API server!",
             icon: "warning",
             footer: '<span style="color: red">server with error!<span/>',
             toast: true,
@@ -61,10 +61,7 @@ const TablePatientsList = () => {
 
 
   useEffect(() => {
-    getAllPatients(); 
-
-    
-
+    getAllPatients();
     if (!cookie.get('token')) {
       window.location.href = "/auth/login";
     }
@@ -82,10 +79,10 @@ const TablePatientsList = () => {
                 <Media className="align-items-center">
                   <RegisterPatient
                     buttonLabel="Registrar Paciente"
-                   
+
                   >
                   </RegisterPatient>
-                 
+
 
                 </Media>
 
@@ -97,6 +94,7 @@ const TablePatientsList = () => {
                     <th scope="col">Nombre</th>
                     <th scope="col">identificador</th>
                     <th scope="col">email</th>
+                    <th scope="col"> status </th>
                     <th className=" text-right">Acción</th>
                   </tr>
                 </thead>
@@ -111,32 +109,39 @@ const TablePatientsList = () => {
 
                                 <Link
                                   className="avatar avatar-sm"
-                                  to={"/admin/listPatient/" + item.id + "/" + item.name}
-                                  id={item.name}
+                                  to={"/admin/user-profile/" + item.id}
+                                  id={item.name.split(' ')[0]}
                                 >
                                   <img
                                     alt="..."
                                     className="rounded-circle"
                                     src={
-                                      require("../../assets/img/theme/team-1-800x800.jpg")
+                                      require("../../../assets/img/theme/team-1-800x800.jpg")
                                         .default
                                     }
                                   />
                                 </Link>
                                 <UncontrolledTooltip
                                   delay={item.id}
-                                  target={item.name}
+                                  target={item.name.split(' ')[0]}
                                 >
-                                  {item.name}
+                                  {item.name.split(' ')[0]}
                                 </UncontrolledTooltip>
+
                               </>
                             </span>
                           </Media>
                         </th>
                         <td>
-                          {
-                            item.name.length > 50 ? item.name.substr(1, 40) + '...' : item.name
-                          }
+
+                          <Link                            
+                            to={"/admin/user-profile/" + item.id}
+                            id={item.name}
+                          >
+                            {item.name.length > 50 ? item.name.substr(1, 40) + '...' : item.name}
+                          </Link>
+
+
                         </td>
                         <td>
                           {
@@ -149,6 +154,13 @@ const TablePatientsList = () => {
                             {item.email}
                           </a>
                         </td>
+                        <td>
+                          <Badge color="" className="badge-dot">
+                            {
+                              (item.status === 1) ? <> <i className="bg-success" /> activo </> : <> <i className="bg-warning" /> pendiente </>
+                            }
+                          </Badge>
+                        </td>
                         <td className=" td-actions text-right">
 
                           <Link to="#">
@@ -158,15 +170,12 @@ const TablePatientsList = () => {
                               size="sm"
                               type="button"
                               onClick={(e) => e.preventDefault()}
-                              id={item.name + "baja"}
+                              id={item.id}
                             >
                               <i className=" ni ni-fat-remove pt-1"></i>
-                              <UncontrolledTooltip
-                                delay={item.id}
-                                target={item.name + "baja"}
-                              >
-                                Baja
-                                  </UncontrolledTooltip>
+
+                              Baja
+
                             </Button>
                           </Link>
                         </td>
@@ -199,7 +208,7 @@ const TablePatientsList = () => {
                         onClick={(e) => e.preventDefault()}
                       >
                         1
-                        </PaginationLink>
+                      </PaginationLink>
                     </PaginationItem>
                     <PaginationItem>
                       <PaginationLink
@@ -215,7 +224,7 @@ const TablePatientsList = () => {
                         onClick={(e) => e.preventDefault()}
                       >
                         3
-                        </PaginationLink>
+                      </PaginationLink>
                     </PaginationItem>
                     <PaginationItem>
                       <PaginationLink

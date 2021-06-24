@@ -57,15 +57,15 @@ const Login = () => {
 // Similar a componentDidMount y componentDidUpdate:
 useEffect(() => {    
   if(cookie.get('token')){
-    if (cookie.get('role') === 'Specialist') {
+    if (cookie.get('role') === 'Specialist' || cookie.get('role') === 'Admin' ) {
       window.location.href = "/admin/index";
     }    
     if (cookie.get('role') === 'Guest') {
       window.location.href = "/patient/index";      
     }
     
-  }  
-
+  } 
+  
 }, []);
 
 
@@ -112,6 +112,9 @@ const inicioSesion = async()=>{
             }
             if (data.role === 'Guest' && data.status) {
               window.location.href = "/patient/index";      
+            }
+            if (data.role === 'Admin' && data.status) {
+              window.location.href = "/admin/index";
             }
 
             

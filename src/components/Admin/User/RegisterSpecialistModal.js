@@ -13,9 +13,11 @@ import {
 import axios from "axios";
 import Swal from "sweetalert2";
 import Cookies from "universal-cookie";
-import useBaseURL from "../../Hooks/useBaseURL";
+import useBaseURL from "../../../Hooks/useBaseURL";
 const cookie = new Cookies();
-const RegisterPatientsModal = (props) => {
+
+
+const RegisterSpecialistModal = (props) => {
   //uso del Hooks para la url de la API
   const baseURL = useBaseURL(null);
 
@@ -29,17 +31,15 @@ const RegisterPatientsModal = (props) => {
 
   
 
-  const setEmailRegisterPatiente = async () => {
+  const setEmailRegisterSpecialist = async () => {
     axios.defaults.headers.Authorization = "Bearer " + cookie.get("token");
     await axios.get(baseURL + "sanctum/csrf-cookie").then(() => {
       // get Tratamientos
-      axios
-        .post(baseURL + "api/setEmailRegisterPatient", {
+      axios.post(baseURL + "api/setEmailRegisterSpecialist", {
           emailRegister: emailRegister.form.email,
           uri_register: window.location.origin+'/auth/register'
         })
-        .then((response) => {
-          //console.log(response);
+        .then((response) => {          
           if (response.status === 200) {            
               Swal.fire({
                 title: 'Woww!!',
@@ -51,14 +51,14 @@ const RegisterPatientsModal = (props) => {
                 showConfirmButton: false,
                 timer: 4000,
             });
-            //setModalOpen(!modalOpen);
+            setModalOpen(!modalOpen);
           }
           
         })
-        .catch((err) => {
+        .catch(() => {
           Swal.fire({
             title: "Oops!!",
-            text: "there is a problem connecting with Treatment the API server!",
+            text: "there is a problem connecting with the API server!",
             icon: "warning",
             footer: '<span style="color: red">server with error!<span/>',
             toast: true,
@@ -120,7 +120,7 @@ const RegisterPatientsModal = (props) => {
               className=" form-control-alternative"
               id="email"
               name="email"
-              placeholder="paciente@email"
+              placeholder="specialist@email"
               type="email"
               onChange={handleEmailRegisterChange}
             ></Input>
@@ -137,7 +137,7 @@ const RegisterPatientsModal = (props) => {
           <Button
             color="primary"
             type="button"
-            onClick={() => setEmailRegisterPatiente()}
+            onClick={() => setEmailRegisterSpecialist()}
           >
             Enviar
           </Button>
@@ -147,4 +147,4 @@ const RegisterPatientsModal = (props) => {
   );
 };
 
-export default RegisterPatientsModal;
+export default RegisterSpecialistModal;

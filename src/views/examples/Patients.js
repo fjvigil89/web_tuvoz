@@ -19,18 +19,27 @@ import React from "react";
 // reactstrap components
 
 // core components
-import Header from "components/Headers/Header.js";
-import PatientList from "components/Specialist/TablePatientsList";
+import SpecialistHeader from "components/Specialist/Headers/SpecialistHeader";
+import AdminHeader from "components/Admin/Headers/AdminHeader";
+import SpecialistPatientList from "components/Specialist/Patient/TablePatientsList";
+import AdminUserList from "components/Admin/User/AdminTableUserList";
+import Cookies from 'universal-cookie';
 
+
+const cookie = new Cookies();
 
 const Patients = () => {
    
 
   return (
     <>
-      <Header />      
+      {
+        cookie.get('role') === "Admin" ? <AdminHeader/> :  <SpecialistHeader/> 
+      }     
       {/* Page content */}
-      <PatientList/>
+      {
+        cookie.get('role') === "Admin" ? <AdminUserList/> :  <SpecialistPatientList/> 
+      }
       
     </>
   );

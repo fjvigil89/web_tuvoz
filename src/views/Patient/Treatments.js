@@ -20,7 +20,7 @@ import React from "react";
 
 // core components
 import HeaderPatient from "components/Headers/HeaderPatient.js";
-import PatientTableList from "components/Treatment/PatientTableList.js";
+import PatientTableList from "components/Specialist/Treatment/PatientTableList.js";
 
 
 const Treatments = () => {

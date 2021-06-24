@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/creativetimofficial/argon-dashboard-react/issues"
   },
-  "homepage": "https://demos.creative-tim.com/argon-dashboard-react/",
+  "homepage": "http://155.210.153.12",
   "scripts": {
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -52,6 +52,7 @@
     "form-data": "^4.0.0",
     "fs": "0.0.1-security",
     "fs-extra": "^10.0.0",
+    "jsx-to-string": "^1.4.0",
     "laravel-echo": "^1.10.0",
     "moment": "2.29.1",
     "node-sass": "4.14.1",
