@@ -1,11 +1,11 @@
 {
-  "name": "argon-dashboard-react",
+  "name": "TuVoz",
   "version": "1.2.0",
-  "description": "React version of Argon Dashboard by Creative Tim",
+  "description": "PhD interlegibility",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/creativetimofficial/argon-dashboard-react.git"
+    "url": "git+https://gitlab.com/frankjosue.vigilvega/voiceRecord_web"
   },
   "keywords": [
     "react",
@@ -19,8 +19,8 @@
   ],
   "author": "Creative Tim",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/creativetimofficial/argon-dashboard-react/issues"
+  "bugs": {    
+    "url": "https://gitlab.com/frankjosue.vigilvega/voiceRecord_web/-/issues"
   },
   "homepage": "http://155.210.153.12",
   "scripts": {
