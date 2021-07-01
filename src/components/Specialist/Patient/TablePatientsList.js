@@ -13,7 +13,8 @@ import {
   Container,
   Row,
   Badge,
-  UncontrolledTooltip
+  UncontrolledTooltip,
+  Progress
 } from "reactstrap";
 import { Link } from "react-router-dom";
 
@@ -21,6 +22,8 @@ import Cookies from 'universal-cookie';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import useBaseURL from '../../../Hooks/useBaseURL';
+import useFormatterDate from '../../../Hooks/useFormatterDate';
+
 import RegisterPatient from "./RegisterPatientsModal";
 
 const cookie = new Cookies();
@@ -28,6 +31,7 @@ const cookie = new Cookies();
 const TablePatientsList = () => {
   //uso del Hooks para la url de la API
   const baseURL = useBaseURL(null);
+  const formatter = new useFormatterDate();
 
   //gusrdar los tratamientos del Usuario Logueado
   const [listPatients, setListPatients] = useState([]);
@@ -40,6 +44,7 @@ const TablePatientsList = () => {
       // get Tratamientos
       axios.get(baseURL + 'api/getAllpatient')
         .then(response => {
+          //console.log(response.data.data);
           setListPatients(response.data.data);
         })
         .catch(() => {
@@ -92,9 +97,11 @@ const TablePatientsList = () => {
                   <tr>
                     <th scope="col"> </th>
                     <th scope="col">Nombre</th>
-                    <th scope="col">identificador</th>
-                    <th scope="col">email</th>
-                    <th scope="col"> status </th>
+                    <th scope="col">Identificador</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Status </th>
+                    <th scope="col">Terminación</th>
+                    <th scope="col">Alta</th>
                     <th className=" text-right">Acción</th>
                   </tr>
                 </thead>
@@ -115,10 +122,7 @@ const TablePatientsList = () => {
                                   <img
                                     alt="..."
                                     className="rounded-circle"
-                                    src={
-                                      require("../../../assets/img/theme/team-1-800x800.jpg")
-                                        .default
-                                    }
+                                    src={item.foto}
                                   />
                                 </Link>
                                 <UncontrolledTooltip
@@ -134,7 +138,7 @@ const TablePatientsList = () => {
                         </th>
                         <td>
 
-                          <Link                            
+                          <Link
                             to={"/admin/user-profile/" + item.id}
                             id={item.name}
                           >
@@ -160,6 +164,26 @@ const TablePatientsList = () => {
                               (item.status === 1) ? <> <i className="bg-success" /> activo </> : <> <i className="bg-warning" /> pendiente </>
                             }
                           </Badge>
+                        </td>
+                        <td>
+                          <div className="d-flex align-items-center">
+                            <span className="mr-2">{item.porcientoTreatmentComplete+'%'}</span>
+                            <div>
+                              <Progress
+                                max="100"
+                                value={item.porcientoTreatmentComplete}
+                                barClassName={item.porcientoTreatmentComplete < 90 ? "bg-danger" : (item.porcientoTreatmentComplete < 100 ? "bg-info" : "bg-success")}
+                              />
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <span className="mb-0 text-sm">
+                            {
+                              formatter.format(Date.parse(item.created_at))
+
+                            }
+                          </span>
                         </td>
                         <td className=" td-actions text-right">
 

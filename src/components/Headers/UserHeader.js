@@ -22,7 +22,8 @@ import { Button, Container, Row, Col } from "reactstrap";
 import Cookies from 'universal-cookie';
 const cookie = new Cookies();
 
-const UserHeader = () => {
+const UserHeader = (props) => {
+  const {foto, name, id} = props
   return (
     <>
       <div
@@ -31,7 +32,7 @@ const UserHeader = () => {
           minHeight: "600px",
           backgroundImage:
             "url(" +
-            require("../../assets/img/theme/team-4-800x800.jpg").default +
+              foto +
             ")",
           backgroundSize: "cover",
           backgroundPosition: "center top",
@@ -43,7 +44,7 @@ const UserHeader = () => {
         <Container className="d-flex align-items-center" fluid>
           <Row>
             <Col lg="7" md="10">
-              <h1 className="display-2 text-white">{ cookie.get('name')}</h1>
+              <h1 className="display-2 text-white">{ name }</h1>
               <p className="text-white mt-0 mb-5">
                 This is your profile page. You can see the progress you've made
                 with your work and manage your projects or assigned tasks

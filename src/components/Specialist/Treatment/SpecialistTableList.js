@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 import {
   Badge,
@@ -14,23 +14,26 @@ import {
   Container,
   Row,
   UncontrolledTooltip,
+  Progress,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import Cookies from "universal-cookie";
 import axios from "axios";
 import Swal from "sweetalert2";
 import useBaseURL from "../../../Hooks/useBaseURL";
+import useFormatterDate from '../../../Hooks/useFormatterDate';
 
 const cookie = new Cookies();
 
 const SpecialistTableList = () => {
   //uso del Hooks para la url de la API
   const baseURL = useBaseURL(null);
-  
+  const formatter = new useFormatterDate();
+
   //gusrdar los tratamientos del Usuario Logueado
   const [treatment, setTreatment] = useState([]);
 
-  
+
 
   //metodo Sincronico para el consumo del login en la api
   const Tratamientos = async () => {
@@ -39,7 +42,7 @@ const SpecialistTableList = () => {
       // get Tratamientos
       axios.get(baseURL + "api/treatment")
         .then((response) => {
-          //console.log(response.data.data[0].patients[0][0].username.toString());
+          //console.log(response.data.data);
           setTreatment(response.data.data);
         })
         .catch((err) => {
@@ -109,7 +112,7 @@ const SpecialistTableList = () => {
         <Row>
           <div className="col">
             <Card className="shadow">
-              { cookie.get("role") === "Specialist" ?
+              {cookie.get("role") === "Specialist" ?
                 <CardHeader className="border-0">
                   <Media className="align-items-center">
                     <Link className="avatar avatar-sm" to="/admin/addtreatment">
@@ -137,9 +140,11 @@ const SpecialistTableList = () => {
                   <tr>
                     <th scope="col">Tratamientos</th>
                     <th scope="col">Descripción</th>
-                    <th scope="col">Status</th>
                     <th scope="col">Paciente</th>
-                    <th className=" text-right">Acción</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Terminación</th>
+                    <th scope="col">Creado</th>
+                    <th className=" text-right">Acción</th> 
                   </tr>
                 </thead>
                 <tbody>
@@ -156,22 +161,9 @@ const SpecialistTableList = () => {
                           : item.desc}
                       </td>
                       <td>
-                        <Badge color="" className="badge-dot mr-4">
-                          {item.status === 1 ? (
-                            <>
-                              <i className="bg-success" /> activated
-                            </>
-                          ) : (
-                            <>
-                              <i className="bg-warning" /> disabled{" "}
-                            </>
-                          )}
-                        </Badge>
-                      </td>
-                      <td>
                         <div className="avatar-group">
-                          {item.patients.map((patient) => (
-                            <>
+                          {item.patients.map((patient, index) => (
+                            <Fragment key={index}>
                               {patient.map((user) => (
                                 <>
                                   <Link key={user.id}
@@ -182,10 +174,8 @@ const SpecialistTableList = () => {
                                     <img
                                       alt="..."
                                       className="rounded-circle"
-                                      src={
-                                        require("../../../assets/img/theme/team-1-800x800.jpg")
-                                          .default
-                                      }
+                                      src={user.foto}
+
                                     />
                                   </Link>
                                   <UncontrolledTooltip
@@ -196,9 +186,39 @@ const SpecialistTableList = () => {
                                   </UncontrolledTooltip>
                                 </>
                               ))}
-                            </>
+                            </Fragment>
                           ))}
                         </div>
+                      </td>
+                      <td>
+                        <Badge color="" className="badge-dot mr-4">
+                          {item.status === 1 ? (
+                            <>
+                              <i className="bg-success" /> activo
+                            </>
+                          ) : (
+                            <>
+                              <i className="bg-warning" /> pendiente
+                            </>
+                          )}
+                        </Badge>
+                      </td>
+                      <td>
+                          <div className="d-flex align-items-center">
+                            <span className="mr-2">{item.porcientoTreatmentComplete+'%'}</span>
+                            <div>
+                              <Progress
+                                max="100"
+                                value={item.porcientoTreatmentComplete}
+                                barClassName={item.porcientoTreatmentComplete < 90 ? "bg-danger" : (item.porcientoTreatmentComplete < 100 ? "bg-info" : "bg-success")}
+                              />
+                            </div>
+                          </div>
+                        </td>
+                      <td>
+                        {
+                          formatter.format(Date.parse(item.created_at))
+                        }
                       </td>
                       <td className=" td-actions text-right">
                         <Link

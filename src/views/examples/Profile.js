@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 // reactstrap components
 import {
@@ -32,11 +32,61 @@ import {
 } from "reactstrap";
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
+import Cookies from 'universal-cookie';
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import useBaseURL from '../../Hooks/useBaseURL';
+import useFormatterDate from '../../Hooks/useFormatterDate';
+import { useParams } from "react-router";
+
+const cookie = new Cookies();
 
 const Profile = () => {
+  //uso del Hooks para la url de la API
+  const baseURL = useBaseURL(null);
+  const formatter = new useFormatterDate();
+  let { id}= useParams(); 
+
+  //gusrdar los tratamientos del Usuario Logueado
+  const [user, setUser] = useState([]);
+
+
+  //metodo Sincronico para el consumo del login en la api
+  const getUser = async () => {
+    axios.defaults.headers.Authorization = "Bearer " + cookie.get('token');
+    await axios.get(baseURL + 'sanctum/csrf-cookie').then(() => {
+      // get Tratamientos
+      axios.get(baseURL + 'api/user/'+id)
+        .then(response => {
+          //console.log(response.data.data);
+          setUser(response.data.data);
+        })
+        .catch(() => {
+          Swal.fire({
+            title: 'Oops!!',
+            text: "there is a problem connecting with  the API server!",
+            icon: "warning",
+            footer: '<span style="color: red">server with error!<span/>',
+            toast: true,
+            position: "top-right",
+            showConfirmButton: false,
+            timer: 4000,
+          })
+        })
+    })
+  };
+
+  useEffect(() => {
+    getUser();
+    if (!cookie.get('token')) {
+      window.location.href = "/auth/login";
+    }
+
+  }, []);
+
   return (
     <>
-      <UserHeader />
+      <UserHeader foto={user.foto} id={user.id} name= {user.name} />
       {/* Page content */}
       <Container className="mt--7" fluid>
         <Row>
@@ -49,10 +99,7 @@ const Profile = () => {
                       <img
                         alt="..."
                         className="rounded-circle"
-                        src={
-                          require("../../assets/img/theme/team-4-800x800.jpg")
-                            .default
-                        }
+                        src={user.foto}
                       />
                     </a>
                   </div>
@@ -101,7 +148,7 @@ const Profile = () => {
                 </Row>
                 <div className="text-center">
                   <h3>
-                    Jessica Jones
+                    {user.name}
                     <span className="font-weight-light">, 27</span>
                   </h3>
                   <div className="h5 font-weight-300">
@@ -165,10 +212,11 @@ const Profile = () => {
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue="lucky.jesse"
+                            //defaultValue="lucky.jesse"
                             id="input-username"
-                            placeholder="Username"
+                            placeholder={user.username}
                             type="text"
+                            
                           />
                         </FormGroup>
                       </Col>
@@ -183,31 +231,31 @@ const Profile = () => {
                           <Input
                             className="form-control-alternative"
                             id="input-email"
-                            placeholder="jesse@example.com"
+                            placeholder={user.email}
                             type="email"
                           />
                         </FormGroup>
                       </Col>
                     </Row>
                     <Row>
-                      <Col lg="6">
+                      <Col lg="12">
                         <FormGroup>
                           <label
                             className="form-control-label"
                             htmlFor="input-first-name"
                           >
-                            First name
+                            Name
                           </label>
                           <Input
                             className="form-control-alternative"
-                            defaultValue="Lucky"
+                            //defaultValue="Lucky"
                             id="input-first-name"
-                            placeholder="First name"
+                            placeholder={user.name}
                             type="text"
                           />
                         </FormGroup>
                       </Col>
-                      <Col lg="6">
+                      {/*<Col lg="6">
                         <FormGroup>
                           <label
                             className="form-control-label"
@@ -223,7 +271,7 @@ const Profile = () => {
                             type="text"
                           />
                         </FormGroup>
-                      </Col>
+                      </Col>*/}
                     </Row>
                   </div>
                   <hr className="my-4" />

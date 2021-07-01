@@ -121,6 +121,7 @@ const AddFrom = () => {
                                                     name="nameTreatment"
                                                     placeholder="nombre del Tratamiento"
                                                     type="text"
+                                                    maxlength="255"
                                                     onChange={handleChange}
                                                 ></Input>
                                             </FormGroup>
@@ -139,6 +140,7 @@ const AddFrom = () => {
                                                     onChange={handleChange}
                                                     name="descTreatment"
                                                     id="descTreatment"
+                                                    maxlength="255"
                                                     placeholder="Descripción del tratamiento"
                                                 ></Input>
                                             </FormGroup>
@@ -149,7 +151,7 @@ const AddFrom = () => {
 
                                     <Row>
                                         <Col md="6">
-                                            <AddPhraseModal
+                                            <AddPhraseModal                                                
                                                 buttonLabel="Agrega Frases al Tratamineto"
                                             >
                                             </AddPhraseModal>
