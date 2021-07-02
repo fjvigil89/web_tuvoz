@@ -88,9 +88,10 @@ const Admin = (props) => {
         routes={routes}
         logo={{
           innerLink: "/admin/index",
-          imgSrc: require("../assets/img/brand/argon-react.png").default,
+          imgSrc: require("../assets/img/brand/tuvoz-logo-color.png").default,
           imgAlt: "...",
         }}
+        
       />
       <div className="main-content" ref={mainContent}>
         <AdminNavbar
