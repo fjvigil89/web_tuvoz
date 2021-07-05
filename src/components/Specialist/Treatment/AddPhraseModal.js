@@ -19,11 +19,13 @@ const AddPhraseModal= (props) => {
         namePhrase:''
     });
 
+    const {
+      buttonLabel,                     
+      } = props;
+
     const [ listPhrase, setlistPhrase ] = useState([]);
 
-    const {
-        buttonLabel,               
-        } = props;
+    
 
     const cachePhrase = async()=>{
         const newList = listPhrase.concat(phrase.form);
@@ -97,6 +99,7 @@ const AddPhraseModal= (props) => {
                 name="namePhrase"
                 placeholder="Phrase"
                 type="text"  
+                maxlength="255"
                 onChange= { handlePhraseChange }              
                 ></Input>
                  

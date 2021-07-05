@@ -32,7 +32,7 @@ import {
   Navbar,
   Nav,
   Container,
-  Media,
+  Media,  
 } from "reactstrap";
 
 import Cookies from 'universal-cookie';
@@ -43,7 +43,7 @@ const cookie = new Cookies();
 const AdminNavbar = (props) => {
 
   //uso del Hooks para la url de la API
-  const baseURL= useBaseURL(null);
+  const baseURL= useBaseURL(null);  
 
 //metodo Sincronico para el consumo del login en la api
 const logout = async()=>{
@@ -61,8 +61,10 @@ const logout = async()=>{
   });
 };
 
+
 useEffect( ()=> { 
-  //cookie.remove('token',{path: '/'});    
+  //cookie.remove('token',{path: '/'});   
+  //console.log(cookie.getAll()); 
   if(!cookie.get('token')){    
     window.location.href = "/auth/login"; 
   }    
@@ -95,13 +97,10 @@ useEffect( ()=> {
               <DropdownToggle className="pr-0" nav>
                 <Media className="align-items-center">
                   <span className="avatar avatar-sm rounded-circle">
-                    <img
+                    <img 
                       alt="..."
-                      src={
-                        require("../../assets/img/theme/team-4-800x800.jpg")
-                          .default
-                      }
-                    />
+                      src={cookie.get('foto')}
+                      />
                   </span>
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm font-weight-bold">
@@ -114,7 +113,7 @@ useEffect( ()=> {
                 <DropdownItem className="noti-title" header tag="div">
                   <h6 className="text-overflow m-0">Welcome!</h6>
                 </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
+                <DropdownItem to={"/admin/user-profile/"+ cookie.get('id')} tag={Link}>
                   <i className="ni ni-single-02" />
                   <span>My profile</span>
                 </DropdownItem>

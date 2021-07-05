@@ -81,7 +81,8 @@ const handleChange = async e =>{
 }
 
 //metodo Sincronico para el consumo del login en la api
-const inicioSesion = async()=>{    
+const inicioSesion = async(e)=>{  
+  e.preventDefault();  
   await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
     // Login...
     axios.post(baseURL+'api/login', {      
@@ -106,6 +107,7 @@ const inicioSesion = async()=>{
             cookie.set('email', data.email, {path: '/', maxAge: '10800'});
             cookie.set('name', data.name, {path: '/', maxAge: '10800'}); 
             cookie.set('role', data.role, {path: '/', maxAge: '10800'}); 
+            cookie.set('foto', data.foto, {path: '/', maxAge: '10800'});
             
             if (data.role === 'Specialist' && data.status) {
               window.location.href = "/admin/index";
@@ -185,7 +187,7 @@ const inicioSesion = async()=>{
             <div className="text-center text-muted mb-4">
               <small>Or sign in with credentials</small>
             </div>
-            <Form role="form">
+            <Form role="form" onSubmit={ inicioSesion }>
               <FormGroup className="mb-3">
                 <InputGroup className="input-group-alternative">
                   <InputGroupAddon addonType="prepend">
@@ -232,7 +234,7 @@ const inicioSesion = async()=>{
                 </label>
               </div>
               <div className="text-center">
-                <Button className="my-4" color="primary" type="button" onClick={ inicioSesion }>
+                <Button className="my-4" color="primary" type="submit" >
                   Sign in
                 </Button>
               </div>
@@ -249,7 +251,7 @@ const inicioSesion = async()=>{
               <small>Forgot password?</small>
             </a>
           </Col>
-          <Col className="text-right" xs="6">
+         {/* <Col className="text-right" xs="6">
             <a
               className="text-light"
               href="#pablo"
@@ -257,7 +259,7 @@ const inicioSesion = async()=>{
             >
               <small>Create new account</small>
             </a>
-          </Col>
+                  </Col> */}
         </Row>
       </Col>
     </>
