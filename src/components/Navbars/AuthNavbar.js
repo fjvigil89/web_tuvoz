@@ -30,7 +30,10 @@ import {
   Col,
 } from "reactstrap";
 
+
+
 const AdminNavbar = () => {
+  
   return (
     <>
       <Navbar className="navbar-top navbar-horizontal navbar-dark" expand="md">
@@ -70,9 +73,9 @@ const AdminNavbar = () => {
             </div>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink className="nav-link-icon" to="/" tag={Link}>
-                  <i className="ni ni-planet" />
-                  <span className="nav-link-inner--text">Dashboard</span>
+                <NavLink className="nav-link-icon" to="/apk/tu-voz.apk" download target="_blank" tag={Link}>
+                  <i className="ni ni-mobile-button" />
+                  <span className="nav-link-inner--text">Descargar</span>
                 </NavLink>
               </NavItem>
               <NavItem>

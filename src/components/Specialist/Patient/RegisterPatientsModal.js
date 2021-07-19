@@ -35,6 +35,7 @@ const RegisterPatientsModal = (props) => {
       // get Tratamientos
       axios.post(baseURL + "api/setEmailRegisterPatient", {
           emailRegister: emailRegister.form.email,
+          origin_url: window.location.origin,
           uri_register: window.location.origin+'/auth/register'
         })
         .then((response) => {          
