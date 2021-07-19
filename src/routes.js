@@ -21,6 +21,7 @@ import Treatments from "views/examples/Treatments.js";
 import Icons from "views/examples/Icons.js";
 import Patients from "views/examples/Patients";
 import Voces from "views/examples/Voces.js";
+import App from "views/examples/App";
 
 var routes = [
   {
@@ -43,27 +44,34 @@ var routes = [
     icon: "ni ni-pin-3 text-orange",
     component: Maps,
     layout: "/admin",
-  },  
+  },
   {
     path: "/treatments",
     name: "Treatments",
     icon: "ni ni-bullet-list-67 text-red",
     component: Treatments,
     layout: "/admin",
-  }, 
+  },
   {
     path: "/patients",
     name: "Pacientes",
-    icon: "fas fa-users text-info",    
+    icon: "fas fa-users text-info",
     component: Patients,
     layout: "/admin",
-  }, 
+  },
   {
     path: "/voces",
     name: "Voces",
-    icon: "ni ni-sound-wave text-blue",    
+    icon: "ni ni-sound-wave text-blue",
     component: Voces,
     layout: "/admin",
-  },  
+  },
+  {
+    path: "/app",
+    name: "App",
+    icon: "ni ni-mobile-button text-info",
+    component: App,
+    layout: "/admin",
+  },
 ];
 export default routes;
