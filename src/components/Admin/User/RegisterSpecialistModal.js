@@ -37,6 +37,7 @@ const RegisterSpecialistModal = (props) => {
       // get Tratamientos
       axios.post(baseURL + "api/setEmailRegisterSpecialist", {
           emailRegister: emailRegister.form.email,
+          origin_url: window.location.origin,
           uri_register: window.location.origin+'/auth/register'
         })
         .then((response) => {          

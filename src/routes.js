@@ -64,6 +64,6 @@ var routes = [
     icon: "ni ni-sound-wave text-blue",    
     component: Voces,
     layout: "/admin",
-  }, 
+  },  
 ];
 export default routes;
