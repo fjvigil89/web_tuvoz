@@ -44,6 +44,7 @@ const AdminHeader = () => {
       // get Tratamientos
       axios.get(baseURL+'api/countGetTreatment')      
       .then(response =>{                    
+        //console.log(response);
         setTreatment(response.data);
       })    
       .catch(() => {            

@@ -38,12 +38,12 @@ const AdminAppTableList = () => {
       axios
         .get(baseURL + "api/app")
         .then((response) => {
-          console.log(response.data);
+          //console.log(response.data);
           setApp(response.data.data);
         })
         .catch(() => {
           Swal.fire({
-            title: "Oops!!",
+            title: "Oopss!!",
             text: "there is a problem connecting with Treatment the API server!",
             icon: "warning",
             footer: '<span style="color: red">server with error!<span/>',
@@ -63,15 +63,16 @@ const AdminAppTableList = () => {
   };
 
   const setUpload = async () => {
-    console.log(file);
+    //console.log(file);
     let formData = new FormData();
     formData.append("name", file.name);
     formData.append("files", file);
+    formData.append("version", "v"+(1 + app.length));
     axios.defaults.headers.Authorization = "Bearer " + cookie.get("token");
     await axios.get(baseURL + "sanctum/csrf-cookie").then(() => {
       axios
         .post(baseURL + "api/app", formData)
-        .then((response) => {
+        .then((response) => {          
           let data = response.data.data;
           let newApp = {
             id: data.id,
@@ -92,6 +93,7 @@ const AdminAppTableList = () => {
   useEffect(() => {
     getAllApp();
 
+    //console.log(app.length);
     if (!cookie.get("token")) {
       window.location.href = "/auth/login";
     }
