@@ -16,7 +16,6 @@ import Cookies from "universal-cookie";
 import useBaseURL from "../../../Hooks/useBaseURL";
 const cookie = new Cookies();
 
-
 const RegisterSpecialistModal = (props) => {
   //uso del Hooks para la url de la API
   const baseURL = useBaseURL(null);
@@ -29,32 +28,29 @@ const RegisterSpecialistModal = (props) => {
     email: "",
   });
 
-  
-
   const setEmailRegisterSpecialist = async () => {
     axios.defaults.headers.Authorization = "Bearer " + cookie.get("token");
     await axios.get(baseURL + "sanctum/csrf-cookie").then(() => {
       // get Tratamientos
-      axios.post(baseURL + "api/setEmailRegisterSpecialist", {
+      axios
+        .post(baseURL + "api/setEmailRegisterSpecialist", {
           emailRegister: emailRegister.form.email,
-          origin_url: window.location.origin,
-          uri_register: window.location.origin+'/auth/register'
+          uri_register: window.location.origin + "/auth/register",
         })
-        .then((response) => {          
-          if (response.status === 200) {            
-              Swal.fire({
-                title: 'Woww!!',
-                text: response.data.message,
-                icon: "success",
-                footer: '<span style="color: blue">Thanks!<span/>',
-                toast: true,
-                position: "top-right",
-                showConfirmButton: false,
-                timer: 4000,
+        .then((response) => {
+          if (response.status === 200) {
+            Swal.fire({
+              title: "Woww!!",
+              text: response.data.message,
+              icon: "success",
+              footer: '<span style="color: blue">Thanks!<span/>',
+              toast: true,
+              position: "top-right",
+              showConfirmButton: false,
+              timer: 4000,
             });
             setModalOpen(!modalOpen);
           }
-          
         })
         .catch(() => {
           Swal.fire({

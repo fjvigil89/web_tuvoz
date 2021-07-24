@@ -29,11 +29,38 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import useBaseURL from "../../Hooks/useBaseURL";
 
-
+import axios from "axios";
 
 const AdminNavbar = () => {
-  
+  //uso del Hooks para la url de la API
+  const baseURL = useBaseURL(null);
+
+  const lastUpdate = async () => {
+    await axios.get(baseURL + "sanctum/csrf-cookie").then(() => {
+      // Login...
+      axios
+        .get(baseURL + "api/lastUpdate", {
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            "Access-Control-Allow-Origin": "*",
+          },
+        })
+        .then((response) => {
+          return response;
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            window.open(response.data.data.url);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+  };
+
   return (
     <>
       <Navbar className="navbar-top navbar-horizontal navbar-dark" expand="md">
@@ -42,7 +69,8 @@ const AdminNavbar = () => {
             <img
               alt="..."
               src={
-                require("../../assets/img/brand/tuvoz-logo-onboarding.png").default
+                require("../../assets/img/brand/tuvoz-logo-onboarding.png")
+                  .default
               }
             />
           </NavbarBrand>
@@ -73,7 +101,16 @@ const AdminNavbar = () => {
             </div>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink className="nav-link-icon" to="/apk/tu-voz.apk" download target="_blank" tag={Link}>
+                <NavLink
+                  className="nav-link-icon"
+                  to=""
+                  download
+                  tag={Link}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    lastUpdate();
+                  }}
+                >
                   <i className="ni ni-mobile-button" />
                   <span className="nav-link-inner--text">Descargar</span>
                 </NavLink>

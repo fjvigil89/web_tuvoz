@@ -30,16 +30,15 @@ const SpecialistRecordTableList = () => {
   //gusrdar los tratamientos del Usuario Logueado
   const [record, setRecord] = useState([]);
 
-
-
   //metodo Sincronico para el consumo del login en la api
   const getRecordByUser = async () => {
     axios.defaults.headers.Authorization = "Bearer " + cookie.get("token");
     await axios.get(baseURL + "sanctum/csrf-cookie").then(() => {
       // get Tratamientos
-      axios.get(baseURL + "api/getRecordByUser")
+      axios
+        .get(baseURL + "api/getRecordByUser")
         .then((response) => {
-          //console.log(response.data.data[0]);
+          //console.log(response.data.data);
           setRecord(response.data.data);
         })
         .catch((err) => {
@@ -57,9 +56,8 @@ const SpecialistRecordTableList = () => {
     });
   };
 
-
   useEffect(() => {
-    getRecordByUser()
+    getRecordByUser();
 
     if (!cookie.get("token")) {
       window.location.href = "/auth/login";
@@ -75,7 +73,6 @@ const SpecialistRecordTableList = () => {
             <Card className="shadow">
               <CardHeader className="border-0">
                 <Media className="align-items-center">
-
                   <Media>
                     <span className="mb-0 text-sm">
                       <h3 className="mb-0">Grabaciones</h3>
@@ -84,7 +81,6 @@ const SpecialistRecordTableList = () => {
                 </Media>
               </CardHeader>
 
-
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
@@ -92,7 +88,6 @@ const SpecialistRecordTableList = () => {
                     <th scope="col">Identificador</th>
                     <th scope="col">Url</th>
                     <th scope="col">Frases</th>
-
                   </tr>
                 </thead>
                 <tbody>
@@ -106,9 +101,7 @@ const SpecialistRecordTableList = () => {
                             </span>
                           </Media>
                         </th>
-                        <th>
-                          {item.path.split('/')[4].split('-')[0]}
-                        </th>
+                        <th>{item.path.split("/")[4].split("-")[0]}</th>
                         <td>
                           <audio src={item.path} controls />
                         </td>
@@ -117,7 +110,6 @@ const SpecialistRecordTableList = () => {
                             {item.phrase_id.phrase}
                           </div>
                         </td>
-
                       </tr>
                     </>
                   ))}

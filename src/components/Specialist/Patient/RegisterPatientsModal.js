@@ -27,32 +27,29 @@ const RegisterPatientsModal = (props) => {
     email: "",
   });
 
-  
-
   const setEmailRegisterPatiente = async () => {
     axios.defaults.headers.Authorization = "Bearer " + cookie.get("token");
     await axios.get(baseURL + "sanctum/csrf-cookie").then(() => {
       // get Tratamientos
-      axios.post(baseURL + "api/setEmailRegisterPatient", {
+      axios
+        .post(baseURL + "api/setEmailRegisterPatient", {
           emailRegister: emailRegister.form.email,
-          origin_url: window.location.origin,
-          uri_register: window.location.origin+'/auth/register'
+          uri_register: window.location.origin + "/auth/register",
         })
-        .then((response) => {          
-          if (response.status === 200) {            
-              Swal.fire({
-                title: 'Woww!!',
-                text: response.data.message,
-                icon: "success",
-                footer: '<span style="color: blue">Thanks!<span/>',
-                toast: true,
-                position: "top-right",
-                showConfirmButton: false,
-                timer: 4000,
+        .then((response) => {
+          if (response.status === 200) {
+            Swal.fire({
+              title: "Woww!!",
+              text: response.data.message,
+              icon: "success",
+              footer: '<span style="color: blue">Thanks!<span/>',
+              toast: true,
+              position: "top-right",
+              showConfirmButton: false,
+              timer: 4000,
             });
             setModalOpen(!modalOpen);
           }
-          
         })
         .catch(() => {
           Swal.fire({
