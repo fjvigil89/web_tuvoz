@@ -37,6 +37,7 @@ const RegisterPatientsModal = (props) => {
           uri_register: window.location.origin + "/auth/register",
         })
         .then((response) => {
+          //console.log(response);
           if (response.status === 200) {
             Swal.fire({
               title: "Woww!!",

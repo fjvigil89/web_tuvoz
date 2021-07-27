@@ -32,142 +32,137 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import useBaseURL from '../../Hooks/useBaseURL';
-import Cookies from 'universal-cookie';
-import axios from 'axios';
-import Swal from 'sweetalert2';
+import useBaseURL from "../../Hooks/useBaseURL";
+import Cookies from "universal-cookie";
+import axios from "axios";
+import Swal from "sweetalert2";
 import { useParams } from "react-router";
-
-
 
 const cookie = new Cookies();
 
-function validateFormRegister(name, passwd){
-      
-    if (name === undefined ||  name.length === 0) {
-      Swal.fire({
-        title: "Oops!!",
-        text: "El campo nombre no puede estar en blanco!",
-        icon: "error",
-        footer: '<span style="color: red">server with error!<span/>',
-        toast: true,
-        position: "top-right",
-        showConfirmButton: false,
-        timer: 4000,
-      });
-      return false;
-    }
+function validateFormRegister(name, passwd) {
+  if (name === undefined || name.length === 0) {
+    Swal.fire({
+      title: "Oops!!",
+      text: "El campo nombre no puede estar en blanco!",
+      icon: "error",
+      footer: '<span style="color: red">server with error!<span/>',
+      toast: true,
+      position: "top-right",
+      showConfirmButton: false,
+      timer: 4000,
+    });
+    return false;
+  }
 
-    if (passwd === undefined || passwd.length < 6) {
-      Swal.fire({
-        title: "Oops!!",
-        text: "El campo password tiene que tener más de 6 caracteres!",
-        icon: "error",
-        footer: '<span style="color: red">server with error!<span/>',
-        toast: true,
-        position: "top-right",
-        showConfirmButton: false,
-        timer: 4000,
-      });
+  if (passwd === undefined || passwd.length < 6) {
+    Swal.fire({
+      title: "Oops!!",
+      text: "El campo password tiene que tener más de 6 caracteres!",
+      icon: "error",
+      footer: '<span style="color: red">server with error!<span/>',
+      toast: true,
+      position: "top-right",
+      showConfirmButton: false,
+      timer: 4000,
+    });
 
-      return false;
-    }
-  
+    return false;
+  }
 
-  
-  return true; 
-};
-
+  return true;
+}
 
 const Register = () => {
-
   //uso del Hooks para la url de la API
   const baseURL = useBaseURL(null);
 
   //hoocks para el uso de las credenciales
-  const { email }= useParams();
+  const { email } = useParams();
 
   const [register, setRegister] = useState({
-    name: '',
+    name: "",
     email: email,
-    password: ''
+    password: "",
   });
 
   //Captura los valores del formulario
-  const handleChange = async e => {
+  const handleChange = async (e) => {
     await setRegister({
       form: {
         ...register.form,
-        [e.target.name]: e.target.value
-      }
+        [e.target.name]: e.target.value,
+      },
+    });
 
-    });    
+    //console.log(email);
   };
 
-  
-//metodo Sincronico para el consumo del login en la api
-const setRegisterpatient = async()=>{  
-  
-  await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
-    register.email    = email;
-    register.name     = (register.form !== undefined) ? register.form.name : register.name;
-    register.password = (register.form !== undefined) ? register.form.password : register.password;
-   
-    if (validateFormRegister(register.name, register.password)) { 
-      // Login...
-      console.log(register);
-      axios.post(baseURL+'api/register', {      
-          email: email, 
-          name: register.form.name,
-          password: register.form.password 
-        },
-        {
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8',        
-            "Access-Control-Allow-Origin": "*",        
-          },
-        })
-      .then(response =>{             
-        return response;       
-      })
-      .then(response=>{     
-        
-        if (response.status === 200) { 
+  //metodo Sincronico para el consumo del login en la api
+  const setRegisterpatient = async () => {
+    await axios.get(baseURL + "sanctum/csrf-cookie").then(() => {
+      register.email = email;
+      register.name =
+        register.form !== undefined ? register.form.name : register.name;
+      register.password =
+        register.form !== undefined
+          ? register.form.password
+          : register.password;
+
+      if (validateFormRegister(register.name, register.password)) {
+        // Login...
+        //console.log(register);
+        axios
+          .post(
+            baseURL + "api/register",
+            {
+              email: email,
+              name: register.form.name,
+              password: register.form.password,
+            },
+            {
+              headers: {
+                "Content-type": "application/json; charset=UTF-8",
+                "Access-Control-Allow-Origin": "*",
+              },
+            }
+          )
+          .then((response) => {
+            return response;
+          })
+          .then((response) => {
+            if (response.status === 200) {
               let data = response.data.data;
               let token = response.data.access_token;
-              cookie.set('token', token, {path: '/', maxAge: '10800'}); 
-              cookie.set('id', data.id, {path: '/', maxAge: '10800'});
-              cookie.set('email', data.email, {path: '/', maxAge: '10800'});
-              cookie.set('name', data.name, {path: '/', maxAge: '10800'}); 
-              cookie.set('role', data.role, {path: '/', maxAge: '10800'}); 
-              
-              if (data.role === 'Specialist' && data.status) {
+              cookie.set("token", token, { path: "/", maxAge: "10800" });
+              cookie.set("id", data.id, { path: "/", maxAge: "10800" });
+              cookie.set("email", data.email, { path: "/", maxAge: "10800" });
+              cookie.set("name", data.name, { path: "/", maxAge: "10800" });
+              cookie.set("role", data.role, { path: "/", maxAge: "10800" });
+
+              if (data.role === "Specialist" && data.status) {
                 window.location.href = "/admin/index";
               }
-              if (data.role === 'Guest' && data.status) {
-                window.location.href = "/patient/index";      
+              if (data.role === "Guest" && data.status) {
+                window.location.href = "/patient/index";
               }
-              
-        }
-      })
-      .catch(() => {
-          
-        Swal.fire({
-          title: 'Oops!!',
-          text: "Credentials went wrong!",
-          icon: "error",
-          footer: '<span style="color: red">server with error!<span/>',        
-          toast: true,
-          position: "top-right",        
-          showConfirmButton: false,
-          timer: 4000,
-        }) 
-      })
-    }
-
-  }); 
-};
-
+            }
+          })
+          .catch(() => {
+            Swal.fire({
+              title: "Oops!!",
+              text: "Credentials went wrong!",
+              icon: "error",
+              footer: '<span style="color: red">server with error!<span/>',
+              toast: true,
+              position: "top-right",
+              showConfirmButton: false,
+              timer: 4000,
+            });
+          });
+      }
+    });
+  };
 
   return (
     <>
@@ -248,7 +243,6 @@ const setRegisterpatient = async()=>{
                     type="email"
                     autoComplete="new-email"
                     value={email}
-                    
                   />
                 </InputGroup>
               </FormGroup>
@@ -298,7 +292,12 @@ const setRegisterpatient = async()=>{
                 </Col>
               </Row>
               <div className="text-center">
-                <Button className="mt-4" color="primary" type="button" onClick={setRegisterpatient}>
+                <Button
+                  className="mt-4"
+                  color="primary"
+                  type="button"
+                  onClick={setRegisterpatient}
+                >
                   Create account
                 </Button>
               </div>
