@@ -140,7 +140,8 @@ const inicioSesion = async(e)=>{
   }); 
 };
 
-const switchShown = () => {
+const switchShown = (e) => {
+  e.preventDefault();
   setShown(!shown);
   if (!shown) {
     setEyes("fa fa-eye-slash");
@@ -231,7 +232,7 @@ const switchShown = () => {
                     onChange= { handleChange }
                   />
 
-                    <InputGroupAddon addonType="prepend" onClick={()=>switchShown()}>
+                    <InputGroupAddon addonType="prepend" onClick={(e)=>switchShown(e)}>
                       <InputGroupText>
                       <i className={eyes} />
                       </InputGroupText>

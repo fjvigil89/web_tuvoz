@@ -109,7 +109,8 @@ const Register = () => {
     });    
   };
 
-const switchShown = () => {
+const switchShown = (e) => {
+  e.preventDefault();
   setShown(!shown);
   if (!shown) {
     setEyes("fa fa-eye-slash");
@@ -119,7 +120,8 @@ const switchShown = () => {
   }
   
 }
-const switchReshown = () => {
+const switchReshown = (e) => {
+  e.preventDefault();
   setReshown(!reshown);
   if (!reshown) {
     setReyes("fa fa-eye-slash");
@@ -309,7 +311,7 @@ const setRegisterpatient = async()=>{
                     onChange={handleChange}
                     minLength="6"
                   />                  
-                  <InputGroupAddon addonType="prepend" onClick={()=>switchShown()}>
+                  <InputGroupAddon addonType="prepend" onClick={(e)=>switchShown(e)}>
                     <InputGroupText>
                     <i className={eyes} />
                     </InputGroupText>
@@ -333,7 +335,7 @@ const setRegisterpatient = async()=>{
                     onChange={handleChange}
                     minLength="6"
                   />  
-                  <InputGroupAddon addonType="prepend" onClick={()=>switchReshown()}>
+                  <InputGroupAddon addonType="prepend" onClick={(e)=>switchReshown(e)}>
                       <InputGroupText>
                         <i className={reyes} />
                       </InputGroupText>
