@@ -34,123 +34,121 @@ import {
 } from "reactstrap";
 
 import { useEffect, useState } from "react";
-import useBaseURL from '../../Hooks/useBaseURL';
-import Cookies from 'universal-cookie';
-import axios from 'axios';
-import Swal from 'sweetalert2';
+import useBaseURL from "../../Hooks/useBaseURL";
+import Cookies from "universal-cookie";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const cookie = new Cookies();
 //Funcion Base para la paguina del Login
 const Login = () => {
-
-  
   //uso del Hooks para la url de la API
-  const baseURL= useBaseURL(null);
+  const baseURL = useBaseURL(null);
 
   //hoocks para el uso de las credenciales
   const [shown, setShown] = React.useState(false);
-  const [eyes, setEyes] = React.useState('fa fa-eye');
+  const [eyes, setEyes] = React.useState("fa fa-eye");
 
-  
   const [credenciales, setCredenciales] = useState({
-  email: '',
-  password: ''
-})
+    email: "",
+    password: "",
+  });
 
-// Similar a componentDidMount y componentDidUpdate:
-useEffect(() => {    
-  if(cookie.get('token')){
-    if (cookie.get('role') === 'Specialist' || cookie.get('role') === 'Admin' ) {
-      window.location.href = "/admin/index";
-    }    
-    if (cookie.get('role') === 'Guest') {
-      window.location.href = "/patient/index";      
+  // Similar a componentDidMount y componentDidUpdate:
+  useEffect(() => {
+    if (cookie.get("token")) {
+      if (
+        cookie.get("role") === "Specialist" ||
+        cookie.get("role") === "Admin"
+      ) {
+        window.location.href = "/admin/index";
+      }
+      if (cookie.get("role") === "Guest") {
+        window.location.href = "/patient/index";
+      }
     }
-    
-  } 
-  
-}, []);
+  }, []);
 
-
-//Captura los valores del formulario
-const handleChange = async e =>{  
-  await setCredenciales({        
-    form:{
-      ...credenciales.form,
-      [e.target.name]: e.target.value
-    }
-  
-  });  
-}
-
-//metodo Sincronico para el consumo del login en la api
-const inicioSesion = async(e)=>{  
-  e.preventDefault();  
-  await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
-    // Login...
-    axios.post(baseURL+'api/login', {      
-        email: credenciales.form.email, 
-        password: credenciales.form.password 
+  //Captura los valores del formulario
+  const handleChange = async (e) => {
+    await setCredenciales({
+      form: {
+        ...credenciales.form,
+        [e.target.name]: e.target.value,
       },
-      {
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',        
-          "Access-Control-Allow-Origin": "*",        
-        },
-      })
-    .then(response =>{             
-      return response;
-    })
-    .then(response=>{     
-      if (response.statusText === 'OK') { 
+    });
+  };
+
+  //metodo Sincronico para el consumo del login en la api
+  const inicioSesion = async (e) => {
+    e.preventDefault();
+    await axios.get(baseURL + "sanctum/csrf-cookie").then(() => {
+      // Login...
+      axios
+        .post(
+          baseURL + "api/login",
+          {
+            email: credenciales.form.email,
+            password: credenciales.form.password,
+            isWeb: true,
+          },
+          {
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+              "Access-Control-Allow-Origin": "*",
+            },
+          }
+        )
+        .then((response) => {
+          return response;
+        })
+        .then((response) => {
+          console.log(response);
+          if (response.statusText === "OK") {
             let data = response.data.data;
             let token = response.data.access_token;
-            cookie.set('token', token, {path: '/', maxAge: '10800'}); 
-            cookie.set('id', data.id, {path: '/', maxAge: '10800'});
-            cookie.set('email', data.email, {path: '/', maxAge: '10800'});
-            cookie.set('name', data.name, {path: '/', maxAge: '10800'}); 
-            cookie.set('role', data.role, {path: '/', maxAge: '10800'}); 
-            cookie.set('foto', data.foto, {path: '/', maxAge: '10800'});
-            
-            if (data.role === 'Specialist' && data.status) {
+            cookie.set("token", token, { path: "/", maxAge: "10800" });
+            cookie.set("id", data.id, { path: "/", maxAge: "10800" });
+            cookie.set("email", data.email, { path: "/", maxAge: "10800" });
+            cookie.set("name", data.name, { path: "/", maxAge: "10800" });
+            cookie.set("role", data.role, { path: "/", maxAge: "10800" });
+            cookie.set("foto", data.foto, { path: "/", maxAge: "10800" });
+
+            if (data.role === "Specialist" && data.status) {
               window.location.href = "/admin/index";
             }
-            if (data.role === 'Guest' && data.status) {
-              window.location.href = "/patient/index";      
+            if (data.role === "Guest" && data.status) {
+              window.location.href = "/patient/index";
             }
-            if (data.role === 'Admin' && data.status) {
+            if (data.role === "Admin" && data.status) {
               window.location.href = "/admin/index";
             }
+          }
+        })
+        .catch(() => {
+          Swal.fire({
+            title: "Oops!!",
+            text: "Credentials went wrong!",
+            icon: "error",
+            footer: '<span style="color: red">server with error!<span/>',
+            toast: true,
+            position: "top-right",
+            showConfirmButton: false,
+            timer: 4000,
+          });
+        });
+    });
+  };
 
-            
-      }
-    })
-    .catch(() => {         
-      Swal.fire({
-        title: 'Oops!!',
-        text: "Credentials went wrong!",
-        icon: "error",
-        footer: '<span style="color: red">server with error!<span/>',        
-        toast: true,
-        position: "top-right",        
-        showConfirmButton: false,
-        timer: 4000,
-      }) 
-    })
-  }); 
-};
-
-const switchShown = (e) => {
-  e.preventDefault();
-  setShown(!shown);
-  if (!shown) {
-    setEyes("fa fa-eye-slash");
-  }
-  else{
-    setEyes("fa fa-eye");
-  }
-  
-}
+  const switchShown = (e) => {
+    e.preventDefault();
+    setShown(!shown);
+    if (!shown) {
+      setEyes("fa fa-eye-slash");
+    } else {
+      setEyes("fa fa-eye");
+    }
+  };
   return (
     <>
       <Col lg="5" md="7">
@@ -200,7 +198,7 @@ const switchShown = (e) => {
             <div className="text-center text-muted mb-4">
               <small>Or sign in with credentials</small>
             </div>
-            <Form role="form" onSubmit={ inicioSesion }>
+            <Form role="form" onSubmit={inicioSesion}>
               <FormGroup className="mb-3">
                 <InputGroup className="input-group-alternative">
                   <InputGroupAddon addonType="prepend">
@@ -211,13 +209,13 @@ const switchShown = (e) => {
                   <Input
                     placeholder="Email"
                     type="email"
-                    autoComplete="new-email" 
-                    name = 'email'
-                    onChange= { handleChange }
+                    autoComplete="new-email"
+                    name="email"
+                    onChange={handleChange}
                   />
                 </InputGroup>
               </FormGroup>
-              <FormGroup>              
+              <FormGroup>
                 <InputGroup className="input-group-alternative">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText>
@@ -226,17 +224,20 @@ const switchShown = (e) => {
                   </InputGroupAddon>
                   <Input
                     placeholder="Password"
-                    type={shown ? 'text' : 'password'}
+                    type={shown ? "text" : "password"}
                     autoComplete="new-password"
-                    name='password'
-                    onChange= { handleChange }
+                    name="password"
+                    onChange={handleChange}
                   />
 
-                    <InputGroupAddon addonType="prepend" onClick={(e)=>switchShown(e)}>
-                      <InputGroupText>
+                  <InputGroupAddon
+                    addonType="prepend"
+                    onClick={(e) => switchShown(e)}
+                  >
+                    <InputGroupText>
                       <i className={eyes} />
-                      </InputGroupText>
-                    </InputGroupAddon>
+                    </InputGroupText>
+                  </InputGroupAddon>
                 </InputGroup>
               </FormGroup>
               <div className="custom-control custom-control-alternative custom-checkbox">
@@ -253,7 +254,7 @@ const switchShown = (e) => {
                 </label>
               </div>
               <div className="text-center">
-                <Button className="my-4" color="primary" type="submit" >
+                <Button className="my-4" color="primary" type="submit">
                   Sign in
                 </Button>
               </div>
@@ -270,7 +271,7 @@ const switchShown = (e) => {
               <small>Forgot password?</small>
             </a>
           </Col>
-         {/* <Col className="text-right" xs="6">
+          {/* <Col className="text-right" xs="6">
             <a
               className="text-light"
               href="#pablo"
