@@ -48,7 +48,10 @@ const Login = () => {
   const baseURL= useBaseURL(null);
 
   //hoocks para el uso de las credenciales
+  const [shown, setShown] = React.useState(false);
+  const [eyes, setEyes] = React.useState('fa fa-eye');
 
+  
   const [credenciales, setCredenciales] = useState({
   email: '',
   password: ''
@@ -137,7 +140,16 @@ const inicioSesion = async(e)=>{
   }); 
 };
 
-
+const switchShown = () => {
+  setShown(!shown);
+  if (!shown) {
+    setEyes("fa fa-eye-slash");
+  }
+  else{
+    setEyes("fa fa-eye");
+  }
+  
+}
   return (
     <>
       <Col lg="5" md="7">
@@ -213,11 +225,17 @@ const inicioSesion = async(e)=>{
                   </InputGroupAddon>
                   <Input
                     placeholder="Password"
-                    type="password"
+                    type={shown ? 'text' : 'password'}
                     autoComplete="new-password"
                     name='password'
                     onChange= { handleChange }
                   />
+
+                    <InputGroupAddon addonType="prepend" onClick={()=>switchShown()}>
+                      <InputGroupText>
+                      <i className={eyes} />
+                      </InputGroupText>
+                    </InputGroupAddon>
                 </InputGroup>
               </FormGroup>
               <div className="custom-control custom-control-alternative custom-checkbox">
