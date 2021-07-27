@@ -86,11 +86,17 @@ const Register = () => {
 
   //hoocks para el uso de las credenciales
   const { email }= useParams();
+  const [shown, setShown] = React.useState(false);
+  const [reshown, setReshown] = React.useState(false);
+
+  const [eyes, setEyes] = React.useState('fa fa-eye');
+  const [reyes, setReyes] = React.useState('fa fa-eye');
 
   const [register, setRegister] = useState({
     name: '',
     email: email,
-    password: ''
+    password: '',
+    repassword: ''
   });
 
   //Captura los valores del formulario
@@ -100,70 +106,106 @@ const Register = () => {
         ...register.form,
         [e.target.name]: e.target.value
       }
-
     });    
   };
 
+const switchShown = () => {
+  setShown(!shown);
+  if (!shown) {
+    setEyes("fa fa-eye-slash");
+  }
+  else{
+    setEyes("fa fa-eye");
+  }
   
+}
+const switchReshown = () => {
+  setReshown(!reshown);
+  if (!reshown) {
+    setReyes("fa fa-eye-slash");
+  }
+  else{
+    setReyes("fa fa-eye");
+  }
+}
+
 //metodo Sincronico para el consumo del login en la api
-const setRegisterpatient = async()=>{  
+const setRegisterpatient = async()=>{
+
   
+    
   await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
     register.email    = email;
     register.name     = (register.form !== undefined) ? register.form.name : register.name;
     register.password = (register.form !== undefined) ? register.form.password : register.password;
-   
-    if (validateFormRegister(register.name, register.password)) { 
-      // Login...
-      console.log(register);
-      axios.post(baseURL+'api/register', {      
-          email: email, 
-          name: register.form.name,
-          password: register.form.password 
-        },
-        {
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8',        
-            "Access-Control-Allow-Origin": "*",        
+    register.repassword = (register.form !== undefined) ? register.form.repassword : register.repassword;
+    
+    if(register.form.password === register.form.repassword){
+      if (validateFormRegister(register.name, register.password)) { 
+        // Login...
+        //console.log(register);
+        axios.post(baseURL+'api/register', {      
+            email: email, 
+            name: register.form.name,
+            password: register.form.password 
           },
+          {
+            headers: {
+              'Content-type': 'application/json; charset=UTF-8',        
+              "Access-Control-Allow-Origin": "*",        
+            },
+          })
+        .then(response =>{             
+          return response;       
         })
-      .then(response =>{             
-        return response;       
-      })
-      .then(response=>{     
-        
-        if (response.status === 200) { 
-              let data = response.data.data;
-              let token = response.data.access_token;
-              cookie.set('token', token, {path: '/', maxAge: '10800'}); 
-              cookie.set('id', data.id, {path: '/', maxAge: '10800'});
-              cookie.set('email', data.email, {path: '/', maxAge: '10800'});
-              cookie.set('name', data.name, {path: '/', maxAge: '10800'}); 
-              cookie.set('role', data.role, {path: '/', maxAge: '10800'}); 
-              
-              if (data.role === 'Specialist' && data.status) {
-                window.location.href = "/admin/index";
-              }
-              if (data.role === 'Guest' && data.status) {
-                window.location.href = "/patient/index";      
-              }
-              
-        }
-      })
-      .catch(() => {
+        .then(response=>{     
           
-        Swal.fire({
-          title: 'Oops!!',
-          text: "Credentials went wrong!",
-          icon: "error",
-          footer: '<span style="color: red">server with error!<span/>',        
-          toast: true,
-          position: "top-right",        
-          showConfirmButton: false,
-          timer: 4000,
-        }) 
-      })
+          if (response.status === 200) { 
+                let data = response.data.data;
+                let token = response.data.access_token;
+                cookie.set('token', token, {path: '/', maxAge: '10800'}); 
+                cookie.set('id', data.id, {path: '/', maxAge: '10800'});
+                cookie.set('email', data.email, {path: '/', maxAge: '10800'});
+                cookie.set('name', data.name, {path: '/', maxAge: '10800'}); 
+                cookie.set('role', data.role, {path: '/', maxAge: '10800'}); 
+                
+                if (data.role === 'Specialist' && data.status) {
+                  window.location.href = "/admin/index";
+                }
+                if (data.role === 'Guest' && data.status) {
+                  window.location.href = "/patient/index";      
+                }
+                
+          }
+        })
+        .catch(() => {
+            
+          Swal.fire({
+            title: 'Oops!!',
+            text: "Las Credenciales están mal!",
+            icon: "error",
+            footer: '<span style="color: red">server with error!<span/>',        
+            toast: true,
+            position: "top-right",        
+            showConfirmButton: false,
+            timer: 4000,
+          }) 
+        })
+      }            
     }
+    else{
+      Swal.fire({
+        title: 'Oops!!',
+        text: "Las Credenciales no Coinciden!",
+        icon: "error",
+        footer: '<span style="color: red">server with error!<span/>',        
+        toast: true,
+        position: "top-right",        
+        showConfirmButton: false,
+        timer: 4000,
+      }) 
+    }
+    
 
   }); 
 };
@@ -262,12 +304,42 @@ const setRegisterpatient = async()=>{
                   <Input
                     name="password"
                     placeholder="Password"
-                    type="password"
+                    type={shown ? 'text' : 'password'}
                     autoComplete="new-password"
                     onChange={handleChange}
                     minLength="6"
-                  />
+                  />                  
+                  <InputGroupAddon addonType="prepend" onClick={()=>switchShown()}>
+                    <InputGroupText>
+                    <i className={eyes} />
+                    </InputGroupText>
+                  </InputGroupAddon>
                 </InputGroup>
+                
+    
+              </FormGroup>
+              <FormGroup>
+                <InputGroup className="input-group-alternative">
+                  <InputGroupAddon addonType="prepend">
+                    <InputGroupText>
+                      <i className="ni ni-lock-circle-open" />
+                    </InputGroupText>
+                  </InputGroupAddon>
+                  <Input
+                    name="repassword"
+                    placeholder="Password"
+                    type={reshown ? 'text' : 'password'}
+                    autoComplete="repite-password"
+                    onChange={handleChange}
+                    minLength="6"
+                  />  
+                  <InputGroupAddon addonType="prepend" onClick={()=>switchReshown()}>
+                      <InputGroupText>
+                        <i className={reyes} />
+                      </InputGroupText>
+                    </InputGroupAddon>
+                    
+                  </InputGroup>
               </FormGroup>
               <div className="text-muted font-italic">
                 <small>
