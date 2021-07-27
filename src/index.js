@@ -31,8 +31,8 @@ ReactDOM.render(
   <BrowserRouter>
     <Switch>
       <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
-      <Route path="/auth" render={(props) => <AuthLayout {...props} />} />      
-      <Route path="/patient" render={(props) => <PatientLayout {...props} />} /> 
+      <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
+      <Route path="/patient" render={(props) => <PatientLayout {...props} />} />
       <Redirect from="/" to="/auth/login" />
     </Switch>
   </BrowserRouter>,

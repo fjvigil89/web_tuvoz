@@ -32,186 +32,178 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import useBaseURL from '../../Hooks/useBaseURL';
-import Cookies from 'universal-cookie';
-import axios from 'axios';
-import Swal from 'sweetalert2';
+import useBaseURL from "../../Hooks/useBaseURL";
+import Cookies from "universal-cookie";
+import axios from "axios";
+import Swal from "sweetalert2";
 import { useParams } from "react-router";
-
-
 
 const cookie = new Cookies();
 
-function validateFormRegister(name, passwd){
-      
-    if (name === undefined ||  name.length === 0) {
-      Swal.fire({
-        title: "Oops!!",
-        text: "El campo nombre no puede estar en blanco!",
-        icon: "error",
-        footer: '<span style="color: red">server with error!<span/>',
-        toast: true,
-        position: "top-right",
-        showConfirmButton: false,
-        timer: 4000,
-      });
-      return false;
-    }
+function validateFormRegister(name, passwd) {
+  if (name === undefined || name.length === 0) {
+    Swal.fire({
+      title: "Oops!!",
+      text: "El campo nombre no puede estar en blanco!",
+      icon: "error",
+      footer: '<span style="color: red">server with error!<span/>',
+      toast: true,
+      position: "top-right",
+      showConfirmButton: false,
+      timer: 4000,
+    });
+    return false;
+  }
 
-    if (passwd === undefined || passwd.length < 6) {
-      Swal.fire({
-        title: "Oops!!",
-        text: "El campo password tiene que tener más de 6 caracteres!",
-        icon: "error",
-        footer: '<span style="color: red">server with error!<span/>',
-        toast: true,
-        position: "top-right",
-        showConfirmButton: false,
-        timer: 4000,
-      });
+  if (passwd === undefined || passwd.length < 6) {
+    Swal.fire({
+      title: "Oops!!",
+      text: "El campo password tiene que tener más de 6 caracteres!",
+      icon: "error",
+      footer: '<span style="color: red">server with error!<span/>',
+      toast: true,
+      position: "top-right",
+      showConfirmButton: false,
+      timer: 4000,
+    });
 
-      return false;
-    }
-  
+    return false;
+  }
 
-  
-  return true; 
-};
-
+  return true;
+}
 
 const Register = () => {
-
   //uso del Hooks para la url de la API
   const baseURL = useBaseURL(null);
 
   //hoocks para el uso de las credenciales
-  const { email }= useParams();
+  const { email } = useParams();
   const [shown, setShown] = React.useState(false);
   const [reshown, setReshown] = React.useState(false);
 
-  const [eyes, setEyes] = React.useState('fa fa-eye');
-  const [reyes, setReyes] = React.useState('fa fa-eye');
+  const [eyes, setEyes] = React.useState("fa fa-eye");
+  const [reyes, setReyes] = React.useState("fa fa-eye");
 
   const [register, setRegister] = useState({
-    name: '',
+    name: "",
     email: email,
-    password: '',
-    repassword: ''
+
+    password: "",
+    repassword: "",
   });
 
   //Captura los valores del formulario
-  const handleChange = async e => {
+  const handleChange = async (e) => {
     await setRegister({
       form: {
         ...register.form,
-        [e.target.name]: e.target.value
-      }
-    });    
+        [e.target.name]: e.target.value,
+      },
+    });
   };
 
-const switchShown = (e) => {
-  e.preventDefault();
-  setShown(!shown);
-  if (!shown) {
-    setEyes("fa fa-eye-slash");
-  }
-  else{
-    setEyes("fa fa-eye");
-  }
-  
-}
-const switchReshown = (e) => {
-  e.preventDefault();
-  setReshown(!reshown);
-  if (!reshown) {
-    setReyes("fa fa-eye-slash");
-  }
-  else{
-    setReyes("fa fa-eye");
-  }
-}
+  const switchShown = (e) => {
+    e.preventDefault();
+    setShown(!shown);
+    if (!shown) {
+      setEyes("fa fa-eye-slash");
+    } else {
+      setEyes("fa fa-eye");
+    }
+  };
+  const switchReshown = (e) => {
+    e.preventDefault();
+    setReshown(!reshown);
+    if (!reshown) {
+      setReyes("fa fa-eye-slash");
+    } else {
+      setReyes("fa fa-eye");
+    }
+  };
 
-//metodo Sincronico para el consumo del login en la api
-const setRegisterpatient = async()=>{
+  //metodo Sincronico para el consumo del login en la api
+  const setRegisterpatient = async () => {
+    await axios.get(baseURL + "sanctum/csrf-cookie").then(() => {
+      register.email = email;
+      register.name =
+        register.form !== undefined ? register.form.name : register.name;
+      register.password =
+        register.form !== undefined
+          ? register.form.password
+          : register.password;
+      register.repassword =
+        register.form !== undefined
+          ? register.form.repassword
+          : register.repassword;
 
-  
-    
-  await axios.get(baseURL+'sanctum/csrf-cookie').then(() => {
-    register.email    = email;
-    register.name     = (register.form !== undefined) ? register.form.name : register.name;
-    register.password = (register.form !== undefined) ? register.form.password : register.password;
-    register.repassword = (register.form !== undefined) ? register.form.repassword : register.repassword;
-    
-    if(register.form.password === register.form.repassword){
-      if (validateFormRegister(register.name, register.password)) { 
-        // Login...
-        //console.log(register);
-        axios.post(baseURL+'api/register', {      
-            email: email, 
-            name: register.form.name,
-            password: register.form.password 
-          },
-          {
-            headers: {
-              'Content-type': 'application/json; charset=UTF-8',        
-              "Access-Control-Allow-Origin": "*",        
-            },
-          })
-        .then(response =>{             
-          return response;       
-        })
-        .then(response=>{     
-          
-          if (response.status === 200) { 
+      if (register.form.password === register.form.repassword) {
+        if (validateFormRegister(register.name, register.password)) {
+          // Login...
+          //console.log(register);
+          axios
+            .post(
+              baseURL + "api/register",
+              {
+                email: email,
+                name: register.form.name,
+                password: register.form.password,
+              },
+              {
+                headers: {
+                  "Content-type": "application/json; charset=UTF-8",
+                  "Access-Control-Allow-Origin": "*",
+                },
+              }
+            )
+            .then((response) => {
+              return response;
+            })
+            .then((response) => {
+              if (response.status === 200) {
                 let data = response.data.data;
                 let token = response.data.access_token;
-                cookie.set('token', token, {path: '/', maxAge: '10800'}); 
-                cookie.set('id', data.id, {path: '/', maxAge: '10800'});
-                cookie.set('email', data.email, {path: '/', maxAge: '10800'});
-                cookie.set('name', data.name, {path: '/', maxAge: '10800'}); 
-                cookie.set('role', data.role, {path: '/', maxAge: '10800'}); 
-                
-                if (data.role === 'Specialist' && data.status) {
+                cookie.set("token", token, { path: "/", maxAge: "10800" });
+                cookie.set("id", data.id, { path: "/", maxAge: "10800" });
+                cookie.set("email", data.email, { path: "/", maxAge: "10800" });
+                cookie.set("name", data.name, { path: "/", maxAge: "10800" });
+                cookie.set("role", data.role, { path: "/", maxAge: "10800" });
+
+                if (data.role === "Specialist" && data.status) {
                   window.location.href = "/admin/index";
                 }
-                if (data.role === 'Guest' && data.status) {
-                  window.location.href = "/patient/index";      
+                if (data.role === "Guest" && data.status) {
+                  window.location.href = "/patient/index";
                 }
-                
-          }
-        })
-        .catch(() => {
-            
-          Swal.fire({
-            title: 'Oops!!',
-            text: "Las Credenciales están mal!",
-            icon: "error",
-            footer: '<span style="color: red">server with error!<span/>',        
-            toast: true,
-            position: "top-right",        
-            showConfirmButton: false,
-            timer: 4000,
-          }) 
-        })
-      }            
-    }
-    else{
-      Swal.fire({
-        title: 'Oops!!',
-        text: "Las Credenciales no Coinciden!",
-        icon: "error",
-        footer: '<span style="color: red">server with error!<span/>',        
-        toast: true,
-        position: "top-right",        
-        showConfirmButton: false,
-        timer: 4000,
-      }) 
-    }
-    
-
-  }); 
-};
-
+              }
+            })
+            .catch(() => {
+              Swal.fire({
+                title: "Oops!!",
+                text: "Las Credenciales están mal!",
+                icon: "error",
+                footer: '<span style="color: red">server with error!<span/>',
+                toast: true,
+                position: "top-right",
+                showConfirmButton: false,
+                timer: 4000,
+              });
+            });
+        }
+      } else {
+        Swal.fire({
+          title: "Oops!!",
+          text: "Las Credenciales no Coinciden!",
+          icon: "error",
+          footer: '<span style="color: red">server with error!<span/>',
+          toast: true,
+          position: "top-right",
+          showConfirmButton: false,
+          timer: 4000,
+        });
+      }
+    });
+  };
 
   return (
     <>
@@ -292,7 +284,6 @@ const setRegisterpatient = async()=>{
                     type="email"
                     autoComplete="new-email"
                     value={email}
-                    
                   />
                 </InputGroup>
               </FormGroup>
@@ -306,19 +297,20 @@ const setRegisterpatient = async()=>{
                   <Input
                     name="password"
                     placeholder="Password"
-                    type={shown ? 'text' : 'password'}
+                    type={shown ? "text" : "password"}
                     autoComplete="new-password"
                     onChange={handleChange}
                     minLength="6"
-                  />                  
-                  <InputGroupAddon addonType="prepend" onClick={(e)=>switchShown(e)}>
+                  />
+                  <InputGroupAddon
+                    addonType="prepend"
+                    onClick={(e) => switchShown(e)}
+                  >
                     <InputGroupText>
-                    <i className={eyes} />
+                      <i className={eyes} />
                     </InputGroupText>
                   </InputGroupAddon>
                 </InputGroup>
-                
-    
               </FormGroup>
               <FormGroup>
                 <InputGroup className="input-group-alternative">
@@ -330,18 +322,20 @@ const setRegisterpatient = async()=>{
                   <Input
                     name="repassword"
                     placeholder="Password"
-                    type={reshown ? 'text' : 'password'}
+                    type={reshown ? "text" : "password"}
                     autoComplete="repite-password"
                     onChange={handleChange}
                     minLength="6"
-                  />  
-                  <InputGroupAddon addonType="prepend" onClick={(e)=>switchReshown(e)}>
-                      <InputGroupText>
-                        <i className={reyes} />
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    
-                  </InputGroup>
+                  />
+                  <InputGroupAddon
+                    addonType="prepend"
+                    onClick={(e) => switchReshown(e)}
+                  >
+                    <InputGroupText>
+                      <i className={reyes} />
+                    </InputGroupText>
+                  </InputGroupAddon>
+                </InputGroup>
               </FormGroup>
               <div className="text-muted font-italic">
                 <small>
@@ -372,7 +366,12 @@ const setRegisterpatient = async()=>{
                 </Col>
               </Row>
               <div className="text-center">
-                <Button className="mt-4" color="primary" type="button" onClick={setRegisterpatient}>
+                <Button
+                  className="mt-4"
+                  color="primary"
+                  type="button"
+                  onClick={setRegisterpatient}
+                >
                   Create account
                 </Button>
               </div>
