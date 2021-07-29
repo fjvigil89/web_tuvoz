@@ -38,7 +38,7 @@ const SpecialistRecordTableList = () => {
       axios
         .get(baseURL + "api/getRecordByUser")
         .then((response) => {
-          //console.log(response.data.data);
+          console.log(response.data.data);
           setRecord(response.data.data);
         })
         .catch((err) => {
@@ -84,7 +84,7 @@ const SpecialistRecordTableList = () => {
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
-                    <th scope="col">Usuario</th>
+                    {/* <th scope="col">Usuario</th> */}
                     <th scope="col">Identificador</th>
                     <th scope="col">Url</th>
                     <th scope="col">Frases</th>
@@ -94,13 +94,13 @@ const SpecialistRecordTableList = () => {
                   {record.map((item) => (
                     <>
                       <tr key={item.id}>
-                        <th scope="row">
+                        {/*  <th scope="row">
                           <Media className="align-items-center">
                             <span className="mb-0 text-sm">
                               {item.phrase_id.treatment_id.patient_id.name}
                             </span>
                           </Media>
-                        </th>
+                        </th> */}
                         <th>{item.path.split("/")[4].split("-")[0]}</th>
                         <td>
                           <audio src={item.path} controls />
