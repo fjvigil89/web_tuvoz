@@ -37,6 +37,7 @@ import Cookies from "universal-cookie";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useParams } from "react-router";
+import RegisterPolicy from "./RegisterPolicyModal";
 
 const cookie = new Cookies();
 
@@ -92,6 +93,12 @@ const Register = () => {
     password: "",
     repassword: "",
   });
+
+  const [checkBox, setCheckBox]= useState(false);
+  const handlePolicy = async (e) =>{
+    //e.preventDefault();
+    setCheckBox(!checkBox);    
+  }
 
   //Captura los valores del formulario
   const handleChange = async (e) => {
@@ -350,23 +357,36 @@ const Register = () => {
                       className="custom-control-input"
                       id="customCheckRegister"
                       type="checkbox"
+                      onClick={handlePolicy}
                     />
                     <label
                       className="custom-control-label"
                       htmlFor="customCheckRegister"
                     >
+                      
                       <span className="text-muted">
-                        I agree with the{" "}
-                        <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                          Privacy Policy
-                        </a>
+                        <RegisterPolicy
+                          buttonLabel="Privacy Policy"
+                        >
+                        </RegisterPolicy>
+                        
                       </span>
                     </label>
                   </div>
                 </Col>
               </Row>
               <div className="text-center">
+                {!checkBox ? 
                 <Button
+                  className="mt-4"
+                  color="primary"
+                  type="button"                                    
+                  disabled
+                >
+                  Create account
+                </Button>
+                 : 
+                 <Button
                   className="mt-4"
                   color="primary"
                   type="button"
@@ -374,6 +394,7 @@ const Register = () => {
                 >
                   Create account
                 </Button>
+                 }
               </div>
             </Form>
           </CardBody>

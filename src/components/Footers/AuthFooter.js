@@ -37,7 +37,7 @@ const Login = () => {
               <Nav className="nav-footer justify-content-center justify-content-xl-end">
                 <NavItem>
                   <NavLink
-                    href="https://vivolab.unizar.es/software.html"
+                    href="https://vivolab.i3a.es/"
                     target="_blank"
                   >
                     Web ViVoLab
@@ -45,7 +45,7 @@ const Login = () => {
                 </NavItem>
                 <NavItem>
                   <NavLink
-                    href="https://www.creative-tim.com/presentation?ref=adr-auth-footer"
+                    href="https://vivolab.i3a.es/team/"
                     target="_blank"
                   >
                     About Us
@@ -53,7 +53,7 @@ const Login = () => {
                 </NavItem>
                 <NavItem>
                   <NavLink
-                    href="http://blog.creative-tim.com?ref=adr-auth-footer"
+                    href="https://vivolab.i3a.es/news/"
                     target="_blank"
                   >
                     Blog
@@ -61,10 +61,10 @@ const Login = () => {
                 </NavItem>
                 <NavItem>
                   <NavLink
-                    href="https://github.com/creativetimofficial/argon-dashboard/blob/master/LICENSE.md?ref=adr-auth-footer"
+                    href="https://vivolab.i3a.es/contact/"
                     target="_blank"
                   >
-                    MIT License
+                    Contact
                   </NavLink>
                 </NavItem>
               </Nav>
