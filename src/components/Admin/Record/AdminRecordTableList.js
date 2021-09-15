@@ -26,20 +26,19 @@ const cookie = new Cookies();
 const AdminRecordTableList = () => {
   //uso del Hooks para la url de la API
   const baseURL = useBaseURL(null);
-  
+
   //gusrdar los tratamientos del Usuario Logueado
   const [record, setRecord] = useState([]);
-
-  
 
   //metodo Sincronico para el consumo del login en la api
   const getAllRecord = async () => {
     axios.defaults.headers.Authorization = "Bearer " + cookie.get("token");
     await axios.get(baseURL + "sanctum/csrf-cookie").then(() => {
       // get Tratamientos
-      axios.get(baseURL + "api/getAllRecord")
+      axios
+        .get(baseURL + "api/getAllRecord")
         .then((response) => {
-          //console.log(response.data.data);
+          console.log(response.data.data);
           setRecord(response.data.data);
         })
         .catch(() => {
@@ -57,7 +56,7 @@ const AdminRecordTableList = () => {
     });
   };
 
-  const setDeleteRecordId = async (recordID) =>{
+  const setDeleteRecordId = async (recordID) => {
     axios.defaults.headers.Authorization = "Bearer " + cookie.get("token");
     await axios.get(baseURL + "sanctum/csrf-cookie").then(() => {
       // get Tratamientos
@@ -71,8 +70,9 @@ const AdminRecordTableList = () => {
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          axios.delete(baseURL + "api/record/" + recordID)
-            .then(response => {
+          axios
+            .delete(baseURL + "api/record/" + recordID)
+            .then((response) => {
               //console.log(response);
               getAllRecord();
 
@@ -94,10 +94,9 @@ const AdminRecordTableList = () => {
       });
     });
   };
- 
 
   useEffect(() => {
-    getAllRecord()
+    getAllRecord();
 
     if (!cookie.get("token")) {
       window.location.href = "/auth/login";
@@ -110,28 +109,27 @@ const AdminRecordTableList = () => {
         {/* Table */}
         <Row>
           <div className="col">
-            <Card className="shadow">              
-                <CardHeader className="border-0">
-                  <Media className="align-items-center">
-                  
-                    <Media>
-                      <span className="mb-0 text-sm">
-                        <h3 className="mb-0">Grabaciones</h3>
-                      </span>
-                    </Media>
+            <Card className="shadow">
+              <CardHeader className="border-0">
+                <Media className="align-items-center">
+                  <Media>
+                    <span className="mb-0 text-sm">
+                      <h3 className="mb-0">Grabaciones</h3>
+                    </span>
                   </Media>
-                </CardHeader>
-              
+                </Media>
+              </CardHeader>
 
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
                     <th scope="col">Usuario</th>
                     <th scope="col">Identificador</th>
-                    <th scope="col">Url</th>                    
+                    <th scope="col">Url</th>
                     <th scope="col">Frases</th>
+                    <th scope="col">Movil</th>
+                    <th scope="col">Modelo Movil</th>
                     <th className=" text-right">Acción</th>
-                    
                   </tr>
                 </thead>
                 <tbody>
@@ -139,21 +137,20 @@ const AdminRecordTableList = () => {
                     <tr key={item.id}>
                       <th scope="row">
                         <Media className="align-items-center">
-                          <span className="mb-0 text-sm">{item.phrase_id === null ? "Demo" : item.name}</span>
+                          <span className="mb-0 text-sm">
+                            {item.phrase_id === null ? "Demo" : item.name}
+                          </span>
                         </Media>
                       </th>
-                      <th>
-                        { item.path.split('/')[4].split('-')[0] }
-                      </th>
-                      <td>                        
-                          
-                        <audio controls="controls" >
-                            <source src={item.path} type="audio/mp4" />
+                      <th>{item.path.split("/")[4].split("-")[0]}</th>
+                      <td>
+                        <audio controls="controls">
+                          <source src={item.path} type="audio/mp4" />
                         </audio>
-                      </td>              
+                      </td>
                       <td>
                         <div className="avatar-group">
-                           {/*item.specialist_id.map((user) => (
+                          {/*item.specialist_id.map((user) => (
                                 <>
                                   <Link
                                     className="avatar avatar-sm"
@@ -178,17 +175,23 @@ const AdminRecordTableList = () => {
                                 </>
                               ))*/}
 
-                              { item.phrase_id }
-                            
+                          {item.phrase_id}
                         </div>
                       </td>
-                      <td className=" td-actions text-right"> 
-                        <a  href={item.path} target="_blank" rel="noopener noreferrer" download>
+                      <td>{item.devices.brand}</td>
+                      <td>{item.devices.manufacturer}</td>
+                      <td className=" td-actions text-right">
+                        <a
+                          href={item.path}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          download
+                        >
                           <Button
                             className=" btn-icon"
                             color="info"
                             size="sm"
-                            type="button"                            
+                            type="button"
                             id={"download"}
                           >
                             <i className=" ni ni-cloud-download-95 pt-1"></i>
@@ -199,7 +202,7 @@ const AdminRecordTableList = () => {
                               Original
                             </UncontrolledTooltip>
                           </Button>
-                        </a>     
+                        </a>
 
                         <Link to="#">
                           <Button
@@ -207,7 +210,7 @@ const AdminRecordTableList = () => {
                             color="danger"
                             size="sm"
                             type="button"
-                            onClick={(e) => setDeleteRecordId(item.id) }
+                            onClick={(e) => setDeleteRecordId(item.id)}
                             id={"delete"}
                           >
                             <i className=" ni ni-fat-remove pt-1"></i>
