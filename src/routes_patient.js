@@ -16,10 +16,10 @@
 
 */
 
-import Index from "views/Patient/Index.js"
-import Treatments from "views/Patient/Treatments.js"
+import Index from "views/Patient/Index.js";
+import Treatments from "views/Patient/Treatments.js";
 
-var routes_patient = [  
+var routes_patient = [
   {
     path: "/index",
     name: "Dashboard",
@@ -33,6 +33,6 @@ var routes_patient = [
     icon: "ni ni-bullet-list-67 text-red",
     component: Treatments,
     layout: "/patient",
-  }, 
+  },
 ];
 export default routes_patient;

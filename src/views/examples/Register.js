@@ -94,11 +94,11 @@ const Register = () => {
     repassword: "",
   });
 
-  const [checkBox, setCheckBox]= useState(false);
-  const handlePolicy = async (e) =>{
+  const [checkBox, setCheckBox] = useState(false);
+  const handlePolicy = async (e) => {
     //e.preventDefault();
-    setCheckBox(!checkBox);    
-  }
+    setCheckBox(!checkBox);
+  };
 
   //Captura los valores del formulario
   const handleChange = async (e) => {
@@ -167,7 +167,11 @@ const Register = () => {
               return response;
             })
             .then((response) => {
-              if (response.status === 200) {
+              console.log(response);
+              if (
+                response.status === 200 &&
+                response.data.data.role !== "Guest"
+              ) {
                 let data = response.data.data;
                 let token = response.data.access_token;
                 cookie.set("token", token, { path: "/", maxAge: "10800" });
@@ -179,12 +183,15 @@ const Register = () => {
                 if (data.role === "Specialist" && data.status) {
                   window.location.href = "/admin/index";
                 }
+              } else {
+                let data = response.data.data;
                 if (data.role === "Guest" && data.status) {
-                  window.location.href = "/patient/index";
+                  window.location.href = "/auth/guest_register";
                 }
               }
             })
-            .catch(() => {
+            .catch((error) => {
+              console.log(error);
               Swal.fire({
                 title: "Oops!!",
                 text: "Las Credenciales están mal!",
@@ -363,38 +370,33 @@ const Register = () => {
                       className="custom-control-label"
                       htmlFor="customCheckRegister"
                     >
-                      
                       <span className="text-muted">
-                        <RegisterPolicy
-                          buttonLabel="Privacy Policy"
-                        >
-                        </RegisterPolicy>
-                        
+                        <RegisterPolicy buttonLabel="Privacy Policy"></RegisterPolicy>
                       </span>
                     </label>
                   </div>
                 </Col>
               </Row>
               <div className="text-center">
-                {!checkBox ? 
-                <Button
-                  className="mt-4"
-                  color="primary"
-                  type="button"                                    
-                  disabled
-                >
-                  Create account
-                </Button>
-                 : 
-                 <Button
-                  className="mt-4"
-                  color="primary"
-                  type="button"
-                  onClick={setRegisterpatient}
-                >
-                  Create account
-                </Button>
-                 }
+                {!checkBox ? (
+                  <Button
+                    className="mt-4"
+                    color="primary"
+                    type="button"
+                    disabled
+                  >
+                    Create account
+                  </Button>
+                ) : (
+                  <Button
+                    className="mt-4"
+                    color="primary"
+                    type="button"
+                    onClick={setRegisterpatient}
+                  >
+                    Create account
+                  </Button>
+                )}
               </div>
             </Form>
           </CardBody>

@@ -22,17 +22,17 @@ import ListPatient from "components/Patient/ListPatient";
 import Login from "views/examples/Login.js";
 import Profile from "views/examples/Profile.js";
 import Register from "views/examples/Register.js";
-
+import GuestRegister from "views/Patient/GuestRegister.js";
 var routes_hidden = [
   {
     path: "/addtreatment",
-    name: "AddTreatment",    
+    name: "AddTreatment",
     component: AddTreatments,
     layout: "/admin",
-  },  
+  },
   {
     path: "/listPatient/:id/:name",
-    name: "ListPatient",    
+    name: "ListPatient",
     component: ListPatient,
     layout: "/admin",
   },
@@ -49,18 +49,24 @@ var routes_hidden = [
     icon: "ni ni-circle-08 text-pink",
     component: Register,
     layout: "/auth",
-  }, 
+  },
   {
     path: "/login",
-    name: "Login",     
+    name: "Login",
     component: Login,
     layout: "/auth",
   },
   {
     path: "/listPhrase/:id",
-    name: "listPhrase",    
+    name: "listPhrase",
     component: ListPhrase,
     layout: "/patient",
-  },  
+  },
+  {
+    path: "/guest_register",
+    name: "GuestRegister",
+    component: GuestRegister,
+    layout: "/auth",
+  },
 ];
 export default routes_hidden;
