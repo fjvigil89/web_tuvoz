@@ -38,7 +38,7 @@ const AdminRecordTableList = () => {
       axios
         .get(baseURL + "api/getAllRecord")
         .then((response) => {
-          console.log(response.data.data);
+          //console.log(response.data.data);
           setRecord(response.data.data);
         })
         .catch(() => {
