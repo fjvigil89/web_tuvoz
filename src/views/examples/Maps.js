@@ -46,9 +46,6 @@ const MapWrapper = () => {
         .get(baseURL + "api/user")
         .then((response) => {
           setUser(response.data.data);
-          initMap();
-
-          console.log(user);
         })
         .catch((err) => {
           Swal.fire({
@@ -65,7 +62,13 @@ const MapWrapper = () => {
     });
   };
 
-  const initMap = async () => {
+  useEffect(() => {
+    getAllUser();
+
+    if (!cookie.get("token")) {
+      window.location.href = "/auth/login";
+    }
+
     let google = window.google;
     let map = mapRef.current;
 
@@ -175,13 +178,6 @@ const MapWrapper = () => {
         google.maps.event.removeListener(boundsListener);
       }
     );
-  };
-  useEffect(() => {
-    getAllUser();
-
-    if (!cookie.get("token")) {
-      window.location.href = "/auth/login";
-    }
   }, []);
 
   return (
