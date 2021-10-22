@@ -44,7 +44,7 @@ const TablePatientsList = () => {
       // get Tratamientos
       axios.get(baseURL + 'api/getAllpatient')
         .then(response => {
-          //console.log(response.data.data);
+          console.log(response.data.data);
           setListPatients(response.data.data);
         })
         .catch(() => {
