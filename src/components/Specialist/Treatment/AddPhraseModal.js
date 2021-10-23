@@ -1,52 +1,47 @@
 import React, { useState } from "react";
 
 // reactstrap components
-import {     
-    FormGroup,    
-    Input,          
-    Button, 
-    Modal, 
-    ModalBody, 
-    ModalFooter, 
-    Fade,
-    Badge } from "reactstrap";
-import Cookies from 'universal-cookie';
+import {
+  FormGroup,
+  Input,
+  Button,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  Fade,
+  Badge,
+} from "reactstrap";
+import Cookies from "universal-cookie";
 const cookie = new Cookies();
 
-const AddPhraseModal= (props) => {
+const AddPhraseModal = (props) => {
+  const [phrase, setPhrase] = useState({
+    namePhrase: "",
+  });
 
-    const [ phrase, setPhrase ] = useState({
-        namePhrase:''
+  const { buttonLabel } = props;
+
+  const [listPhrase, setlistPhrase] = useState([]);
+
+  const cachePhrase = async () => {
+    const newList = listPhrase.concat(phrase.form);
+    await setlistPhrase(newList);
+    await cookie.set("cachePhrase", newList, { path: "/", maxAge: "10800" });
+
+    document.getElementById("namePhrase").value = "";
+  };
+
+  //Captura los valores del formulario
+  const handlePhraseChange = async (e) => {
+    await setPhrase({
+      form: {
+        ...phrase.form,
+        [e.target.name]: e.target.value,
+      },
     });
-
-    const {
-      buttonLabel,                     
-      } = props;
-
-    const [ listPhrase, setlistPhrase ] = useState([]);
-
-    
-
-    const cachePhrase = async()=>{
-        const newList = listPhrase.concat(phrase.form);
-        await setlistPhrase(newList);
-        await cookie.set('cachePhrase', newList, {path: '/' , maxAge: '10800'});         
-
-      document.getElementById("namePhrase").value="";
-    }
-
-      //Captura los valores del formulario
-      const handlePhraseChange = async e =>{  
-        await setPhrase({
-            form:{
-                ...phrase.form,
-                [e.target.name]: e.target.value
-            }
-        });            
-    }
+  };
 
   const [modalOpen, setModalOpen] = React.useState(false);
-  
 
   return (
     <>
@@ -54,24 +49,21 @@ const AddPhraseModal= (props) => {
         color="primary"
         type="button"
         onClick={() => setModalOpen(!modalOpen)}
-      > 
-      
-        <span>{ buttonLabel }</span>
+      >
+        <span>{buttonLabel}</span>
         <Badge
           className="badge-circle badge-floating border-white"
           color="primary"
           size="md"
         >
-          { listPhrase.length }
+          {listPhrase.length}
         </Badge>
       </Button>
-
-
 
       <Modal toggle={() => setModalOpen(!modalOpen)} isOpen={modalOpen}>
         <div className=" modal-header">
           <h5 className=" modal-title" id="exampleModalLabel">
-            { buttonLabel }
+            {buttonLabel}
           </h5>
           <button
             aria-label="Close"
@@ -83,37 +75,33 @@ const AddPhraseModal= (props) => {
           </button>
         </div>
         <ModalBody>
-            <FormGroup>
-                <label htmlFor="exampleFormControlTextarea1">Phrase
-                    <Badge
-                        className="badge-circle badge-floating border-white"
-                        color="primary"
-                        size="md"
-                        >
-                        { listPhrase.length }
-                    </Badge>                    
-                </label>                
-                <Input
-                className=" form-control-alternative"
-                id="namePhrase"
-                name="namePhrase"
-                placeholder="Phrase"
-                type="text"  
-                maxlength="255"
-                onChange= { handlePhraseChange }              
-                ></Input>
-                 
-                {
-                    listPhrase.map( (item, index) =>(
-                        <Fade tag="h5" className="mt-3" key={index}>
-                            {item.namePhrase}
-                        </Fade>
-                        
-                    ))
-                }
+          <FormGroup>
+            <label htmlFor="exampleFormControlTextarea1">
+              Phrase
+              <Badge
+                className="badge-circle badge-floating border-white"
+                color="primary"
+                size="md"
+              >
+                {listPhrase.length}
+              </Badge>
+            </label>
+            <Input
+              className=" form-control-alternative"
+              id="namePhrase"
+              name="namePhrase"
+              placeholder="Phrase"
+              type="textarea"
+              maxlength="255"
+              onChange={handlePhraseChange}
+            ></Input>
 
-
-            </FormGroup>
+            {listPhrase.map((item, index) => (
+              <Fade tag="h5" className="mt-3" key={index}>
+                {item.namePhrase}
+              </Fade>
+            ))}
+          </FormGroup>
         </ModalBody>
         <ModalFooter>
           <Button
@@ -123,13 +111,13 @@ const AddPhraseModal= (props) => {
           >
             Close
           </Button>
-          <Button color="primary" type="button" onClick= {cachePhrase}>
+          <Button color="primary" type="button" onClick={cachePhrase}>
             Save
           </Button>
         </ModalFooter>
       </Modal>
     </>
   );
-}
+};
 
 export default AddPhraseModal;
