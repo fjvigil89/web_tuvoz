@@ -58,7 +58,7 @@ const AddFrom = () => {
           phrase: cookie.get("cachePhrase"),
         })
         .then((response) => {
-          //console.log(response);
+          console.log(response);
           Swal.fire({
             title: "Woww!!",
             text: response.data.message,

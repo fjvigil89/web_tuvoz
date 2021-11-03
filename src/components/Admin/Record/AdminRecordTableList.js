@@ -70,8 +70,7 @@ const AdminRecordTableList = () => {
         confirmButtonText: "Yes, delete it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          axios
-            .delete(baseURL + "api/record/" + recordID)
+          axios.delete(baseURL + "api/record/" + recordID)
             .then((response) => {
               //console.log(response);
               getAllRecord();
