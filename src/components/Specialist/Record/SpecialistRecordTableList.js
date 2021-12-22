@@ -112,8 +112,8 @@ const SpecialistRecordTableList = () => {
                             {item.phrase_id.phrase}
                           </div>
                         </td>
-                        <td>{/*{item.devices.brand}*/}</td>
-                        <td>{/*{item.devices.manufacturer}*/}</td>
+                        <td>{item.devices.brand}</td>
+                        <td>{item.devices.manufacturer}</td>
                       </tr>
                     </>
                   ))}
