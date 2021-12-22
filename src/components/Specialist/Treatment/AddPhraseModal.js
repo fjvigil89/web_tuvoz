@@ -33,6 +33,8 @@ const AddPhraseModal = (props) => {
 
   //Captura los valores del formulario
   const handlePhraseChange = async (e) => {
+  /*   const { value, selectionEnd } = e.target;
+    console.log(value == "\n"); */
     await setPhrase({
       form: {
         ...phrase.form,
@@ -92,7 +94,7 @@ const AddPhraseModal = (props) => {
               name="namePhrase"
               placeholder="Phrase"
               type="textarea"
-              maxlength="255"
+              maxlength="25500"
               onChange={handlePhraseChange}
             ></Input>
 

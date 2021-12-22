@@ -77,6 +77,7 @@ const ListPatientTable = (props) => {
         idPatient: idPatient
       })
         .then(() => {
+          //console.log(response);
           Patients();
         })
         .catch(err => {
