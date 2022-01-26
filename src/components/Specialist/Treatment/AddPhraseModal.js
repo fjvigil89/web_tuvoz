@@ -22,6 +22,7 @@ const AddPhraseModal = (props) => {
   const { buttonLabel } = props;
 
   const [listPhrase, setlistPhrase] = useState([]);
+  const [countPhrase, setCountPhrase] = useState(0);
 
   const cachePhrase = async () => {
     const newList = listPhrase.concat(phrase.form);
@@ -33,12 +34,24 @@ const AddPhraseModal = (props) => {
 
   //Captura los valores del formulario
   const handlePhraseChange = async (e) => {
+
     await setPhrase({
       form: {
         ...phrase.form,
         [e.target.name]: e.target.value,
       },
     });
+
+    
+    if(phrase.namePhrase !== '')
+    {
+      setCountPhrase(phrase.form.namePhrase.split("\n").length);
+      
+    }
+    
+  
+    
+   
   };
 
   const [modalOpen, setModalOpen] = React.useState(false);
@@ -56,7 +69,7 @@ const AddPhraseModal = (props) => {
           color="primary"
           size="md"
         >
-          {listPhrase.length}
+          {countPhrase}
         </Badge>
       </Button>
 
@@ -83,7 +96,7 @@ const AddPhraseModal = (props) => {
                 color="primary"
                 size="md"
               >
-                {listPhrase.length}
+                {countPhrase}
               </Badge>
             </label>
             <Input
@@ -92,7 +105,7 @@ const AddPhraseModal = (props) => {
               name="namePhrase"
               placeholder="Phrase"
               type="textarea"
-              maxlength="255"
+              maxlength="25500"
               onChange={handlePhraseChange}
             ></Input>
 

@@ -21,6 +21,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import useBaseURL from '../../Hooks/useBaseURL';
 import useFormatterDate from '../../Hooks/useFormatterDate';
+import ShowPhraseModal from "./ShowPhraseModal.js";
 
 const cookie = new Cookies();
 
@@ -50,6 +51,7 @@ const ListPatientTable = (props) => {
         }
       })
         .then(response => {
+          //console.log(response);
           setPatient(response.data.data);
         })
         .catch(err => {
@@ -77,6 +79,7 @@ const ListPatientTable = (props) => {
         idPatient: idPatient
       })
         .then(() => {
+          //console.log(response);
           Patients();
         })
         .catch(err => {
@@ -92,6 +95,45 @@ const ListPatientTable = (props) => {
           })
         })
     })
+  };
+
+  const UnAssociatePatients = async (idPatient) => {
+    axios.defaults.headers.Authorization = "Bearer " + cookie.get("token");
+    await axios.get(baseURL + "sanctum/csrf-cookie").then(() => {
+      // get Tratamientos
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios.post(baseURL + 'api/unassociatePatientTreatment', {
+            idTreatment: idTreatment,
+            idPatient: idPatient
+          }).then((response) => {
+            //console.log(response);
+            Patients();
+            Swal.fire("UnAssociate!", "Your file has been UnAssociate.", "success");
+          })         
+            .catch((err) => {
+              Swal.fire({
+                title: "Oops!!",
+                text: "there is a problem connecting with Treatment the API server!",
+                icon: "warning",
+                footer: '<span style="color: red">server with error!<span/>',
+                toast: true,
+                position: "top-right",
+                showConfirmButton: false,
+                timer: 4000,
+              });
+            });
+        }
+      });
+    });
   };
 
 
@@ -183,17 +225,36 @@ const ListPatientTable = (props) => {
                             }
                           </span>
                         </td>
-                        <td className=" td-actions text-right">
-                          <Button
-                            className=" btn-icon"
-                            color="info"
-                            size="sm"
-                            type="button"
-                            onClick={(e) => AssociatePatients(item.id)}
-                          >
-                            <i className="ni ni-check-bold pt-1"></i>
-                          </Button>
-                        </td>
+                        { item.assignment === false ?  
+                          <td className=" td-actions text-right">
+                            <Button
+                              className=" btn-icon"
+                              color="info"
+                              size="sm"
+                              type="button"
+                              onClick={(e) => AssociatePatients(item.id)}
+                            >
+                              <i className="ni ni-check-bold pt-1"></i>
+                            </Button>
+                          </td>
+                          : 
+                          <>
+                          <td className=" td-actions text-right">
+                            <ShowPhraseModal buttonLabel="Lista de Frases" patient={item.id} idTreatment={idTreatment}></ShowPhraseModal>
+                          
+                            <Button
+                              className=" btn-icon"
+                              color="danger"
+                              size="sm"
+                              type="button"
+                              onClick={(e) => UnAssociatePatients(item.id)}
+                            >
+                              <i className="ni ni-fat-remove pt-1"></i>
+                            </Button>
+                          </td>
+                          </>
+                          
+                        }
                       </tr>
 
                     ))
