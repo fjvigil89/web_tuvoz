@@ -103,7 +103,7 @@ const Login = () => {
           return response;
         })
         .then((response) => {
-          console.log(response);
+          //console.log(response);
           if (response.statusText === "OK") {
             let data = response.data.data;
             let token = response.data.access_token;
