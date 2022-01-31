@@ -100,7 +100,7 @@ const SpecialistRecordTableList = () => {
                         <th scope="row">
                           <Media className="align-items-center">
                             <span className="mb-0 text-sm">
-                              <ChartModal buttonLabel="Detalles" path={item.name} ></ChartModal>
+                              <ChartModal buttonLabel="Detalles" path={item.path.split("/")[4]} ></ChartModal>
                             </span>
                           </Media>
                         </th>

@@ -3,7 +3,6 @@ import React, { useState } from "react";
 // reactstrap components
 import {
   FormGroup,
-  Input,
   Button,
   Modal,
   ModalBody,
@@ -13,7 +12,7 @@ import {
 // javascipt plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
-import { Line, Radar } from "react-chartjs-2";
+import { Radar } from "react-chartjs-2";
 // core components
 import {
   chartOptions,
@@ -41,18 +40,12 @@ const ChartModal = (props) => {
 
   const [modalOpen, setModalOpen] = React.useState(false);
 
-  const [emailRegister, setEmailRegister] = useState({
-    email: "",
-  });
-
   const getData = async () => {
     axios.defaults.headers.Authorization = "Bearer " + cookie.get("token");
+    axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
     await axios.get(baseURL + "sanctum/csrf-cookie").then(() => {
-      // get Tratamientos
       axios
-        .post(baseURL + "api/modelOpenSmille/", {
-          name_audio: path,         
-        })
+        .get(baseURL + "api/modelOpenSmille/"+path)
         .then((response) => {
           //console.log(response.data);
           if (response.status === 200) {            
