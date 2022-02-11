@@ -47,7 +47,7 @@ const ChartModal = (props) => {
       axios
         .get(baseURL + "api/modelOpenSmille/"+path)
         .then((response) => {
-          //console.log(response.data);
+          console.log(response.data);
           if (response.status === 200) {            
             let label = response.data.label;//array response fot query
             let data = response.data.data;//array response for query
