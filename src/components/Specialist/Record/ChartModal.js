@@ -45,10 +45,11 @@ const ChartModal = (props) => {
     axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
     await axios.get(baseURL + "sanctum/csrf-cookie").then(() => {
       axios
-        .get(baseURL + "api/modelOpenSmille/"+path)
+        .get(baseURL + "api/modelPraat/"+path)
         .then((response) => {
           //console.log(response.data);
-          if (response.status === 200) {            
+          if (response.status === 200) {
+            //console.log(response);        
             let label = response.data.label;//array response fot query
             let data = response.data.data;//array response for query
             setchartOpenSmilleData({      
