@@ -36,7 +36,7 @@ const ChartModal = (props) => {
   } 
   
 
-  const { buttonLabel, path } = props;
+  const { buttonLabel, path, identificador } = props;
 
   const [modalOpen, setModalOpen] = React.useState(false);
 
@@ -52,22 +52,32 @@ const ChartModal = (props) => {
             //console.log(response);        
             let label = response.data.label;//array response fot query
             let data = response.data.data;//array response for query
+            
             setchartOpenSmilleData({      
                 labels: label,
                 datasets: [{
-                    label: 'My First Dataset',
-                    data: data,
-                    fill: true,
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgb(54, 162, 235)',
-                    pointBackgroundColor: 'rgb(54, 162, 235)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgb(54, 162, 235)'
+                  label: 'Normal Voice',
+                  fillColor: "rgba(220,220,220,1)",
+                  strokeColor: "rgba(220,220,220,1)",
+                  pointColor: "rgba(220,220,220,1)",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(220,220,220,1)",
+                  data: [8.127615384615385, 24.270493613068425, 0.9140769230769231, 7.128596496829617e-05, 0.48238461538461536, 0.45438461538461533, 1.447153846153846, 2.8770769230769235, 0.2635384615384616, 1.1473076923076921, 1.7990769230769232, 3.0987692307692307, 3.4419999999999997]
                 },
-              ]      
-              })
-              setModalOpen(!modalOpen)
+                {
+                  label: identificador,
+                  data: data,
+                  fill: true,
+                  backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                  borderColor: 'rgb(54, 162, 235)',
+                  pointBackgroundColor: 'rgb(54, 162, 235)',
+                  pointBorderColor: '#fff',
+                  pointHoverBackgroundColor: '#fff',
+                  pointHoverBorderColor: 'rgb(54, 162, 235)'
+              }]      
+            })
+            setModalOpen(!modalOpen)
           }
         })
         .catch(() => {
@@ -83,9 +93,38 @@ const ChartModal = (props) => {
           });
         });
     });
+
+
   };
 
- 
+ const options = {
+  legend: {
+    display: true,
+    position: 'top'
+  },
+  title: {
+    display: false,
+    text: 'Report Praat'
+  },
+  scale: {
+    reverse: false,
+    gridLines: {
+      color: [
+        'black',
+        'red',
+        'orange',
+        'yellow',
+        'green',
+        'blue',
+        'indigo',
+        'violet'
+      ]
+    },
+    ticks: {
+      beginAtZero: true
+    }
+  }
+}
 
   return (
     <>
@@ -121,7 +160,7 @@ const ChartModal = (props) => {
           <div className="chart">
             <Radar
               data={chartOpenSmilleData}
-              options={chartOpenSmille.options}
+              options={options}
               getDatasetAtEvent={(e) => console.log(e)}
             />
           </div>
