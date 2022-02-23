@@ -63,13 +63,13 @@ const ChartModal = (props) => {
                   pointStrokeColor: "#fff",
                   pointHighlightFill: "#fff",
                   pointHighlightStroke: "rgba(220,220,220,1)",
-                  data: [8.127615384615385, 24.270493613068425, 0.9140769230769231, 7.128596496829617e-05, 0.48238461538461536, 0.45438461538461533, 1.447153846153846, 2.8770769230769235, 0.2635384615384616, 1.1473076923076921, 1.7990769230769232, 3.0987692307692307, 3.4419999999999997]
+                  data: [0.11778303565638346, 3.234159345323093, -0.7031975164134467, -10.121609323130262, -1.4653375684603436, -1.2275826699650698, -0.36816932336446756, 0.9086617047096639, -1.496109227127097, -0.02326862693935433, 0.5486992761940723, 1.0378001492713522, 1.0753436617287553]
                 },
                 {
                   label: identificador,
                   data: data,
                   fill: true,
-                  backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                  backgroundColor: 'rgb(54, 162, 235, 0.2)',
                   borderColor: 'rgb(54, 162, 235)',
                   pointBackgroundColor: 'rgb(54, 162, 235)',
                   pointBorderColor: '#fff',
@@ -107,8 +107,9 @@ const ChartModal = (props) => {
     text: 'Report Praat'
   },
   scale: {
+    display: true,
     reverse: false,
-    gridLines: {
+    /* gridLines: {
       color: [
         'black',
         'red',
@@ -119,7 +120,7 @@ const ChartModal = (props) => {
         'indigo',
         'violet'
       ]
-    },
+    }, */
     ticks: {
       beginAtZero: true
     }

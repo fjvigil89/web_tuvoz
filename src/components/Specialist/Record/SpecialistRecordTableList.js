@@ -106,7 +106,7 @@ const SpecialistRecordTableList = () => {
                         </th>
                         <th>{item.path.split("/")[4].split("-")[0]}</th>
                         <td>
-                          <audio src={item.path} controls />
+                          <audio src={item.path} controls type="audio/wav"/>
                         </td>
                         <td>
                           <div className="avatar-group">
