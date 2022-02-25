@@ -57,24 +57,50 @@ const ChartModal = (props) => {
                 labels: label,
                 datasets: [{
                   label: 'Normal Voice',
-                  fillColor: "rgba(220,220,220,1)",
-                  strokeColor: "rgba(220,220,220,1)",
-                  pointColor: "rgba(220,220,220,1)",
+                  fillColor: "rgba(155,155,155,1)",
+                  strokeColor: "rgba(155,155,155,1)",
+                  pointColor: "rgba(155,155,155,1)",
                   pointStrokeColor: "#fff",
                   pointHighlightFill: "#fff",
-                  pointHighlightStroke: "rgba(220,220,220,1)",
-                  data: [0.11778303565638346, 3.234159345323093, -0.7031975164134467, -10.121609323130262, -1.4653375684603436, -1.2275826699650698, -0.36816932336446756, 0.9086617047096639, -1.496109227127097, -0.02326862693935433, 0.5486992761940723, 1.0378001492713522, 1.0753436617287553]
+                  pointHighlightStroke: "rgba(155,155,155,1)",
+                  data: [0.9052297640673617, 3.292198590261772, -1.0384583658483628, 1.8070101962607745e-05, -1.8201589437497527, -1.720369473141382, -0.7236063880446538, 0.7462139014966376, -1.6607312068216509, -0.03770186718401153, 0.20985557483270167, 0.6800619410112898, 1.060737321257339]
+                },
+                {
+                  label: '+ Standad',
+                  fill: true,
+                  fillColor: "rgb(255,105,97)",
+                  strokeColor: "rgb(255,105,97)",
+                  borderColor: 'rgb(255,105,97)',
+                  pointBackgroundColor: 'rgb(255,105,97)',
+                  pointBorderColor: '#ffdece',
+                  pointHoverBackgroundColor: '#ffdece',
+                  pointHoverBorderColor: 'rgb(255,105,97)',                
+                  data: [2.242335304136552, 3.4623183654345033, -0.4804938577021248, 4.20040400137363e-05, -1.22552393705207, -1.2027053532665073, -0.12899194407067116, 1.2683663442584787, -1.1294089098086149, 0.5608159555903807, 0.7607131566028743, 1.1941442348337608, 1.6592485968789588]
+                },
+                {
+                  label: '- Standad',                  
+                  fill: true,
+                  fillColor: "rgb(255,105,97)",
+                  strokeColor: "rgb(255,105,97)",
+                  borderColor: 'rgb(255,105,97)',
+                  pointBackgroundColor: 'rgb(255,105,97)',
+                  pointBorderColor: '#ffdece',
+                  pointHoverBackgroundColor: '#ffdece',
+                  pointHoverBorderColor: 'rgb(255,105,97)',
+
+                  data: [-0.4318757760018288, 3.1220788150890404, -1.5964228739946007, -5.863836088520816e-06, -2.4147939504474354, -2.238033593016257, -1.3182208320186364, 0.22406145873479644, -2.192053503834687, -0.6362196899584038, -0.34100200693747096, 0.16597964718881886, 0.46222604563571923]
                 },
                 {
                   label: identificador,
                   data: data,
                   fill: true,
-                  backgroundColor: 'rgb(54, 162, 235, 0.2)',
-                  borderColor: 'rgb(54, 162, 235)',
-                  pointBackgroundColor: 'rgb(54, 162, 235)',
+                  fillColor: "rgb(54, 162, 235, 0.2)",
+                  strokeColor: "rgb(54, 162, 235, 0.2)",
+                  borderColor: 'rgba(54, 162, 235)',
+                  pointBackgroundColor: 'rgba(54, 162, 235)',
                   pointBorderColor: '#fff',
                   pointHoverBackgroundColor: '#fff',
-                  pointHoverBorderColor: 'rgb(54, 162, 235)'
+                  pointHoverBorderColor: 'rgba(54, 162, 235)'
               }]      
             })
             setModalOpen(!modalOpen)
