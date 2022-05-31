@@ -60,7 +60,9 @@ const AdminNavbar = () => {
         });
     });
   };
-
+  const demoDownload = async () => {
+    window.open('../apk/tuVoz-beta.apk')
+  };
   return (
     <>
       <Navbar className="navbar-top navbar-horizontal navbar-dark" expand="md">
@@ -100,6 +102,21 @@ const AdminNavbar = () => {
               </Row>
             </div>
             <Nav className="ml-auto" navbar>
+              <NavItem>
+                <NavLink
+                  className="nav-link-icon"
+                  to=""
+                  download
+                  tag={Link}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    demoDownload();
+                  }}
+                >
+                  <i className="ni ni-mobile-button" />
+                  <span className="nav-link-inner--text">Descargar Beta</span>
+                </NavLink>
+              </NavItem>
               <NavItem>
                 <NavLink
                   className="nav-link-icon"
