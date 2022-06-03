@@ -24,6 +24,7 @@ import Profile from "views/examples/Profile.js";
 import Register from "views/examples/Register.js";
 import GuestRegister from "views/Patient/GuestRegister.js";
 var routes_hidden = [
+
   {
     path: "/addtreatment",
     name: "AddTreatment",

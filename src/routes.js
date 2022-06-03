@@ -22,6 +22,7 @@ import Icons from "views/examples/Icons.js";
 import Patients from "views/examples/Patients";
 import Voces from "views/examples/Voces.js";
 import App from "views/examples/App";
+import ListBucket from "views/examples/ListBucket.js";
 
 var routes = [
   {
@@ -71,6 +72,13 @@ var routes = [
     name: "App",
     icon: "ni ni-mobile-button text-info",
     component: App,
+    layout: "/admin",
+  },
+  {
+    path: "/listBucket",
+    name: "DataSet",
+    component: ListBucket,
+    icon: "ni ni-folder-17 text-blue",
     layout: "/admin",
   },
 ];

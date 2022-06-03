@@ -56,6 +56,7 @@ const Login = () => {
 
   // Similar a componentDidMount y componentDidUpdate:
   useEffect(() => {
+
     if (cookie.get("token")) {
       if (
         cookie.get("role") === "Specialist" ||
@@ -71,22 +72,24 @@ const Login = () => {
 
   //Captura los valores del formulario
   const handleChange = async (e) => {
+    
     await setCredenciales({
+      
       form: {
         ...credenciales.form,
         [e.target.name]: e.target.value,
+        
       },
     });
   };
 
   //metodo Sincronico para el consumo del login en la api
   const inicioSesion = async (e) => {
+    
     e.preventDefault();
     await axios.get(baseURL + "sanctum/csrf-cookie").then(() => {
       // Login...
-      axios
-        .post(
-          baseURL + "api/login",
+      axios.post(baseURL + "api/login",
           {
             email: credenciales.form.email,
             password: credenciales.form.password,
@@ -98,12 +101,10 @@ const Login = () => {
               "Access-Control-Allow-Origin": "*",
             },
           }
-        )
-        .then((response) => {
+        ).then((response) => { 
           return response;
         })
         .then((response) => {
-          //console.log(response);
           if (response.statusText === "OK") {
             let data = response.data.data;
             let token = response.data.access_token;
