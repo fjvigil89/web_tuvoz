@@ -29,3 +29,28 @@ jobs:
         tags: |
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
             ${{ env.IMAGE_NAME }}
+  
+  deploy_unizar:
+    name: build and push image
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    
+    steps:
+    - uses: actions/checkout@master
+
+    - name: SSH Server Deploy
+      uses: kostya-ten/ssh-server-deploy@v4
+      env:
+        WOELCOME: "localhost"
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        port: ${{ secrets.SERVER_PORT }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        password: ${{ secrets.SERVER_PASSWORD }}
+        scp_source: ./*
+        scp_target: ~/
+        before_script: | 
+          sudo docker rm -f tuvozweb
+          sudo docker rmi -f fjvigil/tu_voz_web
+        after_script: |          
+          sudo docker run -p 80:80 --name tuvozweb  -d fjvigil/tu_voz_web
