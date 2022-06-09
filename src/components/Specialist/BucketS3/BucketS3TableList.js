@@ -20,6 +20,8 @@ import useBaseURL from "../../../Hooks/useBaseURL";
 import ChartModal from "./ChartModal";
 import AWS from "aws-sdk";
 import useFormatterDate from '../../../Hooks/useFormatterDate';
+import JSZip  from "jszip";
+import { saveAs } from 'file-saver';
 
 const cookie = new Cookies();
 
@@ -41,7 +43,8 @@ const BucketS3 = () => {
   const baseURL = useBaseURL(null);
   const hostS3= "https://tuvoz-bucket.s3.eu-central-1.amazonaws.com/";
   const formatter = new useFormatterDate();
-  
+ 
+
   //gusrdar los tratamientos del Usuario Logueado
   const [record, setRecord] = useState([
     {
@@ -118,10 +121,44 @@ const BucketS3 = () => {
     tempLink.click();
   }
 
-  const downloadDataset = async()=>{    
-    record.map((item) => {
-       downloadS3(item);
-  });
+  const getBlob = async(item) =>{
+    let resp = await fetch(hostS3+item.metadato);
+    let metadata = await resp.blob();  
+
+    resp = await fetch(hostS3+item.record);
+    let record = await resp.blob(); 
+    return [metadata, record];
+  }
+
+  const downloadDataset = async()=>{   
+    let zip = new JSZip(); 
+
+    for (let i = 0; i < users.length; i++) {
+        const user = users[i];        
+        for (let j = 0; j < record.length; j++) {
+          const item = record[j];
+
+          if (item.metadato.split("(")[0] === user) {
+            let audio = zip.folder(user);
+  
+            let tuvoz = await getBlob(item);
+            
+            let metadata =tuvoz[0]; 
+            let record = tuvoz[1]; 
+
+            audio.file(item.metadato, metadata);
+            audio.file(item.record, record); 
+            
+          }
+          
+        }
+    }
+
+    zip.generateAsync({type:"blob"}).then(function(content) {
+      // see FileSaver.js
+      saveAs(content, "dataset_TuVoz.zip");
+    });
+  
     
   }
 
