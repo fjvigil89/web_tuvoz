@@ -58,6 +58,8 @@ const BucketS3 = () => {
  
   ]);
   const [users, setUsers] = useState([ ]);
+  const [isLoading, setIsLoading] = useState(false);
+  
   //paginations
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(0);
@@ -131,33 +133,53 @@ const BucketS3 = () => {
   }
 
   const downloadDataset = async()=>{   
-    let zip = new JSZip(); 
+    try {
+        setIsLoading(true)
+        let zip = new JSZip(); 
 
-    for (let i = 0; i < users.length; i++) {
-        const user = users[i];        
-        for (let j = 0; j < record.length; j++) {
-          const item = record[j];
+        for (let i = 0; i < users.length; i++) {
+            const user = users[i];        
+            for (let j = 0; j < record.length; j++) {
+              const item = record[j];
 
-          if (item.metadato.split("(")[0] === user) {
-            let audio = zip.folder(user);
-  
-            let tuvoz = await getBlob(item);
-            
-            let metadata =tuvoz[0]; 
-            let record = tuvoz[1]; 
+              if (item.metadato.split("(")[0] === user) {
+                let audio = zip.folder(user);
+      
+                let tuvoz = await getBlob(item);
+                
+                let metadata =tuvoz[0]; 
+                let record = tuvoz[1]; 
 
-            audio.file(item.metadato, metadata);
-            audio.file(item.record, record); 
-            
-          }
-          
+                audio.file(item.metadato, metadata);
+                audio.file(item.record, record); 
+                
+              }
+              
+            }
         }
-    }
 
-    zip.generateAsync({type:"blob"}).then(function(content) {
-      // see FileSaver.js
-      saveAs(content, "dataset_TuVoz.zip");
-    });
+        zip.generateAsync({type:"blob"}).then(function(content) {
+          // see FileSaver.js
+          saveAs(content, "dataset_TuVoz.zip");
+        });
+    }
+    catch(error){
+      Swal.fire({
+        title: "Oops!!",
+        text: "Credentials went wrong!",
+        icon: "error",
+        footer: '<span style="color: red">server with error!<span/>',
+        toast: true,
+        position: "top-right",
+        showConfirmButton: false,
+        timer: 4000,
+      });
+    
+    }
+    finally{
+      setIsLoading(false)
+    }
+    
   
     
   }
@@ -180,111 +202,136 @@ const BucketS3 = () => {
     <>
       <Container className="mt--7" fluid>
         {/* Table */}
-        <Row>
-          <div className="col">
-            <Card className="shadow">
-              <CardHeader className="border-0">
-                <Media className="align-items-center">
-                  <Media>
-                    <span className="mb-0 text-sm">
-                      <h3 className="mb-0">Grabaciones</h3>
-                    </span>
-                    <Badge color="primary" >{record.length}</Badge>
-                  </Media>
-                </Media>
-              </CardHeader>
+            <Row>
+              <div className="col">
+                <Card className="shadow">
+                  <CardHeader className="border-0">
+                    <Media className="align-items-center">
+                      <Media>
+                        <span className="mb-0 text-sm">
+                          <h3 className="mb-0">Grabaciones</h3>
+                        </span>
+                        <Badge color="primary" >{record.length}</Badge>
+                      </Media>
+                      <Media style={{marginLeft: 450}}>
+                        <span className="mb-0 text-sm">
+                          <h3 className="mb-0">Pacientes</h3>
+                        </span>
+                        <Badge color="primary" >{record.length /10}</Badge>
+                      </Media>
 
-              <Table className="align-items-center table-flush" responsive>
-                <thead className="thead-light">
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Metadatos</th>
-                    <th scope="col">Audio</th>
-                    <th scope="col">Fecha</th>
-                    <th scope="col">Tamaño</th>
+                      <Button style={{marginLeft: 550}} className="btn-icon btn-3 " color="primary" type="button" onClick={()=>downloadDataset()}>
+                        <span className="btn-inner--icon">
+                          <i className="ni ni-bag-17" />
+                        </span>
+                        <span className="btn-inner--text">DataSet</span>
+                      </Button>
+                    </Media>
+
                     
-                  </tr>
-                </thead>
-                <tbody>
-                  {record.slice(currentPage * pageSize, (currentPage + 1) * pageSize ).map((item, index) => (                    
-                    <>
-                      <tr key={index}>
-                        <th scope="row" onClick={()=>downloadS3(item)} >
-                          <i className="fas fa-angle-down" />
-                          <span className="sr-only">Previous</span>
-                        </th>
-                        <td>
-                        <div className="avatar-group" >
-                            {item.metadato}
-                          </div>
-                        </td>
-                        <td>
-                          <div className="avatar-group" >
-                            {item.record}
-                          </div>
-                        </td>
-                        <td>
-                          <div >
-                            {item.date}
-                          </div>
-                        </td>
-                        <td>
-                          <div>
-                            {(item.size / 1024).toFixed(2) +"Kb"}
-                          </div>
-                        </td>
-                      </tr>
-                    </>
-                   
-                  ))}
-                </tbody>
-              </Table>
-              <CardFooter className="py-4">
-                <nav aria-label="...">
-                <Button className="btn-icon btn-3" color="primary" type="button" onClick={()=>downloadDataset()}>
-                  <span className="btn-inner--icon">
-                    <i className="ni ni-bag-17" />
-                  </span>
-                  <span className="btn-inner--text">DataSet</span>
-                </Button>
-                </nav>
-                <nav aria-label="...">
-                  <Pagination
-                    className="pagination justify-content-end mb-0"
-                    listClassName="justify-content-end mb-0"
-                  >
-                    <PaginationItem disabled={currentPage <= 0}>
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={e => handlePageClick(e, currentPage - 1)}
-                        tabIndex="-1"
+                  </CardHeader>
+                  {!isLoading ?(
+                    <Table className="align-items-center table-flush" responsive>
+                      <thead className="thead-light">
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Metadatos</th>
+                          <th scope="col">Audio</th>
+                          <th scope="col">Fecha</th>
+                          <th scope="col">Tamaño</th>
+                          
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {record.slice(currentPage * pageSize, (currentPage + 1) * pageSize ).map((item, index) => (                    
+                          <>
+                            <tr key={index}>
+                              <th scope="row" onClick={()=>downloadS3(item)} >
+                                <i className="fas fa-angle-down" />
+                                <span className="sr-only">Previous</span>
+                              </th>
+                              <td>
+                              <div className="avatar-group" >
+                                  {item.metadato}
+                                </div>
+                              </td>
+                              <td>
+                                <div className="avatar-group" >
+                                  {item.record}
+                                </div>
+                              </td>
+                              <td>
+                                <div >
+                                  {item.date}
+                                </div>
+                              </td>
+                              <td>
+                                <div>
+                                  {(item.size / 1024).toFixed(2) +"Kb"}
+                                </div>
+                              </td>
+                            </tr>
+                          </>
+                        
+                        ))}
+                      </tbody>
+                    </Table>
+                    ): (
+                      <Table className="align-items-center table-flush" responsive>
+                        <div className="col">
+                          <div className="align-items-center"> Loading...</div>
+                        </div>
+                      </Table>
+            
+                    )}
+                  <CardFooter className="py-4">
+                    <nav aria-label="...">
+                    <Button className="btn-icon btn-3" color="primary" type="button" onClick={()=>downloadDataset()}>
+                      <span className="btn-inner--icon">
+                        <i className="ni ni-bag-17" />
+                      </span>
+                      <span className="btn-inner--text">DataSet</span>
+                    </Button>
+                    </nav>
+                    <nav aria-label="...">
+                      <Pagination
+                        className="pagination justify-content-end mb-0"
+                        listClassName="justify-content-end mb-0"
                       >
-                        <i className="fas fa-angle-left" />
-                        <span className="sr-only">Previous</span>
-                      </PaginationLink>
-                    </PaginationItem>
-                    {[...Array(pagesCount)].map((page, i) => 
-                      <PaginationItem active={i === currentPage} key={i}>
-                        <PaginationLink onClick={e => handlePageClick(e, i)} href="#">
-                          {i + 1}
-                        </PaginationLink>
-                      </PaginationItem>
-                    )}                                          
-                    <PaginationItem disabled={currentPage >= pagesCount - 1}>
-                      <PaginationLink
-                        href="#pablo"
-                        onClick={e => handlePageClick(e, currentPage + 1)}
-                      >
-                        <i className="fas fa-angle-right" />
-                        <span className="sr-only">Next</span>
-                      </PaginationLink>
-                    </PaginationItem>
-                  </Pagination>
-                </nav>
-              </CardFooter>
-            </Card>
-          </div>
-        </Row>
+                        <PaginationItem disabled={currentPage <= 0}>
+                          <PaginationLink
+                            href="#pablo"
+                            onClick={e => handlePageClick(e, currentPage - 1)}
+                            tabIndex="-1"
+                          >
+                            <i className="fas fa-angle-left" />
+                            <span className="sr-only">Previous</span>
+                          </PaginationLink>
+                        </PaginationItem>
+                        {[...Array(pagesCount)].map((page, i) => 
+                          <PaginationItem active={i === currentPage} key={i}>
+                            <PaginationLink onClick={e => handlePageClick(e, i)} href="#">
+                              {i + 1}
+                            </PaginationLink>
+                          </PaginationItem>
+                        )}                                          
+                        <PaginationItem disabled={currentPage >= pagesCount - 1}>
+                          <PaginationLink
+                            href="#pablo"
+                            onClick={e => handlePageClick(e, currentPage + 1)}
+                          >
+                            <i className="fas fa-angle-right" />
+                            <span className="sr-only">Next</span>
+                          </PaginationLink>
+                        </PaginationItem>
+                      </Pagination>
+                    </nav>
+                  </CardFooter>
+                </Card>
+              </div>
+            </Row>
+        
+         
       </Container>
     </>
   );
