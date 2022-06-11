@@ -1,0 +1,8 @@
+#! /bin/bash
+for i in *
+do 
+  arrIN=(${i//./ })
+  ffmpeg -i $i ${arrIN[0]}".wav"
+# ffmpeg -i MDAwMDAwMDAw/MDAwMDAwMDAw\(2\).m4a MDAwMDAwMDAw/MDAwMDAwMDAw\(2\).wav
+
+done
