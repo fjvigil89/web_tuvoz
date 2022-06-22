@@ -17,7 +17,7 @@ import Cookies from "universal-cookie";
 import axios from "axios";
 import Swal from "sweetalert2";
 import useBaseURL from "../../../Hooks/useBaseURL";
-import ChartModal from "./ChartModal";
+import PraatChartModal from "./PraatChartModal";
 import AWS from "aws-sdk";
 import useFormatterDate from '../../../Hooks/useFormatterDate';
 import JSZip  from "jszip";
@@ -48,12 +48,10 @@ const BucketS3 = () => {
   //gusrdar los tratamientos del Usuario Logueado
   const [record, setRecord] = useState([
     {
-      Key: 'recording-f841ee41-ce59-400d-a569-130ffbe78f6f.m4a',
-      LastModified: "Fri Jun 03 2022 14:00:04 GMT+0200 (hora de verano de Europa central)",
-      ETag: '"9af1b0758fd09eb4902078246b0adfb1"',
-      ChecksumAlgorithm: Array(0),
-      Size: 22550,
-      StorageClass: "STANDARD",
+      metadato: 'recording-f841ee41-ce59-400d-a569-130ffbe78f6f.json',
+      record: 'recording-f841ee41-ce59-400d-a569-130ffbe78f6f.m4a',
+      date: "21 junio de 2022" ,
+      size: 22550,
     },
  
   ]);
@@ -101,7 +99,6 @@ const BucketS3 = () => {
         setPagesCount(Math.ceil(aux.length / (aux.length * porcentPage)));                
       }
     }); 
-
   }
 
   const downloadS3 = async(item)=>{    
@@ -178,10 +175,7 @@ const BucketS3 = () => {
     }
     finally{
       setIsLoading(false)
-    }
-    
-  
-    
+    }  
   }
 
   const handlePageClick = (e, index) => {
@@ -195,7 +189,7 @@ const BucketS3 = () => {
     if (!cookie.get("token")) {
       window.location.href = "/auth/login";
     }
-    
+
   }, []);
 
   return (
@@ -234,7 +228,8 @@ const BucketS3 = () => {
                     <Table className="align-items-center table-flush" responsive>
                       <thead className="thead-light">
                         <tr>
-                          <th scope="col">#</th>
+                          <th scope="col">Praat</th>
+                          <th scope="col">Descargar</th>
                           <th scope="col">Metadatos</th>
                           <th scope="col">Audio</th>
                           <th scope="col">Fecha</th>
@@ -246,10 +241,33 @@ const BucketS3 = () => {
                         {record.slice(currentPage * pageSize, (currentPage + 1) * pageSize ).map((item, index) => (                    
                           <>
                             <tr key={index}>
-                              <th scope="row" onClick={()=>downloadS3(item)} >
-                                <i className="fas fa-angle-down" />
-                                <span className="sr-only">Previous</span>
+                              <th scope="row">                                
+                                <Media className="align-items-center">
+                                  <span className="mb-0 text-sm">
+                                    <PraatChartModal buttonLabel="Detalles" blob={item.record}></PraatChartModal>
+                                  </span>
+                                </Media>
+                                
                               </th>
+                              <td scope="row" onClick={()=>downloadS3(item)} >
+                                <Media className="align-items-center">
+                                  <span className="mb-0 text-sm">
+                                  <Button
+                                    className="btn-icon icon-shape bg-blue text-white rounded-circle shadow"
+                                    outline
+                                    color="secundary"
+                                    type="button"                                    
+                                  >
+                                    <br></br>
+                                    <span className="btn-inner--icon">
+                                    <i className="ni ni-cloud-download-95" />
+                                    </span>  
+                                    
+                                  </Button>
+                                  </span>
+                                </Media>
+                              
+                              </td>
                               <td>
                               <div className="avatar-group" >
                                   {item.metadato}
