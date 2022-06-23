@@ -3,7 +3,7 @@ FROM node:14.17.0 as builder
 
 # set the working dir for container
 WORKDIR /frontend
-
+ENV REACT_APP_API_URL="http://155.210.153.12:8080/"
 # copy the json file first
 COPY . .
 # install npm dependencies
