@@ -6,7 +6,6 @@ WORKDIR /frontend
 
 # copy the json file first
 COPY . .
-ENV REACT_APP_API_URL="http://155.210.153.12:8080/"
 # install npm dependencies
 RUN npm install
 
@@ -16,5 +15,6 @@ RUN npm run build -prod
 
 # Handle Nginx
 FROM nginx
+ENV REACT_APP_API_URL="http://155.210.153.12:8080/"
 COPY --from=builder /frontend/build /usr/share/nginx/html
 COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
