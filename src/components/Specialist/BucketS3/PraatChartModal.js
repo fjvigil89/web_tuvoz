@@ -170,13 +170,14 @@ const PraatChartModal = (props) => {
     <>
       <Button
         className="btn-icon icon-shape bg-blue text-white rounded-circle shadow"
+        style={{padding:"5px"}}
         outline
         color="secundary"
         type="button"
         onClick={() => getData()}
         
       >
-        <br></br>
+      
         <span className="btn-inner--icon">
           <i className="ni ni-chart-pie-35" />
         </span>        

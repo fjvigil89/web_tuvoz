@@ -18,6 +18,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import useBaseURL from "../../../Hooks/useBaseURL";
 import PraatChartModal from "./PraatChartModal";
+import SoundModal from "./SoundModal";
 import AWS from "aws-sdk";
 import useFormatterDate from '../../../Hooks/useFormatterDate';
 import JSZip  from "jszip";
@@ -228,8 +229,7 @@ const BucketS3 = () => {
                     <Table className="align-items-center table-flush" responsive>
                       <thead className="thead-light">
                         <tr>
-                          <th scope="col">Praat</th>
-                          <th scope="col">Descargar</th>
+                          <th scope="col">Opción</th>
                           <th scope="col">Metadatos</th>
                           <th scope="col">Audio</th>
                           <th scope="col">Fecha</th>
@@ -242,23 +242,20 @@ const BucketS3 = () => {
                           <>
                             <tr key={index}>
                               <th scope="row">                                
-                                <Media className="align-items-center">
+                                <Media className="align-items-left">
                                   <span className="mb-0 text-sm">
                                     <PraatChartModal buttonLabel="Detalles" blob={item.record}></PraatChartModal>
                                   </span>
-                                </Media>
-                                
-                              </th>
-                              <td scope="row" onClick={()=>downloadS3(item)} >
-                                <Media className="align-items-center">
+                               
                                   <span className="mb-0 text-sm">
                                   <Button
                                     className="btn-icon icon-shape bg-blue text-white rounded-circle shadow"
+                                    style={{padding:"5px"}}
                                     outline
                                     color="secundary"
-                                    type="button"                                    
+                                    type="button" 
+                                    onClick={()=>downloadS3(item)}                                   
                                   >
-                                    <br></br>
                                     <span className="btn-inner--icon">
                                     <i className="ni ni-cloud-download-95" />
                                     </span>  
@@ -266,8 +263,8 @@ const BucketS3 = () => {
                                   </Button>
                                   </span>
                                 </Media>
+                              </th>
                               
-                              </td>
                               <td>
                               <div className="avatar-group" >
                                   {item.metadato}
@@ -275,7 +272,13 @@ const BucketS3 = () => {
                               </td>
                               <td>
                                 <div className="avatar-group" >
-                                  {item.record}
+                                <Media className="align-items-center">
+                                  <span className="mb-0 text-sm">
+                                    <SoundModal buttonLabel="Metadatos" blob={item}></SoundModal>                                   
+                                    {"    "}{item.record}
+                                  </span>
+                                </Media>
+                                  
                                 </div>
                               </td>
                               <td>
