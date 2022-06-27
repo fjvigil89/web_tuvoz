@@ -69,7 +69,11 @@ const PraatChartModal = (props) => {
             setchartOpenSmilleData({      
                 labels: label,
                 datasets: [{
-                  label: 'Normal Voice',
+                  label: 'Healthy',
+                  backgroundColor: 'transparent',
+                  borderDash: [5, 5],                                  
+                  pointRadius: 2,
+                  pointStyle: 'rectRot',
                   fillColor: "rgba(155,155,155,1)",
                   strokeColor: "rgba(155,155,155,1)",
                   pointColor: "rgba(155,155,155,1)",
@@ -80,6 +84,10 @@ const PraatChartModal = (props) => {
                 },
                 {
                   label: '+ Standad',
+                  backgroundColor: 'transparent',
+                  borderDash: [5, 5],                                  
+                  pointRadius: 2,
+                  pointStyle: 'rectRot',
                   fill: true,
                   fillColor: "rgb(255,105,97)",
                   strokeColor: "rgb(255,105,97)",
@@ -91,11 +99,15 @@ const PraatChartModal = (props) => {
                   data: [2.242335304136552, 3.4623183654345033, -0.4804938577021248, 4.20040400137363e-05, -1.22552393705207, -1.2027053532665073, -0.12899194407067116, 1.2683663442584787, -1.1294089098086149, 0.5608159555903807, 0.7607131566028743, 1.1941442348337608, 1.6592485968789588]
                 },
                 {
-                  label: '- Standad',                  
+                  label: '- Standad',                     
+                  backgroundColor: 'transparent',
+                  borderDash: [5, 5],                                  
+                  pointRadius: 2,
+                  pointStyle: 'rectRot',
                   fill: true,
                   fillColor: "rgb(255,105,97)",
                   strokeColor: "rgb(255,105,97)",
-                  borderColor: 'rgb(255,105,97)',
+                  borderColor: 'rgb(255,105,97)',                  
                   pointBackgroundColor: 'rgb(255,105,97)',
                   pointBorderColor: '#ffdece',
                   pointHoverBackgroundColor: '#ffdece',
@@ -137,6 +149,8 @@ const PraatChartModal = (props) => {
   };
 
  const options = {
+  type: 'radar',
+  responsive: true,
   legend: {
     display: true,
     position: 'top'

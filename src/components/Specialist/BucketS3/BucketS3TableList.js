@@ -244,7 +244,7 @@ const BucketS3 = () => {
                               <th scope="row">                                
                                 <Media className="align-items-left">
                                   <span className="mb-0 text-sm">
-                                    <PraatChartModal buttonLabel="Detalles" blob={item.record}></PraatChartModal>
+                                    <PraatChartModal buttonLabel="Details" blob={item.record}></PraatChartModal>
                                   </span>
                                
                                   <span className="mb-0 text-sm">
