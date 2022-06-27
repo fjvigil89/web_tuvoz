@@ -90,7 +90,7 @@ const BucketS3 = () => {
               date: formatter.format(Date.parse(element.LastModified)) ,
               size:element.Size + data.Contents[index+1].Size,
             });
-            auxUser.push(element.Key.split("(")[0]);                     
+            auxUser.push(element.Key.split("_")[0]);                     
           }
         });
         setRecord(aux);
@@ -140,7 +140,7 @@ const BucketS3 = () => {
             for (let j = 0; j < record.length; j++) {
               const item = record[j];
 
-              if (item.metadato.split("(")[0] === user) {
+              if (item.metadato.split("_")[0] === user) {
                 let audio = zip.folder(user);
       
                 let tuvoz = await getBlob(item);

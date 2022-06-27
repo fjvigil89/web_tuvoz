@@ -103,8 +103,8 @@ const SoundModal = (props) => {
         <ModalBody>
           <FormGroup>
           <div className="chart text-aling-center">
-              <p>Paciente: {blob.metadato.split("(")[0]}</p>
-              <p>Sonido: {phrase[(blob.metadato.split("(")[1].split(")")[0])-1].name}</p>
+              <p>Paciente: {blob.metadato.split("_")[0]}</p>
+              <p>Sonido: {phrase[(blob.metadato.split("_")[1].split(".")[0])-1].name}</p>
               
 
               <audio controls="controls">
